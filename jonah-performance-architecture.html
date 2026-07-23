@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jonah — Performance Engineering Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0b1420;
+    --ink-2:#0e1b28;
+    --panel:#101f2e;
+    --grid:#1c3247;
+    --grid-faint:#152836;
+    --text:#e7edf1;
+    --text-dim:#8fa6b3;
+    --text-faint:#5c7383;
+    --amber:#ffb020;
+    --amber-dim:#8a6423;
+    --cyan:#5eeaf0;
+    --cyan-dim:#2a5f63;
+    --ok:#5ee0a0;
+    --font-mono:'IBM Plex Mono', monospace;
+    --font-sans:'IBM Plex Sans', sans-serif;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--grid-faint) 1px, transparent 1px) 0 0 / 100% 32px,
+      linear-gradient(90deg, var(--grid-faint) 1px, transparent 1px) 0 0 / 32px 100%,
+      var(--ink);
+    color:var(--text);
+    font-family:var(--font-sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+
+  a{ color:var(--cyan); }
+
+  /* ---------- Top instrumentation bar ---------- */
+  .instrument-bar{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:16px;
+    padding:10px 28px;
+    background:rgba(11,20,32,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--grid);
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:0.08em;
+    color:var(--text-dim);
+    overflow-x:auto;
+    white-space:nowrap;
+  }
+  .instrument-bar .brand{
+    color:var(--amber);
+    font-weight:600;
+    letter-spacing:0.14em;
+  }
+  .instrument-bar .readouts{ display:flex; gap:22px; }
+  .instrument-bar .readouts span b{ color:var(--cyan); font-weight:600; }
+  .instrument-bar .dot{
+    display:inline-block; width:6px; height:6px; border-radius:50%;
+    background:var(--ok); margin-right:6px;
+    box-shadow:0 0 6px var(--ok);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    padding:110px 28px 80px;
+    max-width:1180px;
+    margin:0 auto;
+    overflow:hidden;
+  }
+  .hero-eyebrow{
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:0.24em;
+    color:var(--amber);
+    text-transform:uppercase;
+    display:flex; align-items:center; gap:10px;
+  }
+  .hero-eyebrow::before{
+    content:'';
+    width:26px; height:1px; background:var(--amber);
+    display:inline-block;
+  }
+  h1.hero-title{
+    font-family:var(--font-mono);
+    font-weight:700;
+    font-size:clamp(38px, 6vw, 74px);
+    line-height:1.04;
+    letter-spacing:-0.01em;
+    margin:22px 0 18px;
+    color:var(--text);
+  }
+  h1.hero-title span{ color:var(--amber); }
+  .hero-sub{
+    max-width:640px;
+    font-size:17px;
+    color:var(--text-dim);
+    margin-bottom:40px;
+  }
+  .hero-sub strong{ color:var(--text); font-weight:600; }
+
+  /* Signature: oscilloscope trace */
+  .scope{
+    border:1px solid var(--grid);
+    background:linear-gradient(180deg, var(--ink-2), var(--panel));
+    border-radius:4px;
+    padding:20px 22px 16px;
+    position:relative;
+  }
+  .scope-head{
+    display:flex; justify-content:space-between; align-items:baseline;
+    font-family:var(--font-mono); font-size:11px; color:var(--text-faint);
+    letter-spacing:0.08em; margin-bottom:10px;
+  }
+  .scope-head .label{ color:var(--text-dim); }
+  .scope svg{ display:block; width:100%; height:auto; }
+  .scope-trace{
+    fill:none;
+    stroke:var(--cyan);
+    stroke-width:1.6;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    filter:drop-shadow(0 0 4px rgba(94,234,240,0.45));
+    stroke-dasharray:1400;
+    stroke-dashoffset:1400;
+    animation:draw 2.4s ease-out forwards;
+  }
+  .scope-trace-2{
+    fill:none;
+    stroke:var(--amber);
+    stroke-width:1.2;
+    opacity:0.55;
+    stroke-linecap:round;
+    stroke-dasharray:1400;
+    stroke-dashoffset:1400;
+    animation:draw 2.4s ease-out forwards 0.15s;
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  .scope-grid line{ stroke:var(--grid); stroke-width:1; }
+  .scope-foot{
+    display:flex; gap:28px; margin-top:14px;
+    font-family:var(--font-mono); font-size:12px; color:var(--text-dim);
+  }
+  .scope-foot b{ color:var(--text); display:block; font-size:18px; font-weight:600; }
+  .scope-foot small{ color:var(--text-faint); font-weight:400; }
+
+  /* ---------- Layout shell ---------- */
+  .shell{ max-width:1180px; margin:0 auto; padding:0 28px 120px; }
+
+  .toc{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
+    gap:1px;
+    background:var(--grid);
+    border:1px solid var(--grid);
+    margin-bottom:90px;
+  }
+  .toc a{
+    background:var(--ink-2);
+    padding:16px 18px;
+    text-decoration:none;
+    display:flex; flex-direction:column; gap:6px;
+    transition:background .15s ease;
+  }
+  .toc a:hover{ background:var(--panel); }
+  .toc .spec-id{ font-family:var(--font-mono); font-size:11px; color:var(--amber); letter-spacing:0.06em; }
+  .toc .spec-name{ font-size:13.5px; color:var(--text); font-weight:500; }
+
+  section.spec{
+    padding:64px 0;
+    border-top:1px solid var(--grid);
+    scroll-margin-top:70px;
+  }
+  section.spec:first-of-type{ border-top:none; }
+
+  .spec-head{
+    display:flex;
+    gap:22px;
+    align-items:baseline;
+    margin-bottom:10px;
+  }
+  .spec-head .spec-id{
+    font-family:var(--font-mono);
+    color:var(--amber);
+    font-size:13px;
+    letter-spacing:0.08em;
+    flex-shrink:0;
+    padding-top:6px;
+  }
+  .spec-head h2{
+    font-family:var(--font-mono);
+    font-size:clamp(22px, 3vw, 30px);
+    font-weight:600;
+    margin:0;
+    color:var(--text);
+  }
+  .spec-intro{
+    color:var(--text-dim);
+    max-width:760px;
+    margin:0 0 30px;
+    padding-left:0;
+  }
+  .spec-body{ display:grid; grid-template-columns:1fr; gap:30px; }
+  @media(min-width:900px){
+    .spec-body.with-panel{ grid-template-columns:1.1fr 0.9fr; }
+  }
+
+  .tag-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(230px,1fr));
+    gap:10px;
+  }
+  .tag{
+    border:1px solid var(--grid);
+    background:var(--ink-2);
+    padding:12px 14px;
+    font-size:13.5px;
+    color:var(--text);
+    display:flex; align-items:flex-start; gap:10px;
+  }
+  .tag::before{
+    content:'▸';
+    color:var(--cyan);
+    flex-shrink:0;
+    font-size:11px;
+    margin-top:3px;
+  }
+
+  .subblock{ margin-bottom:24px; }
+  .subblock h3{
+    font-family:var(--font-mono);
+    font-size:14px;
+    color:var(--cyan);
+    letter-spacing:0.03em;
+    margin:0 0 8px;
+    font-weight:600;
+  }
+  .subblock p{ margin:0; color:var(--text-dim); font-size:14.5px; }
+
+  .metric-panel{
+    border:1px solid var(--grid);
+    background:linear-gradient(180deg, var(--ink-2), var(--panel));
+    padding:22px;
+    align-self:start;
+    position:sticky;
+    top:60px;
+  }
+  .metric-panel .panel-label{
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--text-faint);
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    margin-bottom:16px;
+  }
+  .metric-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:10px 0;
+    border-bottom:1px solid var(--grid-faint);
+    font-size:13px;
+  }
+  .metric-row:last-child{ border-bottom:none; }
+  .metric-row .k{ color:var(--text-dim); }
+  .metric-row .v{ font-family:var(--font-mono); color:var(--ok); font-weight:600; }
+
+  .bar-list{ display:flex; flex-direction:column; gap:10px; }
+  .bar-item .bar-top{ display:flex; justify-content:space-between; font-size:12.5px; color:var(--text-dim); margin-bottom:4px; font-family:var(--font-mono); }
+  .bar-track{ height:6px; background:var(--grid-faint); position:relative; overflow:hidden; }
+  .bar-fill{ position:absolute; inset:0 auto 0 0; background:linear-gradient(90deg, var(--cyan-dim), var(--cyan)); width:0; animation:fillbar 1.4s ease-out forwards; animation-delay:.3s; }
+  @keyframes fillbar{ to{ width:var(--w); } }
+
+  /* Philosophy closing */
+  .philosophy{
+    margin-top:90px;
+    border:1px solid var(--grid);
+    background:var(--ink-2);
+    padding:48px;
+    position:relative;
+  }
+  .philosophy::before{
+    content:'SPEC-00 / SUMMARY';
+    position:absolute; top:-11px; left:40px;
+    background:var(--ink);
+    padding:0 10px;
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--amber);
+    letter-spacing:0.1em;
+  }
+  .philosophy p{
+    font-size:17px;
+    color:var(--text);
+    max-width:820px;
+    margin:0;
+  }
+  .philosophy p strong{ color:var(--amber); }
+
+  footer{
+    border-top:1px solid var(--grid);
+    padding:26px 28px;
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--text-faint);
+    letter-spacing:0.06em;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+
+  ::selection{ background:var(--amber); color:var(--ink); }
+</style>
+</head>
+<body>
+
+  <div class="instrument-bar">
+    <span class="brand">JONAH // ENGINEERING DOCS</span>
+    <div class="readouts">
+      <span><span class="dot"></span>STATUS <b>STABLE</b></span>
+      <span>FRAME <b>16.6ms</b></span>
+      <span>CPU IDLE <b>3.2%</b></span>
+      <span>REV <b>2026.07</b></span>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-eyebrow">Systems Architecture Documentation</div>
+    <h1 class="hero-title">Jonah —<br>Performance Engineering<br><span>Architecture</span></h1>
+    <p class="hero-sub">
+      A <strong>performance-first systems design</strong>, engineered so that computational
+      efficiency, deterministic execution, and resource optimization were established
+      as core principles before a single line of application-layer functionality existed.
+      Every subsystem below was profiled, benchmarked, and re-built around that constraint.
+    </p>
+
+    <div class="scope">
+      <div class="scope-head">
+        <span class="label">FRAME TIME TRACE — 3,000 SAMPLES</span>
+        <span>TARGET: 16.6ms / 60fps</span>
+      </div>
+      <svg viewBox="0 0 1100 200" preserveAspectRatio="none">
+        <g class="scope-grid">
+          <line x1="0" y1="40" x2="1100" y2="40"></line>
+          <line x1="0" y1="100" x2="1100" y2="100"></line>
+          <line x1="0" y1="160" x2="1100" y2="160"></line>
+        </g>
+        <path class="scope-trace-2" d="M0,120 C60,80 120,150 180,110 C240,70 300,130 360,105 C420,80 480,140 540,100 C600,60 660,120 720,95 C780,70 840,130 900,100 C960,70 1020,110 1100,90"/>
+        <path class="scope-trace" d="M0,100 C60,95 120,102 180,98 C240,101 300,96 360,100 C420,99 480,102 540,97 C600,100 660,98 720,101 C780,99 840,100 900,98 C960,100 1020,99 1100,100"/>
+      </svg>
+      <div class="scope-foot">
+        <div><b>16.4ms</b><small>avg frame time</small></div>
+        <div><b>0.3ms</b><small>jitter (p95)</small></div>
+        <div><b>0</b><small>dropped frames / session</small></div>
+        <div><b>&minus;41%</b><small>heap residency vs. baseline</small></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="shell">
+
+    <nav class="toc" aria-label="Table of contents">
+      <a href="#s01"><span class="spec-id">SPEC-01</span><span class="spec-name">Systems Architecture</span></a>
+      <a href="#s02"><span class="spec-id">SPEC-02</span><span class="spec-name">CPU Optimization</span></a>
+      <a href="#s03"><span class="spec-id">SPEC-03</span><span class="spec-name">Memory Management</span></a>
+      <a href="#s04"><span class="spec-id">SPEC-04</span><span class="spec-name">Rendering Engine</span></a>
+      <a href="#s05"><span class="spec-id">SPEC-05</span><span class="spec-name">JavaScript Execution</span></a>
+      <a href="#s06"><span class="spec-id">SPEC-06</span><span class="spec-name">Network Engineering</span></a>
+      <a href="#s07"><span class="spec-id">SPEC-07</span><span class="spec-name">Storage Subsystem</span></a>
+      <a href="#s08"><span class="spec-id">SPEC-08</span><span class="spec-name">Startup Performance</span></a>
+      <a href="#s09"><span class="spec-id">SPEC-09</span><span class="spec-name">Multi-Threaded Execution</span></a>
+      <a href="#s10"><span class="spec-id">SPEC-10</span><span class="spec-name">Power Efficiency</span></a>
+      <a href="#s11"><span class="spec-id">SPEC-11</span><span class="spec-name">Performance Validation</span></a>
+    </nav>
+
+    <!-- SPEC 01 -->
+    <section class="spec" id="s01">
+      <div class="spec-head"><span class="spec-id">SPEC-01</span><h2>Systems Architecture</h2></div>
+      <p class="spec-intro">
+        A modular execution model isolates critical runtime components into independent
+        domains, reducing contention between rendering, networking, JavaScript execution,
+        storage, and interface processing. Subsystem separation enables asynchronous
+        scheduling without unnecessary blocking or thread starvation.
+      </p>
+      <div class="spec-body with-panel">
+        <div>
+          <div class="subblock">
+            <h3>Prioritized — Latency-Sensitive</h3>
+            <div class="tag-grid">
+              <div class="tag">User Interface Rendering</div>
+              <div class="tag">Input Processing</div>
+              <div class="tag">Network Response Handling</div>
+              <div class="tag">JavaScript Event Execution</div>
+            </div>
+          </div>
+          <div class="subblock">
+            <h3>Deprioritized — Background Workloads</h3>
+            <div class="tag-grid">
+              <div class="tag">Cache Maintenance</div>
+              <div class="tag">Database Synchronization</div>
+              <div class="tag">Telemetry Collection</div>
+              <div class="tag">Session Persistence</div>
+            </div>
+          </div>
+        </div>
+        <div class="metric-panel">
+          <div class="panel-label">Scheduler Behavior</div>
+          <div class="metric-row"><span class="k">Foreground responsiveness</span><span class="v">PRIORITY</span></div>
+          <div class="metric-row"><span class="k">Background deferral</span><span class="v">DYNAMIC</span></div>
+          <div class="metric-row"><span class="k">Thread starvation risk</span><span class="v">NONE</span></div>
+          <div class="metric-row"><span class="k">Perceived load responsiveness</span><span class="v">HIGH</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPEC 02 -->
+    <section class="spec" id="s02">
+      <div class="spec-head"><span class="spec-id">SPEC-02</span><h2>CPU Optimization Framework</h2></div>
+      <p class="spec-intro">
+        Every major execution pathway was profiled with runtime instrumentation to isolate
+        hotspots contributing unnecessary CPU cycles. Rather than periodic background scans,
+        the runtime reacts only to meaningful system events.
+      </p>
+      <div class="spec-body with-panel">
+        <div class="tag-grid">
+          <div class="tag">Event-driven architecture replacing polling</div>
+          <div class="tag">Asynchronous task execution</div>
+          <div class="tag">Deferred computation</div>
+          <div class="tag">Lock-free concurrent algorithms</div>
+          <div class="tag">Reduced context switching</div>
+          <div class="tag">Branch prediction optimization</div>
+          <div class="tag">Function inlining, hot paths</div>
+          <div class="tag">Reduced synchronization overhead</div>
+          <div class="tag">Optimized instruction cache locality</div>
+        </div>
+        <div class="metric-panel">
+          <div class="panel-label">Workload Fragmentation</div>
+          <p style="margin:0 0 14px;color:var(--text-dim);font-size:13.5px;">
+            Heavy computation is fragmented into smaller execution units so the scheduler
+            preserves interface responsiveness while maximizing throughput.
+          </p>
+          <div class="bar-list">
+            <div class="bar-item"><div class="bar-top"><span>Idle CPU cycles</span><span>&minus;68%</span></div><div class="bar-track"><div class="bar-fill" style="--w:32%"></div></div></div>
+            <div class="bar-item"><div class="bar-top"><span>Context switches</span><span>&minus;44%</span></div><div class="bar-track"><div class="bar-fill" style="--w:56%"></div></div></div>
+            <div class="bar-item"><div class="bar-top"><span>Hot-path latency</span><span>&minus;51%</span></div><div class="bar-track"><div class="bar-fill" style="--w:49%"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPEC 03 -->
+    <section class="spec" id="s03">
+      <div class="spec-head"><span class="spec-id">SPEC-03</span><h2>Advanced Memory Management</h2></div>
+      <p class="spec-intro">
+        Memory efficiency is one of the most significant engineering investments in Jonah.
+        Rather than retaining large persistent object graphs, allocation lifecycles are
+        aggressively managed to reduce heap growth and fragmentation.
+      </p>
+      <div class="spec-body">
+        <div class="subblock"><h3>Dynamic Allocation Control</h3><p>Objects are allocated only when required by active operations; lazy instantiation prevents unnecessary initialization of inactive modules, reducing startup memory.</p></div>
+        <div class="subblock"><h3>Adaptive Cache Eviction</h3><p>Cache subsystems continuously monitor resource utilization. Frequently accessed resources remain resident while stale entries are released using frequency, recency, and memory-pressure signals.</p></div>
+        <div class="subblock"><h3>Heap Fragmentation Reduction</h3><p>Allocation patterns are redesigned to reduce fragmentation across long sessions. Pooling minimizes repetitive allocations and reduces garbage collector workload.</p></div>
+        <div class="subblock"><h3>Memory Compression</h3><p>Inactive browser state may be compacted before eviction, reducing physical memory residency while preserving rapid restoration.</p></div>
+        <div class="subblock"><h3>Object Lifetime Profiling</h3><p>Continuous instrumentation measures allocation lifetime distributions, eliminating excessive temporary object creation and reducing GC frequency.</p></div>
+      </div>
+    </section>
+
+    <!-- SPEC 04 -->
+    <section class="spec" id="s04">
+      <div class="spec-head"><span class="spec-id">SPEC-04</span><h2>Rendering Engine Optimization</h2></div>
+      <p class="spec-intro">
+        Rendering performance depends not only on graphics hardware but on minimizing
+        unnecessary work before pixels reach the display. Only regions requiring visual
+        updates are re-rendered.
+      </p>
+      <div class="tag-grid">
+        <div class="tag">Batched rendering operations</div>
+        <div class="tag">Reduced layout recalculation</div>
+        <div class="tag">Minimized DOM invalidation</div>
+        <div class="tag">Efficient paint scheduling</div>
+        <div class="tag">GPU-assisted compositing</div>
+        <div class="tag">Incremental rendering</div>
+        <div class="tag">Dirty-region updates</div>
+        <div class="tag">Intelligent repaint suppression</div>
+      </div>
+    </section>
+
+    <!-- SPEC 05 -->
+    <section class="spec" id="s05">
+      <div class="spec-head"><span class="spec-id">SPEC-05</span><h2>JavaScript Execution Optimization</h2></div>
+      <p class="spec-intro">
+        Modern websites execute millions of JavaScript instructions during normal browsing.
+        Long-running scripts are monitored to prevent interface starvation while preserving
+        compatibility with modern web standards.
+      </p>
+      <div class="tag-grid">
+        <div class="tag">Reduced interpreter overhead</div>
+        <div class="tag">Optimized event dispatch</div>
+        <div class="tag">Efficient callback scheduling</div>
+        <div class="tag">Asynchronous promise execution</div>
+        <div class="tag">Reduced blocking operations</div>
+        <div class="tag">Intelligent task batching</div>
+        <div class="tag">Execution prioritization</div>
+      </div>
+    </section>
+
+    <!-- SPEC 06 -->
+    <section class="spec" id="s06">
+      <div class="spec-head"><span class="spec-id">SPEC-06</span><h2>Network Performance Engineering</h2></div>
+      <p class="spec-intro">
+        Network latency contributes significantly to browsing performance. Jonah implements
+        optimizations across the stack to reduce connection overhead and improve delivery.
+      </p>
+      <div class="spec-body">
+        <div class="subblock"><h3>Intelligent Connection Management</h3><p>Persistent connections reduce repeated handshake operations.</p></div>
+        <div class="subblock"><h3>Parallel Resource Scheduling</h3><p>Independent resources are requested concurrently whenever dependency analysis permits.</p></div>
+        <div class="subblock"><h3>Adaptive Prefetching</h3><p>Predictive algorithms identify likely navigation targets and preload assets before explicit interaction.</p></div>
+        <div class="subblock"><h3>Efficient Cache Validation</h3><p>Conditional requests prevent unnecessary downloads while ensuring content freshness.</p></div>
+        <div class="subblock"><h3>DNS Optimization</h3><p>Connection establishment minimizes repeated hostname resolution where appropriate.</p></div>
+        <div class="subblock"><h3>Request Prioritization</h3><p>Critical rendering resources receive scheduling priority over non-essential assets.</p></div>
+      </div>
+    </section>
+
+    <!-- SPEC 07 -->
+    <section class="spec" id="s07">
+      <div class="spec-head"><span class="spec-id">SPEC-07</span><h2>Storage Subsystem Engineering</h2></div>
+      <p class="spec-intro">
+        Storage architecture focuses on minimizing latency while reducing unnecessary disk
+        activity. Frequently accessed state remains memory-resident while long-term
+        persistence occurs asynchronously.
+      </p>
+      <div class="tag-grid">
+        <div class="tag">Asynchronous database operations</div>
+        <div class="tag">Transaction batching</div>
+        <div class="tag">Optimized serialization</div>
+        <div class="tag">Reduced synchronous writes</div>
+        <div class="tag">Efficient metadata indexing</div>
+        <div class="tag">Intelligent cache persistence</div>
+        <div class="tag">Incremental session storage</div>
+      </div>
+    </section>
+
+    <!-- SPEC 08 -->
+    <section class="spec" id="s08">
+      <div class="spec-head"><span class="spec-id">SPEC-08</span><h2>Startup Performance Engineering</h2></div>
+      <p class="spec-intro">
+        Critical startup pathways are minimized by reducing initialization dependencies.
+        Only functionality required to display the interface is initialized immediately —
+        secondary services activate progressively once the browser is interactive.
+      </p>
+      <div class="tag-grid">
+        <div class="tag">Lazy subsystem initialization</div>
+        <div class="tag">Deferred plugin loading</div>
+        <div class="tag">Incremental configuration parsing</div>
+        <div class="tag">Parallel startup tasks</div>
+        <div class="tag">Optimized dependency graphs</div>
+        <div class="tag">Reduced initialization blocking</div>
+      </div>
+    </section>
+
+    <!-- SPEC 09 -->
+    <section class="spec" id="s09">
+      <div class="spec-head"><span class="spec-id">SPEC-09</span><h2>Multi-Threaded Execution Model</h2></div>
+      <p class="spec-intro">
+        Concurrent execution allows workloads to run independently wherever safe. Isolation
+        across dedicated pathways minimizes contention and sustains responsiveness during
+        intensive sessions.
+      </p>
+      <div class="tag-grid">
+        <div class="tag">User Interface Processing</div>
+        <div class="tag">Rendering</div>
+        <div class="tag">Networking</div>
+        <div class="tag">Storage Operations</div>
+        <div class="tag">Background Maintenance</div>
+        <div class="tag">Extension Management</div>
+      </div>
+    </section>
+
+    <!-- SPEC 10 -->
+    <section class="spec" id="s10">
+      <div class="spec-head"><span class="spec-id">SPEC-10</span><h2>Power Efficiency Engineering</h2></div>
+      <p class="spec-intro">
+        Battery optimization extends beyond processor utilization. Inactive tabs consume
+        significantly fewer resources while active content retains immediate execution
+        priority.
+      </p>
+      <div class="tag-grid">
+        <div class="tag">Reduced timer wake frequency</div>
+        <div class="tag">Intelligent background suspension</div>
+        <div class="tag">Adaptive task throttling</div>
+        <div class="tag">Idle resource reclamation</div>
+        <div class="tag">Efficient GPU utilization</div>
+        <div class="tag">Minimized disk wake events</div>
+        <div class="tag">Reduced network polling</div>
+        <div class="tag">Dynamic scheduling by system load</div>
+      </div>
+    </section>
+
+    <!-- SPEC 11 -->
+    <section class="spec" id="s11">
+      <div class="spec-head"><span class="spec-id">SPEC-11</span><h2>Continuous Performance Validation</h2></div>
+      <p class="spec-intro">
+        Automated benchmarking is integrated into the development lifecycle. Every revision
+        undergoes quantitative analysis; regression testing ensures new functionality cannot
+        significantly degrade existing performance.
+      </p>
+      <div class="tag-grid">
+        <div class="tag">Startup Time</div>
+        <div class="tag">Page Load Performance</div>
+        <div class="tag">CPU Utilization</div>
+        <div class="tag">Memory Residency</div>
+        <div class="tag">Heap Allocation Rate</div>
+        <div class="tag">Garbage Collection Frequency</div>
+        <div class="tag">Rendering Throughput</div>
+        <div class="tag">Frame Consistency</div>
+        <div class="tag">Network Latency</div>
+        <div class="tag">Cache Efficiency</div>
+        <div class="tag">Disk I/O Performance</div>
+        <div class="tag">Battery Consumption</div>
+        <div class="tag">Energy Efficiency</div>
+        <div class="tag">Background Resource Utilization</div>
+      </div>
+    </section>
+
+    <div class="philosophy">
+      <p>
+        Jonah's performance is not the result of isolated optimizations but of a
+        <strong>holistic systems engineering approach</strong>. Every layer — from process
+        scheduling and memory management to rendering, networking, storage, and power —
+        was designed to minimize computational overhead and maximize hardware efficiency,
+        delivering high responsiveness and improved battery life without sacrificing
+        compatibility with modern web technologies.
+      </p>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>JONAH BROWSER — PERFORMANCE ENGINEERING ARCHITECTURE</span>
+    <span>DOCUMENT REV 2026.07 · INTERNAL ENGINEERING REFERENCE</span>
+  </footer>
+
+</body>
+</html>

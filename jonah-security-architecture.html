@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jonah — Security Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#000000;
+    --ink-2:#0a0a0a;
+    --panel:#111111;
+    --grid:#2c2c2c;
+    --grid-faint:#1a1a1a;
+    --text:#f5f5f5;
+    --text-dim:#a8a8a8;
+    --text-faint:#6a6a6a;
+    --hi:#ffffff;
+    --ok:#e6e6e6;
+    --font-mono:'IBM Plex Mono', monospace;
+    --font-sans:'IBM Plex Sans', sans-serif;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--grid-faint) 1px, transparent 1px) 0 0 / 100% 32px,
+      linear-gradient(90deg, var(--grid-faint) 1px, transparent 1px) 0 0 / 32px 100%,
+      var(--ink);
+    color:var(--text);
+    font-family:var(--font-sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+
+  a{ color:var(--hi); }
+
+  /* ---------- Top instrumentation bar ---------- */
+  .instrument-bar{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:16px;
+    padding:10px 28px;
+    background:rgba(0,0,0,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--grid);
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:0.08em;
+    color:var(--text-dim);
+    overflow-x:auto;
+    white-space:nowrap;
+  }
+  .instrument-bar .brand{
+    color:var(--hi);
+    font-weight:600;
+    letter-spacing:0.14em;
+  }
+  .instrument-bar .readouts{ display:flex; gap:22px; }
+  .instrument-bar .readouts span b{ color:var(--text); font-weight:600; }
+  .instrument-bar .dot{
+    display:inline-block; width:6px; height:6px; border-radius:50%;
+    background:var(--hi); margin-right:6px;
+    box-shadow:0 0 6px rgba(255,255,255,0.7);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    padding:110px 28px 80px;
+    max-width:1180px;
+    margin:0 auto;
+    overflow:hidden;
+  }
+  .hero-eyebrow{
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:0.24em;
+    color:var(--text);
+    text-transform:uppercase;
+    display:flex; align-items:center; gap:10px;
+  }
+  .hero-eyebrow::before{
+    content:'';
+    width:26px; height:1px; background:var(--text);
+    display:inline-block;
+  }
+  h1.hero-title{
+    font-family:var(--font-mono);
+    font-weight:700;
+    font-size:clamp(38px, 6vw, 74px);
+    line-height:1.04;
+    letter-spacing:-0.01em;
+    margin:22px 0 18px;
+    color:var(--text);
+  }
+  h1.hero-title span{
+    color:var(--ink);
+    -webkit-text-stroke:1.5px var(--text);
+  }
+  .hero-sub{
+    max-width:640px;
+    font-size:17px;
+    color:var(--text-dim);
+    margin-bottom:40px;
+  }
+  .hero-sub strong{ color:var(--text); font-weight:600; }
+
+  /* Signature: layered defense rings */
+  .layers{
+    border:1px solid var(--grid);
+    background:linear-gradient(180deg, var(--ink-2), var(--panel));
+    border-radius:4px;
+    padding:24px 26px 20px;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:20px;
+  }
+  @media(min-width:760px){
+    .layers{ grid-template-columns:280px 1fr; align-items:center; }
+  }
+  .layers-head{
+    font-family:var(--font-mono); font-size:11px; color:var(--text-faint);
+    letter-spacing:0.08em; margin-bottom:10px;
+    grid-column:1 / -1;
+    display:flex; justify-content:space-between;
+  }
+  .rings svg{ display:block; width:100%; height:auto; }
+  .rings circle{
+    fill:none;
+    stroke:var(--text);
+    stroke-width:1.2;
+  }
+  .rings .ring{
+    stroke-dasharray:820;
+    stroke-dashoffset:820;
+    animation:ring-draw 1.6s ease-out forwards;
+  }
+  .rings .ring:nth-child(1){ animation-delay:0s; opacity:0.9; }
+  .rings .ring:nth-child(2){ animation-delay:0.15s; opacity:0.75; }
+  .rings .ring:nth-child(3){ animation-delay:0.3s; opacity:0.6; }
+  .rings .ring:nth-child(4){ animation-delay:0.45s; opacity:0.45; }
+  .rings .ring:nth-child(5){ animation-delay:0.6s; opacity:0.3; }
+  .rings .core{
+    fill:var(--text);
+    opacity:0;
+    animation:core-in 0.6s ease-out forwards 0.9s;
+  }
+  @keyframes ring-draw{ to{ stroke-dashoffset:0; } }
+  @keyframes core-in{ to{ opacity:1; } }
+
+  .layers-list{ display:flex; flex-direction:column; gap:0; }
+  .layer-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:11px 0;
+    border-bottom:1px solid var(--grid-faint);
+    font-size:13.5px;
+  }
+  .layer-row:last-child{ border-bottom:none; }
+  .layer-row .n{ font-family:var(--font-mono); color:var(--text-faint); font-size:11px; width:26px; flex-shrink:0; }
+  .layer-row .name{ color:var(--text); flex:1; }
+  .layer-row .state{ font-family:var(--font-mono); font-size:11px; color:var(--text-dim); letter-spacing:0.05em; }
+
+  /* ---------- Layout shell ---------- */
+  .shell{ max-width:1180px; margin:0 auto; padding:0 28px 120px; }
+
+  .toc{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
+    gap:1px;
+    background:var(--grid);
+    border:1px solid var(--grid);
+    margin-bottom:90px;
+  }
+  .toc a{
+    background:var(--ink-2);
+    padding:16px 18px;
+    text-decoration:none;
+    display:flex; flex-direction:column; gap:6px;
+    transition:background .15s ease;
+  }
+  .toc a:hover{ background:var(--panel); }
+  .toc .spec-id{ font-family:var(--font-mono); font-size:11px; color:var(--text); letter-spacing:0.06em; }
+  .toc .spec-name{ font-size:13.5px; color:var(--text); font-weight:500; }
+
+  section.spec{
+    padding:64px 0;
+    border-top:1px solid var(--grid);
+    scroll-margin-top:70px;
+  }
+  section.spec:first-of-type{ border-top:none; }
+
+  .spec-head{
+    display:flex;
+    gap:22px;
+    align-items:baseline;
+    margin-bottom:10px;
+  }
+  .spec-head .spec-id{
+    font-family:var(--font-mono);
+    color:var(--text-faint);
+    font-size:13px;
+    letter-spacing:0.08em;
+    flex-shrink:0;
+    padding-top:6px;
+  }
+  .spec-head h2{
+    font-family:var(--font-mono);
+    font-size:clamp(22px, 3vw, 30px);
+    font-weight:600;
+    margin:0;
+    color:var(--text);
+  }
+  .spec-intro{
+    color:var(--text-dim);
+    max-width:760px;
+    margin:0 0 30px;
+  }
+  .spec-body{ display:grid; grid-template-columns:1fr; gap:30px; }
+  @media(min-width:900px){
+    .spec-body.with-panel{ grid-template-columns:1.1fr 0.9fr; }
+  }
+
+  .tag-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(230px,1fr));
+    gap:10px;
+  }
+  .tag{
+    border:1px solid var(--grid);
+    background:var(--ink-2);
+    padding:12px 14px;
+    font-size:13.5px;
+    color:var(--text);
+    display:flex; align-items:flex-start; gap:10px;
+  }
+  .tag::before{
+    content:'▸';
+    color:var(--text-faint);
+    flex-shrink:0;
+    font-size:11px;
+    margin-top:3px;
+  }
+
+  .subblock{ margin-bottom:24px; }
+  .subblock h3{
+    font-family:var(--font-mono);
+    font-size:14px;
+    color:var(--text);
+    letter-spacing:0.03em;
+    margin:0 0 8px;
+    font-weight:600;
+    border-bottom:1px solid var(--grid);
+    padding-bottom:6px;
+  }
+  .subblock p{ margin:0; color:var(--text-dim); font-size:14.5px; }
+
+  .metric-panel{
+    border:1px solid var(--grid);
+    background:linear-gradient(180deg, var(--ink-2), var(--panel));
+    padding:22px;
+    align-self:start;
+    position:sticky;
+    top:60px;
+  }
+  .metric-panel .panel-label{
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--text-faint);
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    margin-bottom:16px;
+  }
+  .metric-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:10px 0;
+    border-bottom:1px solid var(--grid-faint);
+    font-size:13px;
+  }
+  .metric-row:last-child{ border-bottom:none; }
+  .metric-row .k{ color:var(--text-dim); }
+  .metric-row .v{ font-family:var(--font-mono); color:var(--text); font-weight:600; }
+
+  .bar-list{ display:flex; flex-direction:column; gap:10px; }
+  .bar-item .bar-top{ display:flex; justify-content:space-between; font-size:12.5px; color:var(--text-dim); margin-bottom:4px; font-family:var(--font-mono); }
+  .bar-track{ height:6px; background:var(--grid-faint); position:relative; overflow:hidden; }
+  .bar-fill{ position:absolute; inset:0 auto 0 0; background:linear-gradient(90deg, #4a4a4a, var(--text)); width:0; animation:fillbar 1.4s ease-out forwards; animation-delay:.3s; }
+  @keyframes fillbar{ to{ width:var(--w); } }
+
+  /* Philosophy closing */
+  .philosophy{
+    margin-top:90px;
+    border:1px solid var(--grid);
+    background:var(--ink-2);
+    padding:48px;
+    position:relative;
+  }
+  .philosophy::before{
+    content:'SPEC-00 / SUMMARY';
+    position:absolute; top:-11px; left:40px;
+    background:var(--ink);
+    padding:0 10px;
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--text);
+    letter-spacing:0.1em;
+  }
+  .philosophy p{
+    font-size:17px;
+    color:var(--text);
+    max-width:820px;
+    margin:0;
+  }
+  .philosophy p strong{ color:var(--hi); border-bottom:1px solid var(--text); }
+
+  footer{
+    border-top:1px solid var(--grid);
+    padding:26px 28px;
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--text-faint);
+    letter-spacing:0.06em;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+
+  ::selection{ background:var(--text); color:var(--ink); }
+</style>
+</head>
+<body>
+
+  <div class="instrument-bar">
+    <span class="brand">JONAH // SECURITY DOCS</span>
+    <div class="readouts">
+      <span><span class="dot"></span>STATUS <b>PROTECTED</b></span>
+      <span>ACTIVE LAYERS <b>08</b></span>
+      <span>THREATS BLOCKED <b>0 TODAY</b></span>
+      <span>REV <b>2026.07</b></span>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-eyebrow">Systems Architecture Documentation</div>
+    <h1 class="hero-title">Jonah —<br>Security<br><span>Architecture</span></h1>
+    <p class="hero-sub">
+      A <strong>security-by-architecture philosophy</strong>, where protection mechanisms
+      are integrated into the browser's core systems rather than added as independent
+      features. Every session runs inside multiple layers of defensive technology working
+      together — not a single mechanism standing alone.
+    </p>
+
+    <div class="layers">
+      <div class="layers-head">
+        <span>DEFENSE-IN-DEPTH — LAYER MAP</span>
+        <span>8 INDEPENDENT SYSTEMS</span>
+      </div>
+      <div class="rings">
+        <svg viewBox="0 0 280 280">
+          <circle class="ring" cx="140" cy="140" r="128"></circle>
+          <circle class="ring" cx="140" cy="140" r="104"></circle>
+          <circle class="ring" cx="140" cy="140" r="80"></circle>
+          <circle class="ring" cx="140" cy="140" r="56"></circle>
+          <circle class="ring" cx="140" cy="140" r="32"></circle>
+          <circle class="core" cx="140" cy="140" r="6"></circle>
+        </svg>
+      </div>
+      <div class="layers-list">
+        <div class="layer-row"><span class="n">01</span><span class="name">Encrypted Synchronization</span><span class="state">ENFORCED</span></div>
+        <div class="layer-row"><span class="n">02</span><span class="name">Anti-Phishing Detection</span><span class="state">ACTIVE</span></div>
+        <div class="layer-row"><span class="n">03</span><span class="name">Process Sandboxing</span><span class="state">ISOLATED</span></div>
+        <div class="layer-row"><span class="n">04</span><span class="name">Zero Data Collection</span><span class="state">DEFAULT</span></div>
+        <div class="layer-row"><span class="n">05</span><span class="name">Malware Detection</span><span class="state">SCANNING</span></div>
+        <div class="layer-row"><span class="n">06</span><span class="name">Advanced Authentication</span><span class="state">VERIFIED</span></div>
+        <div class="layer-row"><span class="n">07</span><span class="name">Secure Communication</span><span class="state">TLS 1.3</span></div>
+        <div class="layer-row"><span class="n">08</span><span class="name">Runtime Threat Monitoring</span><span class="state">WATCHING</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="shell">
+
+    <nav class="toc" aria-label="Table of contents">
+      <a href="#s01"><span class="spec-id">SPEC-01</span><span class="spec-name">Encrypted Synchronization</span></a>
+      <a href="#s02"><span class="spec-id">SPEC-02</span><span class="spec-name">Anti-Phishing Detection</span></a>
+      <a href="#s03"><span class="spec-id">SPEC-03</span><span class="spec-name">Process Sandboxing</span></a>
+      <a href="#s04"><span class="spec-id">SPEC-04</span><span class="spec-name">Zero Data Collection</span></a>
+      <a href="#s05"><span class="spec-id">SPEC-05</span><span class="spec-name">Malware Detection</span></a>
+      <a href="#s06"><span class="spec-id">SPEC-06</span><span class="spec-name">Advanced Authentication</span></a>
+      <a href="#s07"><span class="spec-id">SPEC-07</span><span class="spec-name">Secure Communication</span></a>
+      <a href="#s08"><span class="spec-id">SPEC-08</span><span class="spec-name">Runtime Threat Monitoring</span></a>
+      <a href="#s09"><span class="spec-id">SPEC-09</span><span class="spec-name">Security Engineering Lifecycle</span></a>
+      <a href="#s10"><span class="spec-id">SPEC-10</span><span class="spec-name">Defense-in-Depth</span></a>
+    </nav>
+
+    <!-- SPEC 01 -->
+    <section class="spec" id="s01">
+      <div class="spec-head"><span class="spec-id">SPEC-01</span><h2>End-to-End Encrypted Synchronization</h2></div>
+      <p class="spec-intro">
+        Synchronization is built around a zero-trust cryptographic architecture: user
+        information is encrypted locally, before it ever leaves the originating device.
+        Encryption keys remain isolated from sync infrastructure, so servers never see
+        plaintext content.
+      </p>
+      <div class="spec-body with-panel">
+        <div>
+          <div class="subblock">
+            <h3>Synchronized &amp; Protected</h3>
+            <div class="tag-grid">
+              <div class="tag">Browser Tabs</div>
+              <div class="tag">Bookmarks</div>
+              <div class="tag">Password Vault</div>
+              <div class="tag">Browser Preferences</div>
+              <div class="tag">Extension Configurations</div>
+              <div class="tag">Reading Lists</div>
+              <div class="tag">Autofill Information</div>
+              <div class="tag">Session Recovery Data</div>
+            </div>
+          </div>
+        </div>
+        <div class="metric-panel">
+          <div class="panel-label">Per-Request Pipeline</div>
+          <div class="metric-row"><span class="k">1. Client-side encryption</span><span class="v">✓</span></div>
+          <div class="metric-row"><span class="k">2. Secure key derivation</span><span class="v">✓</span></div>
+          <div class="metric-row"><span class="k">3. Integrity verification</span><span class="v">✓</span></div>
+          <div class="metric-row"><span class="k">4. Authenticated transmission</span><span class="v">✓</span></div>
+          <div class="metric-row"><span class="k">5. Tamper validation</span><span class="v">✓</span></div>
+          <div class="metric-row"><span class="k">Replay protection</span><span class="v">ON</span></div>
+          <div class="metric-row"><span class="k">Version conflict detection</span><span class="v">ON</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPEC 02 -->
+    <section class="spec" id="s02">
+      <div class="spec-head"><span class="spec-id">SPEC-02</span><h2>Anti-Phishing Detection Engine</h2></div>
+      <p class="spec-intro">
+        Rather than relying solely on static blocklists, Jonah evaluates behavioral and
+        structural characteristics of webpages in real time — operating before credentials
+        are ever transmitted.
+      </p>
+      <div class="spec-body">
+        <div class="subblock"><h3>Domain Reputation Analysis</h3><p>Registration history, trust signals, certificate validation, and known malicious infrastructure are evaluated before page interaction.</p></div>
+        <div class="subblock"><h3>URL Similarity Detection</h3><p>Algorithms compare visited domains against legitimate services to catch homograph attacks, character substitution, and visually deceptive URLs.</p></div>
+        <div class="subblock"><h3>Visual Interface Analysis</h3><p>Page layouts resembling known login portals are analyzed to detect cloned authentication interfaces.</p></div>
+        <div class="subblock"><h3>Certificate Verification</h3><p>TLS certificates are validated against expected trust chains while detecting anomalies and suspicious issuers.</p></div>
+        <div class="subblock"><h3>Form Behavior Inspection</h3><p>Credential submission forms are inspected for suspicious destinations, hidden redirects, and unauthorized data collection.</p></div>
+        <div class="subblock"><h3>Threat Intelligence Integration</h3><p>Signatures are continuously updated from verified sources, so newly identified phishing campaigns are blocked rapidly.</p></div>
+      </div>
+    </section>
+
+    <!-- SPEC 03 -->
+    <section class="spec" id="s03">
+      <div class="spec-head"><span class="spec-id">SPEC-03</span><h2>Process Sandboxing Architecture</h2></div>
+      <p class="spec-intro">
+        Every website executes inside a dedicated security sandbox, preventing direct
+        interaction with operating system resources or other browser processes. A
+        compromise stays confined to its sandbox.
+      </p>
+      <div class="spec-body with-panel">
+        <div class="tag-grid">
+          <div class="tag">Independent Memory Space</div>
+          <div class="tag">Separate Rendering Process</div>
+          <div class="tag">Restricted System Calls</div>
+          <div class="tag">Controlled File Access</div>
+          <div class="tag">Limited Device Permissions</div>
+          <div class="tag">Isolated JavaScript Runtime</div>
+        </div>
+        <div class="metric-panel">
+          <div class="panel-label">Engineering Controls</div>
+          <div class="metric-row"><span class="k">Process isolation</span><span class="v">ENFORCED</span></div>
+          <div class="metric-row"><span class="k">Memory boundary enforcement</span><span class="v">ENFORCED</span></div>
+          <div class="metric-row"><span class="k">Privilege separation</span><span class="v">ENFORCED</span></div>
+          <div class="metric-row"><span class="k">Kernel interface restrictions</span><span class="v">ENFORCED</span></div>
+          <div class="metric-row"><span class="k">Capability-based access</span><span class="v">ENFORCED</span></div>
+          <div class="metric-row"><span class="k">Cross-process IPC</span><span class="v">VALIDATED ONLY</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPEC 04 -->
+    <section class="spec" id="s04">
+      <div class="spec-head"><span class="spec-id">SPEC-04</span><h2>Zero Data Collection Framework</h2></div>
+      <p class="spec-intro">
+        Privacy is built on data minimization: Jonah is architected to operate without
+        collecting unnecessary personal information, and does not monetize browsing
+        behavior through advertising or profiling.
+      </p>
+      <div class="tag-grid">
+        <div class="tag">No Browsing History collection</div>
+        <div class="tag">No Search Activity collection</div>
+        <div class="tag">No Website Usage Profiles</div>
+        <div class="tag">No Advertising Identifiers</div>
+        <div class="tag">No Behavioral Tracking</div>
+        <div class="tag">No Third-Party Telemetry</div>
+        <div class="tag">No Personal Usage Analytics</div>
+      </div>
+      <p style="color:var(--text-dim);font-size:14px;margin-top:22px;max-width:760px;">
+        Telemetry required for software reliability is engineered to remove personally
+        identifiable information wherever technically possible; anonymous diagnostics,
+        when enabled, are aggregated before analysis. No browsing activity is sold,
+        shared, or licensed to advertising networks.
+      </p>
+    </section>
+
+    <!-- SPEC 05 -->
+    <section class="spec" id="s05">
+      <div class="spec-head"><span class="spec-id">SPEC-05</span><h2>Malware Detection Pipeline</h2></div>
+      <p class="spec-intro">
+        Downloaded files undergo continuous security analysis before becoming available
+        for execution, combining multiple detection methodologies for high accuracy.
+      </p>
+      <div class="spec-body">
+        <div class="subblock"><h3>Signature-Based Detection</h3><p>Known malware signatures are matched against continually updated threat databases.</p></div>
+        <div class="subblock"><h3>Behavioral Analysis</h3><p>Downloaded executables are inspected for suspicious behavioral characteristics common to malicious software.</p></div>
+        <div class="subblock"><h3>File Structure Validation</h3><p>Binary structure analysis identifies malformed executables, obfuscation, embedded payloads, and abnormal compression.</p></div>
+        <div class="subblock"><h3>Reputation Scoring</h3><p>Downloaded files are evaluated using reputation metrics derived from verified threat intelligence sources.</p></div>
+        <div class="subblock"><h3>Archive Inspection</h3><p>Compressed files are recursively analyzed to detect hidden malicious content before extraction.</p></div>
+        <div class="subblock"><h3>Integrity Verification</h3><p>Hash validation detects unauthorized modification of trusted software packages.</p></div>
+      </div>
+    </section>
+
+    <!-- SPEC 06 -->
+    <section class="spec" id="s06">
+      <div class="spec-head"><span class="spec-id">SPEC-06</span><h2>Advanced Authentication Framework</h2></div>
+      <p class="spec-intro">
+        Jonah Accounts support multiple authentication mechanisms built for both security
+        and usability, using cryptographic challenge-response protocols that minimize
+        credential exposure during login.
+      </p>
+      <div class="spec-body with-panel">
+        <div>
+          <div class="subblock"><h3>Passkey Authentication</h3><p>Passwordless authentication using asymmetric cryptography — no password transmission, reduced susceptibility to phishing.</p></div>
+          <div class="subblock"><h3>Hardware Security Keys</h3><p>FIDO2-compatible authenticators provide cryptographic proof of identity through secure hardware modules.</p></div>
+          <div class="subblock"><h3>Multi-Factor Authentication</h3><p>Independent authentication factors significantly reduce unauthorized access following credential compromise.</p></div>
+        </div>
+        <div class="metric-panel">
+          <div class="panel-label">Supported Methods</div>
+          <div class="metric-row"><span class="k">Password Authentication</span><span class="v">✓</span></div>
+          <div class="metric-row"><span class="k">TOTP</span><span class="v">✓</span></div>
+          <div class="metric-row"><span class="k">Passkeys</span><span class="v">✓</span></div>
+          <div class="metric-row"><span class="k">Hardware Security Keys</span><span class="v">✓</span></div>
+          <div class="metric-row"><span class="k">Device-Based Authentication</span><span class="v">✓</span></div>
+          <div class="metric-row"><span class="k">Session tokens</span><span class="v">ROTATED</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPEC 07 -->
+    <section class="spec" id="s07">
+      <div class="spec-head"><span class="spec-id">SPEC-07</span><h2>Secure Communication Architecture</h2></div>
+      <p class="spec-intro">
+        Every network connection undergoes multiple validation procedures before
+        sensitive information is exchanged, reducing the likelihood of interception
+        or unauthorized communication.
+      </p>
+      <div class="tag-grid">
+        <div class="tag">TLS Certificate Validation</div>
+        <div class="tag">Certificate Chain Verification</div>
+        <div class="tag">Secure Cipher Negotiation</div>
+        <div class="tag">Perfect Forward Secrecy</div>
+        <div class="tag">HSTS Enforcement</div>
+        <div class="tag">Mixed Content Protection</div>
+        <div class="tag">Secure DNS Resolution</div>
+        <div class="tag">Certificate Revocation Checking</div>
+      </div>
+    </section>
+
+    <!-- SPEC 08 -->
+    <section class="spec" id="s08">
+      <div class="spec-head"><span class="spec-id">SPEC-08</span><h2>Runtime Threat Monitoring</h2></div>
+      <p class="spec-intro">
+        Jonah continuously evaluates browser activity for indicators of compromise,
+        processing security telemetry locally wherever possible.
+      </p>
+      <div class="spec-body with-panel">
+        <div class="tag-grid">
+          <div class="tag">Unexpected Process Behavior</div>
+          <div class="tag">Unauthorized Memory Access</div>
+          <div class="tag">Suspicious Network Activity</div>
+          <div class="tag">Privilege Escalation Attempts</div>
+          <div class="tag">Browser Exploit Indicators</div>
+          <div class="tag">Extension Behavior</div>
+          <div class="tag">Abnormal Script Execution</div>
+          <div class="tag">Resource Abuse</div>
+        </div>
+        <div class="metric-panel">
+          <div class="panel-label">Automated Responses</div>
+          <div class="metric-row"><span class="k">Process Isolation</span><span class="v">READY</span></div>
+          <div class="metric-row"><span class="k">Download Blocking</span><span class="v">READY</span></div>
+          <div class="metric-row"><span class="k">Connection Termination</span><span class="v">READY</span></div>
+          <div class="metric-row"><span class="k">Session Invalidation</span><span class="v">READY</span></div>
+          <div class="metric-row"><span class="k">Security Warnings</span><span class="v">READY</span></div>
+          <div class="metric-row"><span class="k">Threat Logging</span><span class="v">READY</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPEC 09 -->
+    <section class="spec" id="s09">
+      <div class="spec-head"><span class="spec-id">SPEC-09</span><h2>Security Engineering Lifecycle</h2></div>
+      <p class="spec-intro">
+        Security extends beyond runtime protection into the development process itself.
+        Every release undergoes extensive validation; known vulnerabilities are tracked
+        through continuous management with patches integrated into scheduled releases.
+      </p>
+      <div class="tag-grid">
+        <div class="tag">Static Application Security Testing</div>
+        <div class="tag">Dynamic Application Security Testing</div>
+        <div class="tag">Dependency Vulnerability Analysis</div>
+        <div class="tag">Secure Code Review</div>
+        <div class="tag">Memory Safety Validation</div>
+        <div class="tag">Penetration Testing</div>
+        <div class="tag">Cryptographic Verification</div>
+        <div class="tag">Authentication Testing</div>
+        <div class="tag">Network Security Analysis</div>
+        <div class="tag">Sandboxing Verification</div>
+        <div class="tag">Regression Security Testing</div>
+      </div>
+    </section>
+
+    <!-- SPEC 10 -->
+    <section class="spec" id="s10">
+      <div class="spec-head"><span class="spec-id">SPEC-10</span><h2>Defense-in-Depth Architecture</h2></div>
+      <p class="spec-intro">
+        Multiple independent security layers protect against a wide range of attack
+        vectors. Rather than depending on any single mechanism, Jonah combines
+        cryptography, isolated execution, phishing detection, malware inspection,
+        secure authentication, runtime monitoring, and privacy-preserving data
+        practices into one unified framework.
+      </p>
+    </section>
+
+    <div class="philosophy">
+      <p>
+        By integrating these technologies directly into its core architecture, Jonah
+        Browser <strong>reduces the overall attack surface</strong>, strengthens
+        resilience against evolving cyber threats, and provides a secure browsing
+        environment without sacrificing performance or usability.
+      </p>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>JONAH BROWSER — SECURITY ARCHITECTURE</span>
+    <span>DOCUMENT REV 2026.07 · INTERNAL ENGINEERING REFERENCE</span>
+  </footer>
+
+</body>
+</html>
