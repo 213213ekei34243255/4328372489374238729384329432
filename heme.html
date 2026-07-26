@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<<<<<<< HEAD
 <title>Jonah Browser Mobile</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -22,8 +23,38 @@
   --border-gold:rgba(255,215,0,0.4);
   --text-bright:#ffffff;
   --text-muted:rgba(255,255,255,0.65);
+=======
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jonah Browser</title>
+<link rel="icon" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+<style>
+:root{
+  --black:#0a0a0b;
+  --panel:#141416;
+  --line: rgba(255,255,255,0.10);
+  --line-soft: rgba(255,255,255,0.06);
+  --white:#ffffff;
+  --muted: rgba(255,255,255,0.55);
+  --muted-dark: rgba(10,10,11,0.55);
+  --ink:#0a0a0b;
+>>>>>>> 1f08134 (Update Jonah Browser to v1.3.7)
 }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--black);
+  color:var(--white);
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none;}
+img{display:block;max-width:100%;}
+.wrap{max-width:1280px;margin:0 auto;padding:0 40px;}
 
+<<<<<<< HEAD
 body{
   margin:0;min-height:100vh;
   font-family:'Barlow',sans-serif;
@@ -32,8 +63,24 @@ body{
   display:flex;flex-direction:column;align-items:center;
   overflow-x:hidden;overflow-y:auto;
   position:relative;
+=======
+/* ---------- placeholder boxes (swap these for your own files) ---------- */
+.ph{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  border:1.5px dashed rgba(255,255,255,0.25);
+  border-radius:14px;
+  color:rgba(255,255,255,0.4);
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.5px;
+  text-align:center;
+  width:100%;height:100%;
+  background:rgba(255,255,255,0.02);
+>>>>>>> 1f08134 (Update Jonah Browser to v1.3.7)
 }
+.ph i{font-size:22px;}
 
+<<<<<<< HEAD
 /* ── STADIUM HERO BACKGROUND ── */
 #hero-bg{
   position:fixed;top:0;left:0;width:100%;height:100%;
@@ -53,8 +100,23 @@ body{
       rgba(6,6,16,0.5) 70%,
       rgba(6,6,16,0.95) 100%),
     radial-gradient(ellipse at 50% 0%, rgba(60,59,110,0.4) 0%, transparent 70%);
+=======
+/* ---------- NAV ---------- */
+nav{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 40px;
+  background:rgba(10,10,11,0.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line-soft);
+>>>>>>> 1f08134 (Update Jonah Browser to v1.3.7)
 }
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-slot{width:34px;height:34px;flex-shrink:0;}
+.logo-slot img{width:100%;height:100%;object-fit:contain;}
+.logo-name{font-size:17px;font-weight:700;letter-spacing:0.3px;}
 
+<<<<<<< HEAD
 /* Animated flag stripes */
 #flag-stripes{
   position:fixed;top:0;left:0;width:100%;height:6px;
@@ -102,8 +164,24 @@ body::after{
   position:relative;z-index:10;
   display:flex;flex-direction:column;align-items:center;
   width:100%;padding:50px 0 100px;
-}
+=======
+.nav-links{display:flex;gap:34px;list-style:none;}
+.nav-links a{font-size:14px;font-weight:500;color:var(--muted);transition:color .2s;}
+.nav-links a:hover{color:var(--white);}
+.nav-links a.active{color:var(--white);}
 
+.nav-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 20px;border-radius:10px;
+  background:var(--white);color:var(--ink);
+  font-size:14px;font-weight:600;
+  border:none;cursor:pointer;
+  transition:transform .2s, opacity .2s;
+>>>>>>> 1f08134 (Update Jonah Browser to v1.3.7)
+}
+.nav-cta:hover{transform:translateY(-1px);opacity:.9;}
+
+<<<<<<< HEAD
 /* ── LOGO AREA ── */
 .logo-area{
   display:flex;flex-direction:column;align-items:center;
@@ -1014,11 +1092,382 @@ body::after{
     height: 100%;
     object-fit: cover;
     display: block;
+=======
+.menu-toggle{
+  display:none;
+  align-items:center;justify-content:center;
+  width:38px;height:38px;
+  border-radius:9px;
+  border:1px solid var(--line);
+  background:transparent;
+  color:var(--white);
+  font-size:20px;
+  cursor:pointer;
+  flex-shrink:0;
 }
+.mobile-menu{
+  display:none;
+  position:fixed;
+  top:73px;left:0;right:0;
+  z-index:99;
+  background:rgba(10,10,11,0.98);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line-soft);
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .35s ease;
+}
+.mobile-menu.open{max-height:520px;}
+.mobile-menu ul{list-style:none;padding:8px 24px 4px;display:flex;flex-direction:column;}
+.mobile-menu a{
+  display:block;
+  padding:15px 4px;
+  font-size:15px;font-weight:500;
+  color:var(--muted);
+  border-bottom:1px solid var(--line-soft);
+}
+.mobile-menu a.active{color:var(--white);}
+.mobile-menu .nav-cta{
+  margin:18px 24px 24px;
+  width:calc(100% - 48px);
+  justify-content:center;
+}
+
+@media(max-width:900px){
+  .nav-links{display:none;}
+  nav > .nav-cta{display:none;}
+  .menu-toggle{display:flex;}
+  .mobile-menu{display:block;}
+  .hero-grid{grid-template-columns:1fr;}
+  .hero-visual{aspect-ratio:16/10;order:-1;}
+  .hero h1{font-size:clamp(34px,9vw,48px);}
+  .hero p.lead{max-width:100%;}
+}
+
+@media(max-width:600px){
+  .wrap{padding:0 22px;}
+  nav{padding:16px 20px;}
+  .hero{padding:52px 0 40px;}
+  .hero-grid{gap:34px;}
+  .hero-actions{gap:10px;}
+  .hero-actions button{flex:1;justify-content:center;padding:14px 16px;}
+  .features,.security,.about{padding-top:70px;padding-bottom:60px;}
+  .performance{padding-bottom:70px;}
+  .status{padding:70px 0;}
+  .perf-inner,.about-inner{padding:28px 22px;}
+  .status-card{padding:20px 18px;}
+  .cta{padding:48px 0;}
+  .cta-inner{flex-direction:column;align-items:flex-start;}
+  .cta-right{align-items:flex-start;width:100%;}
+  .cta-right .btn-solid{width:100%;justify-content:center;}
+  .cta-right small{align-self:flex-start;}
+  footer .wrap{flex-direction:column;align-items:flex-start;gap:10px;}
+  .service-row{padding:18px 16px;}
+  .uptime-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;}
+  .uptime-inner{min-width:620px;}
+}
+
+/* ---------- HERO ---------- */
+.hero{
+  padding:90px 0 60px;
+  background:
+    radial-gradient(ellipse 900px 500px at 80% 10%, rgba(255,255,255,0.05), transparent 60%),
+    var(--black);
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:60px;
+  align-items:center;
+}
+.eyebrow{
+  display:inline-block;
+  padding:7px 16px;
+  border:1px solid var(--line);
+  border-radius:100px;
+  font-size:12px;font-weight:500;
+  color:var(--muted);
+  margin-bottom:26px;
+}
+.hero h1{
+  font-size:clamp(38px,4.6vw,56px);
+  font-weight:800;
+  line-height:1.08;
+  letter-spacing:-1px;
+  margin-bottom:22px;
+}
+.hero p.lead{
+  font-size:16px;
+  line-height:1.7;
+  color:var(--muted);
+  max-width:460px;
+  margin-bottom:34px;
+  font-weight:400;
+}
+.hero-actions{display:flex;gap:14px;margin-bottom:30px;flex-wrap:wrap;}
+.btn-solid{
+  padding:14px 28px;border-radius:10px;border:none;
+  background:var(--white);color:var(--ink);
+  font-size:14px;font-weight:600;
+  display:inline-flex;align-items:center;gap:8px;
+  cursor:pointer;transition:transform .2s, opacity .2s;
+}
+.btn-solid:hover{transform:translateY(-2px);opacity:.9;}
+.btn-outline{
+  padding:14px 28px;border-radius:10px;
+  border:1px solid var(--line);
+  background:transparent;color:var(--white);
+  font-size:14px;font-weight:600;
+  cursor:pointer;transition:background .2s, border-color .2s;
+}
+.btn-outline:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.3);}
+
+.trust-row{display:flex;gap:22px;flex-wrap:wrap;font-size:13px;color:var(--muted);}
+.trust-row span{display:inline-flex;align-items:center;gap:6px;}
+.trust-row i{color:var(--white);font-size:15px;}
+
+/* hero right — browser mockup / your image */
+.hero-visual{
+  aspect-ratio: 1.15 / 1;
+  border-radius:18px;
+  overflow:hidden;
+}
+
+/* ---------- LOGO STRIP ---------- */
+.logo-strip{
+  padding:44px 0;
+  border-top:1px solid var(--line-soft);
+  border-bottom:1px solid var(--line-soft);
+  background:var(--black);
+}
+.logo-strip-label{
+  text-align:center;
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:28px;
+  font-family:'JetBrains Mono',monospace;
+}
+.logo-strip-row{
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:28px 40px;
+  opacity:.55;
+}
+.logo-strip-row .brand{
+  font-size:19px;font-weight:700;letter-spacing:-0.3px;
+  display:flex;align-items:center;gap:8px;
+}
+
+/* ---------- FEATURES (light section) ---------- */
+.features{
+  background:var(--white);
+  color:var(--ink);
+  padding:110px 0 90px;
+}
+.section-eyebrow{
+  text-align:center;
+  font-size:12px;letter-spacing:2px;text-transform:uppercase;
+  color:rgba(10,10,11,0.5);
+  margin-bottom:16px;
+  font-weight:600;
+}
+.section-title{
+  text-align:center;
+  font-size:clamp(32px,4vw,46px);
+  font-weight:800;
+  letter-spacing:-1px;
+  line-height:1.15;
+  margin-bottom:16px;
+}
+.section-sub{
+  text-align:center;
+  max-width:520px;margin:0 auto 64px;
+  color:rgba(10,10,11,0.55);
+  font-size:15px;line-height:1.7;
+}
+
+.feature-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:rgba(10,10,11,0.10);
+  border:1px solid rgba(10,10,11,0.10);
+  border-radius:20px;
+  overflow:hidden;
+>>>>>>> 1f08134 (Update Jonah Browser to v1.3.7)
+}
+.feature-card{
+  background:#fff;
+  padding:34px 30px;
+  transition:background .2s;
+}
+.feature-card:hover{background:rgba(10,10,11,0.02);}
+.feature-icon{
+  width:44px;height:44px;
+  border:1.5px solid rgba(10,10,11,0.15);
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:20px;
+}
+.feature-icon i{font-size:20px;}
+.feature-card h3{font-size:16px;font-weight:700;margin-bottom:9px;letter-spacing:-0.2px;}
+.feature-card p{font-size:13.5px;line-height:1.7;color:rgba(10,10,11,0.55);margin-bottom:16px;}
+.feature-card .learn{
+  font-size:13px;font-weight:600;
+  display:inline-flex;align-items:center;gap:6px;
+  color:var(--ink);
+}
+.feature-card .learn i{font-size:14px;transition:transform .2s;}
+.feature-card:hover .learn i{transform:translateX(3px);}
+
+@media(max-width:900px){.feature-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){.feature-grid{grid-template-columns:1fr;}}
+
+/* ---------- PERFORMANCE ---------- */
+.performance{
+  background:var(--white);
+  color:var(--ink);
+  padding:0 0 110px;
+}
+.perf-inner{
+  display:grid;
+  grid-template-columns: 1.1fr 1.6fr;
+  gap:40px;
+  align-items:center;
+  background: rgba(10,10,11,0.03);
+  border:1px solid rgba(10,10,11,0.08);
+  border-radius:24px;
+  padding:48px;
+}
+.perf-inner .tag{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(10,10,11,0.5);font-weight:600;margin-bottom:14px;}
+.perf-inner h3{font-size:30px;font-weight:800;letter-spacing:-0.5px;margin-bottom:14px;}
+.perf-inner p{font-size:14.5px;color:rgba(10,10,11,0.55);line-height:1.7;margin-bottom:18px;max-width:340px;}
+.perf-inner .see{font-size:13.5px;font-weight:600;display:inline-flex;align-items:center;gap:6px;}
+
+.stat-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.stat-col{background:#fff;border:1px solid rgba(10,10,11,0.08);border-radius:16px;padding:22px 20px;}
+.stat-head{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.stat-head i{font-size:18px;}
+.stat-head span{font-size:12.5px;color:rgba(10,10,11,0.55);font-weight:500;}
+.stat-num{font-size:28px;font-weight:800;letter-spacing:-0.5px;margin-bottom:4px;}
+.stat-name{font-size:12px;color:rgba(10,10,11,0.5);margin-bottom:14px;}
+.bar{height:5px;border-radius:100px;background:rgba(10,10,11,0.08);overflow:hidden;}
+.bar-fill{height:100%;background:var(--ink);border-radius:100px;}
+
+@media(max-width:850px){.perf-inner{grid-template-columns:1fr;}}
+@media(max-width:600px){.stat-cols{grid-template-columns:1fr;}}
+
+/* ---------- CTA ---------- */
+.cta{
+  background:var(--black);
+  color:var(--white);
+  padding:64px 0;
+}
+.cta-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:30px;flex-wrap:wrap;
+}
+.cta-inner h3{font-size:clamp(24px,3vw,32px);font-weight:800;letter-spacing:-0.5px;line-height:1.2;margin-bottom:8px;}
+.cta-inner p{color:var(--muted);font-size:14px;}
+.cta-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
+.cta-right small{color:var(--muted);font-size:12.5px;}
+
+/* ---------- FOOTER ---------- */
+footer{
+  background:var(--black);
+  border-top:1px solid var(--line-soft);
+  padding:34px 0;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:14px;
+}
+.footer-text{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;}
+
+/* ---------- SECURITY ---------- */
+.security{background:var(--white);color:var(--ink);padding:0 0 110px;}
+.security-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:rgba(10,10,11,0.10);border:1px solid rgba(10,10,11,0.10);
+  border-radius:20px;overflow:hidden;margin-top:40px;
+}
+.security-stat{background:#fff;padding:32px 24px;text-align:center;}
+.security-stat .num{font-size:32px;font-weight:800;letter-spacing:-1px;margin-bottom:6px;}
+.security-stat .label{font-size:12.5px;color:rgba(10,10,11,0.55);}
+@media(max-width:600px){.security-stats{grid-template-columns:1fr;}}
+
+/* ---------- ABOUT ---------- */
+.about{background:var(--white);color:var(--ink);padding:0 0 110px;}
+.about-inner{
+  display:grid;grid-template-columns:1.2fr 1fr;gap:50px;align-items:center;
+  background:rgba(10,10,11,0.03);border:1px solid rgba(10,10,11,0.08);
+  border-radius:24px;padding:48px;margin-top:40px;
+}
+.about-inner p{font-size:14.5px;line-height:1.8;color:rgba(10,10,11,0.6);margin-bottom:14px;max-width:480px;}
+.about-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.about-stat{background:#fff;border:1px solid rgba(10,10,11,0.08);border-radius:14px;padding:20px;}
+.about-stat .num{font-size:24px;font-weight:800;letter-spacing:-0.5px;}
+.about-stat .label{font-size:12px;color:rgba(10,10,11,0.5);margin-top:4px;}
+@media(max-width:850px){.about-inner{grid-template-columns:1fr;}}
+
+/* ---------- LIVE STATUS DASHBOARD ---------- */
+.status{background:var(--black);color:var(--white);padding:110px 0;border-top:1px solid var(--line-soft);}
+.status-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin:26px 0 10px;}
+.status-live{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:700;}
+.dot-pulse{position:relative;width:10px;height:10px;border-radius:50%;background:#34d399;flex-shrink:0;}
+.dot-pulse::before{
+  content:'';position:absolute;inset:-6px;border-radius:50%;background:#34d399;opacity:0.35;
+  animation:pulse 1.8s ease-out infinite;
+}
+@keyframes pulse{0%{transform:scale(0.6);opacity:0.5;}100%{transform:scale(2.4);opacity:0;}}
+.status-updated{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:0.3px;}
+
+.status-overview{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--line-soft);border:1px solid var(--line-soft);
+  border-radius:20px;overflow:hidden;margin:34px 0 56px;
+}
+.status-card{background:var(--panel);padding:26px 24px;}
+.status-card .k{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;font-family:'JetBrains Mono',monospace;}
+.status-card .v{font-size:25px;font-weight:800;letter-spacing:-0.5px;margin-bottom:12px;}
+.status-card canvas{width:100%;height:44px;display:block;}
+
+.service-list{display:flex;flex-direction:column;gap:14px;}
+.service-row{background:var(--panel);border:1px solid var(--line-soft);border-radius:16px;padding:22px 24px;}
+.service-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;}
+.service-name{font-size:14.5px;font-weight:600;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.status-pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#34d399;font-weight:600;}
+.status-pill .d{width:6px;height:6px;border-radius:50%;background:#34d399;}
+.service-uptime-num{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;}
+
+.uptime-scroll{overflow-x:visible;}
+.uptime-inner{min-width:0;}
+
+.month-labels{position:relative;height:16px;margin-bottom:6px;}
+.month-labels span{position:absolute;top:0;font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;}
+
+.uptime-bars{display:flex;gap:2px;align-items:flex-end;height:30px;}
+.uptime-bars .bar{flex:1;height:100%;border-radius:2px;background:#1c8a5e;}
+.uptime-bars .bar.degraded{background:#d9a441;}
+.uptime-bars .bar.down{background:#d9534f;}
+
+@media(max-width:900px){.status-overview{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){.status-overview{grid-template-columns:1fr;}}
+.dl-status{
+  font-size:11.5px;
+  color:var(--muted);
+  margin-top:6px;
+  text-align:center;
+  font-family:'JetBrains Mono',monospace;
+  min-height:14px;
+}
+.dl-status.error{color:#d9534f;}
+.dl-status.success{color:#34d399;}
 </style>
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
 
+<<<<<<< HEAD
 <div id="flag-stripes"></div>
 
 <!-- Stadium background -->
@@ -1463,10 +1912,221 @@ body::after{
         <div class="stadium-card-info">
           <div class="stadium-name">NRG Stadium</div>
           <div class="stadium-city">Houston, Texas</div>
+=======
+<!-- ========== NAV ========== -->
+<nav>
+  <div class="logo">
+    <!-- LOGO SPACE: put your logo file path below, e.g. src="images/logo.svg" -->
+    <div class="logo-slot">
+      <img src="logo.png" alt="Jonah Browser logo"
+        onerror="this.parentElement.innerHTML='<div class=&quot;ph&quot; style=&quot;font-size:9px&quot;><i class=&quot;bx bx-image&quot;></i>logo</div>'">
+    </div>
+    <span class="logo-name">Jonah</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#home" class="active">Home</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#security">Security</a></li>
+    <li><a href="#performance">Performance</a></li>
+    <li><a href="#status">Status</a></li>
+    <li><a href="#download">Download</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <a href="#download" class="nav-cta"><i class='bx bx-download'></i> Download Jonah</a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+    <i class='bx bx-menu'></i>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="#home" class="active">Home</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#security">Security</a></li>
+    <li><a href="#performance">Performance</a></li>
+    <li><a href="#status">Status</a></li>
+    <li><a href="#download">Download</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <a href="#download" class="nav-cta"><i class='bx bx-download'></i> Download Jonah</a>
+</div>
+
+<!-- ========== HERO ========== -->
+<section class="hero" id="home">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Next Generation Web Browser</span>
+      <h1>Browse Smarter.<br>Browse Faster.<br>Browse Jonah.</h1>
+      <p class="lead">Jonah Browser is a next-gen browser built for speed, privacy, and productivity. Experience the web the way it was meant to be.</p>
+      <div class="hero-actions">
+        <button class="btn-solid" onclick="document.getElementById('download').scrollIntoView({behavior:'smooth'})"><i class='bx bx-download'></i> Download Now</button>
+        <button class="btn-outline" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Explore Features</button>
+      </div>
+      <div class="trust-row">
+        <span><i class='bx bxs-shield-alt-2'></i> 100% Secure</span>
+        <span><i class='bx bxs-shield-alt-2'></i> No Tracking</span>
+        <span><i class='bx bxs-shield-alt-2'></i> Built for You</span>
+      </div>
+    </div>
+
+    <!-- HERO IMAGE SPACE: put your screenshot/mockup file path below -->
+    
+  </div>
+</section>
+
+<!-- ========== TRUSTED BY ========== -->
+<section class="logo-strip">
+  <div class="wrap">
+    <div class="logo-strip-label">Trusted by innovators worldwide</div>
+    <div class="logo-strip-row">
+      <span class="brand"><i class='bx bxl-nvidia'></i> NVIDIA</span>
+      <span class="brand"><i class='bx bxl-microsoft'></i> Microsoft</span>
+      <span class="brand"><i class='bx bxl-google'></i> Google</span>
+      <span class="brand"><i class='bx bxl-aws'></i> AWS</span>
+      <span class="brand"><i class='bx bxs-cloud'></i> Cloudflare</span>
+      <span class="brand"><i class='bx bx-triangle'></i> Vercel</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FEATURES ========== -->
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="section-eyebrow">Features</div>
+    <div class="section-title">Everything you need.<br>Nothing you don't.</div>
+    <p class="section-sub">Jonah Browser comes packed with powerful features designed to give you a better browsing experience.</p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+            <i class='bx bxs-bolt'></i>
+        </div>
+        <h3>Blazing Fast</h3>
+        <p>Engineered for speed to load pages instantly and handle anything you throw at it.</p>
+        <a class="learn" href="#">Learn more <i class='bx bx-right-arrow-alt'></i></a>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class='bx bx-shield-quarter'></i></div>
+        <h3>Privacy First</h3>
+        <p>Built-in tracker blocking, encrypted connections, and total control over your data.</p>
+        <a class="learn" href="#">Learn more <i class='bx bx-right-arrow-alt'></i></a>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class='bx bx-brain'></i></div>
+        <h3>AI Assistant</h3>
+        <p>Browse smarter with built-in AI to summarize, translate, and get things done faster.</p>
+        <a class="learn" href="#">Learn more <i class='bx bx-right-arrow-alt'></i></a>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class='bx bx-devices'></i></div>
+        <h3>Cross Platform</h3>
+        <p>Sync your data seamlessly across Windows, macOS, Linux, Android, and iOS.</p>
+        <a class="learn" href="#">Learn more <i class='bx bx-right-arrow-alt'></i></a>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class='bx bx-extension'></i></div>
+        <h3>Extensible</h3>
+        <p>Customize with powerful extensions and themes from the Jonah Store.</p>
+        <a class="learn" href="#">Learn more <i class='bx bx-right-arrow-alt'></i></a>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class='bx bx-code-alt'></i></div>
+        <h3>Open Source</h3>
+        <p>Transparent, secure, and community driven. Built on open standards.</p>
+        <a class="learn" href="#">Learn more <i class='bx bx-right-arrow-alt'></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SECURITY ========== -->
+<section class="security" id="security">
+  <div class="wrap">
+    <div class="section-eyebrow">Security</div>
+    <div class="section-title">Security, built into<br>every layer.</div>
+    <p class="section-sub">From the network to the tab, Jonah is engineered to keep you protected without ever getting in your way.</p>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon"><i class='bx bx-lock-alt'></i></div>
+        <h3>Encrypted Sync</h3>
+        <p>Every synced tab, password, and bookmark is end-to-end encrypted before it ever leaves your device.</p>
+        <a class="learn" href="jonah-security-architecture.html">Learn more <i class='bx bx-right-arrow-alt'></i></a>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class='bx bxs-error-alt'></i></div>
+        <h3>Anti-Phishing Shield</h3>
+        <p>Real-time detection blocks malicious and impersonation sites before the page ever loads.</p>
+        <a class="learn" href="jonah-security-architecture.html">Learn more <i class='bx bx-right-arrow-alt'></i></a>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class='bx bx-layer'></i></div>
+        <h3>Sandboxed Tabs</h3>
+        <p>Each tab runs in its own isolated process, so a compromised site can't touch the rest of your system.</p>
+        <a class="learn" href="jonah-security-architecture.html">Learn more <i class='bx bx-right-arrow-alt'></i></a>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class='bx bx-data'></i></div>
+        <h3>Zero Data Collection</h3>
+        <p>We don't log your browsing history, sell your data, or share it with advertisers. Ever.</p>
+        <a class="learn" href="jonah-security-architecture.html">Learn more <i class='bx bx-right-arrow-alt'></i></a>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class='bx bx-scan'></i></div>
+        <h3>Malware Scanning</h3>
+        <p>Downloads are checked against a constantly updated threat database before they finish.</p>
+        <a class="learn" href="jonah-security-architecture.html">Learn more <i class='bx bx-right-arrow-alt'></i></a>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class='bx bx-key'></i></div>
+        <h3>Two-Factor Login</h3>
+        <p>Secure your Jonah account with 2FA, passkeys, or a hardware security key.</p>
+        <a class="learn" href="jonah-security-architecture.html">Learn more <i class='bx bx-right-arrow-alt'></i></a>
+      </div>
+    </div>
+
+    <div class="security-stats">
+      <div class="security-stat"><div class="num">50M+</div><div class="label">Threats blocked this year</div></div>
+      <div class="security-stat"><div class="num">256-bit</div><div class="label">Encryption standard</div></div>
+      <div class="security-stat"><div class="num">0</div><div class="label">Data points ever sold</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PERFORMANCE ========== -->
+<section class="performance" id="performance">
+  <div class="wrap">
+    <div class="perf-inner">
+      <div>
+        <div class="tag">Performance</div>
+        <h3>Built for Performance</h3>
+        <p>Optimized from the ground up to use fewer resources while delivering maximum performance.</p>
+        <a class="see" href="jonah-performance-architecture.html">See how we do it <i class='bx bx-right-arrow-alt'></i></a>
+      </div>
+      <div class="stat-cols">
+        <div class="stat-col">
+          <div class="stat-head"><i class='bx bx-tachometer'></i><span>Speed</span></div>
+          <div class="stat-num">98%</div>
+          <div class="stat-name">Faster Loading</div>
+          <div class="bar"><div class="bar-fill" style="width:98%"></div></div>
+        </div>
+        <div class="stat-col">
+          <div class="stat-head"><i class='bx bx-chip'></i><span>Memory Usage</span></div>
+          <div class="stat-num">72%</div>
+          <div class="stat-name">Lower Memory</div>
+          <div class="bar"><div class="bar-fill" style="width:72%"></div></div>
+        </div>
+        <div class="stat-col">
+          <div class="stat-head"><i class='bx bx-battery'></i><span>Battery Efficiency</span></div>
+          <div class="stat-num">85%</div>
+          <div class="stat-name">More Efficient</div>
+          <div class="bar"><div class="bar-fill" style="width:85%"></div></div>
+>>>>>>> 1f08134 (Update Jonah Browser to v1.3.7)
         </div>
       </div>
     </div>
   </div>
+<<<<<<< HEAD
 
   <!-- RADIO -->
   
@@ -2482,6 +3142,160 @@ function buildPitchSVG(hTeam, aTeam, homePlayers, awayPlayers) {
     ${awayDots}
     ${homeDots}
   </svg>`;
+=======
+</section>
+
+<!-- ========== STATUS ========== -->
+<section class="status" id="status">
+  <div class="wrap">
+    <div class="section-eyebrow" style="color:var(--muted)">Status</div>
+    <div class="status-head">
+      <div class="status-live"><span class="dot-pulse"></span> All Systems Operational</div>
+      <div class="status-updated" id="statusUpdated">Updated just now</div>
+    </div>
+    <p class="section-sub" style="text-align:left;margin:0;color:var(--muted);max-width:560px;">Live health across Jonah's core services, refreshed in real time.</p>
+
+    <div class="status-overview">
+      <div class="status-card">
+        <div class="k">Uptime · 90 Days</div>
+        <div class="v">99.98%</div>
+      </div>
+      <div class="status-card">
+        <div class="k">Global Latency</div>
+        <div class="v" id="latencyVal">—</div>
+        <canvas id="chartLatency"></canvas>
+      </div>
+      <div class="status-card">
+        <div class="k">Active Sessions</div>
+        <div class="v" id="sessionsVal">—</div>
+        <canvas id="chartSessions"></canvas>
+      </div>
+      <div class="status-card">
+        <div class="k">Requests / Sec</div>
+        <div class="v" id="throughputVal">—</div>
+        <canvas id="chartThroughput"></canvas>
+      </div>
+    </div>
+
+    <div class="service-list" id="serviceList"></div>
+  </div>
+</section>
+
+<!-- ========== ABOUT ========== -->
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="section-eyebrow">About</div>
+    <div class="section-title">Building the browser<br>the web deserves.</div>
+    <div class="about-inner">
+      <div>
+        <p>Jonah started with a simple frustration: browsers had gotten slower, noisier, and less honest about what they do with your data. We set out to build something different — fast by default, private by design, and smart enough to get out of your way.</p>
+        <p>Today, Jonah is used by people who just want the web to work the way it's supposed to: quickly, quietly, and on their own terms.</p>
+      </div>
+      <div class="about-stats">
+        <div class="about-stat"><div class="num">2025</div><div class="label">Founded</div></div>
+        <div class="about-stat"><div class="num">40+</div><div class="label">Team members</div></div>
+        <div class="about-stat"><div class="num">900k-1M+</div><div class="label">Active users</div></div>
+        <div class="about-stat"><div class="num">70+</div><div class="label">Countries</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CTA ========== -->
+<!-- ========== CTA ========== -->
+<section class="cta" id="download">
+  <div class="wrap cta-inner">
+    <div>
+      <h3>Ready to upgrade<br>your browsing?</h3>
+      <p>Join millions of users who are browsing smarter with Jonah Browser.</p>
+    </div>
+    <div class="cta-right">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;">
+        <div>
+          <button class="btn-solid" id="winBtn"
+            onclick="downloadFile('Jonah-Setup-1.3.7.exe','jonah-setup.exe','winBtn','winStatus')">
+            <i class='bx bxl-windows'></i> Windows
+          </button>
+          <div class="dl-status" id="winStatus"></div>
+        </div>
+        <div>
+          <button class="btn-solid" id="macBtn"
+            onclick="downloadFile('Jonah-1.3.7-arm64.dmg','Jonah-arm64.dmg','macBtn','macStatus')">
+            <i class='bx bxl-apple'></i> macOS (Apple Silicon)
+          </button>
+          <div class="dl-status" id="macStatus"></div>
+        </div>
+        <div>
+          <button class="btn-solid" id="intelBtn"
+            onclick="downloadFile('Jonah-1.3.7.dmg','Jonah-Intel.dmg','intelBtn','intelStatus')">
+            <i class='bx bxl-apple'></i> macOS (Intel)
+          </button>
+          <div class="dl-status" id="intelStatus"></div>
+        </div>
+      </div>
+      <small>Available for Windows, macOS</small>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
+    <div class="logo">
+      <div class="logo-slot" style="width:26px;height:26px;">
+        <img src="logo.png" alt="Jonah Browser logo"
+          onerror="this.parentElement.innerHTML='<div class=&quot;ph&quot; style=&quot;font-size:8px&quot;><i class=&quot;bx bx-image&quot;></i></div>'">
+      </div>
+      <span class="logo-name" style="font-size:14px;">Jonah</span>
+    </div>
+    <div class="footer-text">© 2026 CogniAI Studios · All rights reserved</div>
+    <div class="footer-text">v1.2.9</div>
+  </div>
+</footer>
+<script>
+// ---- download handler ----
+// sourceFile: path/filename on your server (e.g. /downloads/Jonah-Setup-1.2.9.exe)
+// saveAsName: the filename the user's browser will save it as
+// btnId / statusId: element ids to show progress/feedback
+function downloadFile(sourceFile, saveAsName, btnId, statusId){
+  const btn = document.getElementById(btnId);
+  const status = document.getElementById(statusId);
+  const originalHTML = btn.innerHTML;
+
+  btn.disabled = true;
+  btn.style.opacity = '0.7';
+  status.textContent = 'Preparing download…';
+  status.className = 'dl-status';
+
+  fetch(sourceFile)
+    .then(res => {
+      if (!res.ok) throw new Error('File not found (' + res.status + ')');
+      return res.blob();
+    })
+    .then(blob => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = saveAsName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+
+      status.textContent = 'Download started ✓';
+      status.className = 'dl-status success';
+    })
+    .catch(err => {
+      status.textContent = 'Download failed — try again';
+      status.className = 'dl-status error';
+      console.error('Download error:', err);
+    })
+    .finally(() => {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.innerHTML = originalHTML;
+    });
+>>>>>>> 1f08134 (Update Jonah Browser to v1.3.7)
 }
 
 // ── GOAL PARSER ──
@@ -3017,5 +3831,168 @@ setInterval(()=>{
 refreshWCDashboard();
 setInterval(refreshWCDashboard, 15000);
 </script>
+<script>
+// ---- mobile menu toggle ----
+(function(){
+  const btn = document.getElementById('menuToggle');
+  const menu = document.getElementById('mobileMenu');
+  function setOpen(open){
+    menu.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    btn.querySelector('i').className = open ? 'bx bx-x' : 'bx bx-menu';
+  }
+  btn.addEventListener('click', () => setOpen(!menu.classList.contains('open')));
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+  window.addEventListener('resize', () => { if (window.innerWidth > 900) setOpen(false); });
+})();
+
+// ---- live "updated Xs ago" ticker ----
+(function(){
+  const start = Date.now();
+  const el = document.getElementById('statusUpdated');
+  function tick(){
+    const s = Math.floor((Date.now() - start) / 1000);
+    el.textContent = s < 5 ? 'Updated just now' : `Updated ${s}s ago`;
+  }
+  setInterval(tick, 1000);
+})();
+
+// ---- tiny live-updating line charts (no external libs) ----
+function makeChart(canvasId, opts){
+  const canvas = document.getElementById(canvasId);
+  const ctx = canvas.getContext('2d');
+  const min = opts.min, max = opts.max;
+  let data = Array.from({length: 24}, () => opts.start);
+
+  function resize(){
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = Math.max(1, rect.width) * devicePixelRatio;
+    canvas.height = Math.max(1, rect.height) * devicePixelRatio;
+    draw();
+  }
+  window.addEventListener('resize', resize);
+
+  function draw(){
+    const w = canvas.width, h = canvas.height;
+    if (!w || !h) return;
+    ctx.clearRect(0, 0, w, h);
+    const stepX = w / (data.length - 1);
+    const norm = v => h - ((v - min) / (max - min)) * h * 0.8 - h * 0.1;
+
+    ctx.beginPath();
+    ctx.moveTo(0, h);
+    data.forEach((v, i) => ctx.lineTo(i * stepX, norm(v)));
+    ctx.lineTo(w, h);
+    ctx.closePath();
+    const grad = ctx.createLinearGradient(0, 0, 0, h);
+    grad.addColorStop(0, 'rgba(52,211,153,0.35)');
+    grad.addColorStop(1, 'rgba(52,211,153,0)');
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    ctx.beginPath();
+    data.forEach((v, i) => i === 0 ? ctx.moveTo(0, norm(v)) : ctx.lineTo(i * stepX, norm(v)));
+    ctx.strokeStyle = '#34d399';
+    ctx.lineWidth = 2 * devicePixelRatio;
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+  }
+
+  function step(){
+    const last = data[data.length - 1];
+    let next = last + (Math.random() - 0.5) * (max - min) * 0.14;
+    next = Math.max(min, Math.min(max, next));
+    data.push(next);
+    data.shift();
+    draw();
+  }
+
+  resize();
+  return { step, get: () => data[data.length - 1] };
+}
+
+const latencyChart = makeChart('chartLatency', { min: 12, max: 60, start: 26 });
+const sessionsChart = makeChart('chartSessions', { min: 80000, max: 145000, start: 112000 });
+const throughputChart = makeChart('chartThroughput', { min: 3000, max: 9500, start: 5400 });
+
+function fmt(n){ return Math.round(n).toLocaleString('en-US'); }
+
+function refreshMetrics(){
+  latencyChart.step(); sessionsChart.step(); throughputChart.step();
+  document.getElementById('latencyVal').textContent = fmt(latencyChart.get()) + 'ms';
+  document.getElementById('sessionsVal').textContent = fmt(sessionsChart.get());
+  document.getElementById('throughputVal').textContent = fmt(throughputChart.get()) + '/s';
+}
+refreshMetrics();
+setInterval(refreshMetrics, 2200);
+
+// ---- per-service 90-day uptime graphs with month labels ----
+const SERVICES = [
+  { name: 'Browser Core', uptime: '99.99%' },
+  { name: 'Sync & Backup', uptime: '99.96%' },
+  { name: 'AI Assistant', uptime: '99.91%' },
+  { name: 'Trust Engine API', uptime: '99.98%' },
+  { name: 'Download CDN', uptime: '100.00%' },
+  { name: 'Account & Auth', uptime: '99.97%' },
+];
+const DAYS = 90;
+
+function buildDays(){
+  const days = [];
+  const today = new Date();
+  for (let i = DAYS - 1; i >= 0; i--){
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const r = Math.random();
+    let status = 'up';
+    if (r > 0.985) status = 'down';
+    else if (r > 0.96) status = 'degraded';
+    days.push({ date: d, status });
+  }
+  return days;
+}
+
+const serviceList = document.getElementById('serviceList');
+SERVICES.forEach(svc => {
+  const days = buildDays();
+  const row = document.createElement('div');
+  row.className = 'service-row';
+
+  const seenMonths = new Set();
+  const monthMarks = [];
+  days.forEach((d, i) => {
+    const key = d.date.getFullYear() + '-' + d.date.getMonth();
+    if (!seenMonths.has(key)){
+      seenMonths.add(key);
+      monthMarks.push({ i, label: d.date.toLocaleString('en-US', { month: 'short' }) });
+    }
+  });
+
+  const monthHtml = monthMarks.map(m => `<span style="left:${(m.i / DAYS) * 100}%">${m.label}</span>`).join('');
+  const barsHtml = days.map(d => {
+    const cls = d.status === 'up' ? '' : ' ' + d.status;
+    const label = d.status === 'up' ? 'Operational' : d.status === 'degraded' ? 'Degraded performance' : 'Outage';
+    return `<div class="bar${cls}" title="${d.date.toDateString()} · ${label}"></div>`;
+  }).join('');
+
+  row.innerHTML = `
+    <div class="service-top">
+      <div class="service-name">${svc.name}
+        <span class="status-pill"><span class="d"></span>Operational</span>
+      </div>
+      <div class="service-uptime-num">${svc.uptime} uptime</div>
+    </div>
+    <div class="uptime-scroll">
+      <div class="uptime-inner">
+        <div class="month-labels">${monthHtml}</div>
+        <div class="uptime-bars">${barsHtml}</div>
+      </div>
+    </div>
+  `;
+  serviceList.appendChild(row);
+});
+</script>
+
+
 </body>
 </html>

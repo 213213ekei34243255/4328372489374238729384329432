@@ -651,11 +651,176 @@ footer{
           <div class="stat-name">Lower Memory</div>
           <div class="bar"><div class="bar-fill" style="width:72%"></div></div>
         </div>
+<<<<<<< HEAD
         <div class="stat-col">
           <div class="stat-head"><i class='bx bx-battery'></i><span>Battery Efficiency</span></div>
           <div class="stat-num">85%</div>
           <div class="stat-name">More Efficient</div>
           <div class="bar"><div class="bar-fill" style="width:85%"></div></div>
+=======
+      </div>
+      <!-- ✅ CELEBRATION LIVES HERE — outside fd-content, never overwritten -->
+      <div id="psg-celebration" style="position:relative;overflow:hidden;background:linear-gradient(160deg,#06061a 0%,#0a0020 40%,#0e0010 100%);border-bottom:1px solid rgba(255,215,0,0.2);">
+        <canvas id="fw-canvas" height="230" style="display:block;width:100%;"></canvas>
+        <div class="psg-banner" style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;gap:6px;z-index:10;">
+          <div class="stars-row">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <div class="psg-flag-row" style="display:flex;align-items:center;gap:18px;">
+            <span class="psg-trophy"></span>
+            <img src="assets/Spain.jpeg" class="psg-flag-img" onerror="this.style.display='none'" alt="PSG Flag">
+            <span class="psg-trophy"></span>
+          </div>
+          <div class="psg-champ-text">PSG — Champions Of The World!</div>
+          <div class="score-badge">PSG <span>1(4)</span> — <span>(3)1</span> Arsenal · UCL Final 2026</div>
+          <div class="psg-sub">UEFA Champions League 2026 · Allianz Arena, Munich</div>
+          <div class="stars-row" style="margin-top:2px;">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+        </div>
+      </div>
+      <!-- Dynamic content injected here -->
+      <div id="fd-content">
+        <div class="fd-loading">
+          <div class="fd-load-spin"></div>
+          <div class="fd-load-text">FETCHING LIVE DATA...</div>
+          
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <!-- STADIUMS SECTION -->
+  <div class="stadium-section">
+    <div class="section-header"><h2>HOST STADIUMS</h2></div>
+    <div class="stadiums-grid">
+      <div class="stadium-card" onclick="go('https://en.wikipedia.org/wiki/MetLife_Stadium')">
+        <img src="assets/Metlife Stadium.jpg" alt="MetLife Stadium" onerror="this.src='https://via.placeholder.com/640x200/111133/gold?text=MetLife+Stadium'">
+        <span class="stadium-flag flag-us-badge">🇺🇸 USA</span>
+        <div class="stadium-card-info">
+          <div class="stadium-name">MetLife Stadium</div>
+          <div class="stadium-city">East Rutherford, New Jersey · Final Venue</div>
+        </div>
+      </div>
+      <div class="stadium-card" onclick="go('https://en.wikipedia.org/wiki/SoFi_Stadium')">
+        <img src="assets/sofi_stadium10.jpg" alt="SoFi Stadium" onerror="this.src='https://via.placeholder.com/640x200/111133/gold?text=SoFi+Stadium'">
+        <span class="stadium-flag flag-us-badge">🇺🇸 USA</span>
+        <div class="stadium-card-info">
+          <div class="stadium-name">SoFi Stadium</div>
+          <div class="stadium-city">Los Angeles, California</div>
+        </div>
+      </div>
+      <div class="stadium-card" onclick="go('https://en.wikipedia.org/wiki/Estadio_Azteca')">
+        <img src="assets/Estadio Azteca.jpg" alt="Estadio Azteca" onerror="this.src='https://via.placeholder.com/640x200/004400/gold?text=Estadio+Azteca'">
+        <span class="stadium-flag flag-mx-badge">🇲🇽 MEX</span>
+        <div class="stadium-card-info">
+          <div class="stadium-name">Estadio Azteca</div>
+          <div class="stadium-city">Mexico City · Historic Venue</div>
+        </div>
+      </div>
+      <div class="stadium-card" onclick="go('https://en.wikipedia.org/wiki/BC_Place')">
+        <img src="assets/BC Place.jpg" alt="BC Place" onerror="this.src='https://via.placeholder.com/640x200/880000/gold?text=BC+Place'">
+        <span class="stadium-flag flag-ca-badge">🇨🇦 CAN</span>
+        <div class="stadium-card-info">
+          <div class="stadium-name">BC Place</div>
+          <div class="stadium-city">Vancouver, British Columbia</div>
+        </div>
+      </div>
+      <div class="stadium-card" onclick="go('https://en.wikipedia.org/wiki/AT%26T_Stadium')">
+        <img src="assets/AT&T Stadium.jpg" alt="AT&T Stadium" onerror="this.src='https://via.placeholder.com/640x200/111133/gold?text=AT%26T+Stadium'">
+        <span class="stadium-flag flag-us-badge">🇺🇸 USA</span>
+        <div class="stadium-card-info">
+          <div class="stadium-name">AT&T Stadium</div>
+          <div class="stadium-city">Arlington, Texas</div>
+        </div>
+      </div>
+      <div class="stadium-card" onclick="go('https://en.wikipedia.org/wiki/Arrowhead_Stadium')">
+        <img src="assets/Arrowhead stadium.jpg" alt="Arrowhead Stadium" onerror="this.src='https://via.placeholder.com/640x200/111133/gold?text=Arrowhead+Stadium'">
+        <span class="stadium-flag flag-us-badge">🇺🇸 USA</span>
+        <div class="stadium-card-info">
+          <div class="stadium-name">Arrowhead Stadium</div>
+          <div class="stadium-city">Kansas City, Missouri</div>
+        </div>
+      </div>
+      <div class="stadium-card" onclick="go('https://en.wikipedia.org/wiki/Mercedes-Benz_Stadium')">
+        <img src="assets/Mercesdes benz stadium.jpg" alt="Mercedes Benz Stadium" onerror="this.src='https://via.placeholder.com/640x200/111133/gold?text=Arrowhead+Stadium'">
+        <span class="stadium-flag flag-us-badge">🇺🇸 USA</span>
+        <div class="stadium-card-info">
+          <div class="stadium-name">Mercedes-Benz Stadium</div>
+          <div class="stadium-city">Atlanta, Georgia</div>
+        </div>
+      </div>
+      <div class="stadium-card" onclick="go('https://en.wikipedia.org/wiki/Levi%27s_Stadium')">
+        <img src="assets/Levis stadium.jpg" alt="Arrowhead Stadium" onerror="this.src='https://via.placeholder.com/640x200/111133/gold?text=Arrowhead+Stadium'">
+        <span class="stadium-flag flag-us-badge">🇺🇸 USA</span>
+        <div class="stadium-card-info">
+          <div class="stadium-name">Levi's Stadium</div>
+          <div class="stadium-city">San Francisco Bay Area, California</div>
+        </div>
+      </div>
+      <div class="stadium-card" onclick="go('https://en.wikipedia.org/wiki/Hard_Rock_Stadium')">
+        <img src="assets/hard rock stadium.jpg" alt="Arrowhead Stadium" onerror="this.src='https://via.placeholder.com/640x200/111133/gold?text=Arrowhead+Stadium'">
+        <span class="stadium-flag flag-us-badge">🇺🇸 USA</span>
+        <div class="stadium-card-info">
+          <div class="stadium-name">Hard Rock Stadium</div>
+          <div class="stadium-city">Miami Gardens, Florida</div>
+        </div>
+      </div>
+      <div class="stadium-card" onclick="go('https://en.wikipedia.org/wiki/Lincoln_Financial_Field')">
+        <img src="assets/Lincoln financial field.jpg" alt="Arrowhead Stadium" onerror="this.src='https://via.placeholder.com/640x200/111133/gold?text=Arrowhead+Stadium'">
+        <span class="stadium-flag flag-us-badge">🇺🇸 USA</span>
+        <div class="stadium-card-info">
+          <div class="stadium-name">Lincoln Financial Field Stadium</div>
+          <div class="stadium-city">Philadelphia, Pennsylvania</div>
+        </div>
+      </div>
+      <div class="stadium-card" onclick="go('https://en.wikipedia.org/wiki/Lumen_Field')">
+        <img src="assets/Lumen field.jpg" alt="Arrowhead Stadium" onerror="this.src='https://via.placeholder.com/640x200/111133/gold?text=Arrowhead+Stadium'">
+        <span class="stadium-flag flag-us-badge">🇺🇸 USA</span>
+        <div class="stadium-card-info">
+          <div class="stadium-name">Lumen Field Stadium</div>
+          <div class="stadium-city">Seattle, Washington</div>
+        </div>
+      </div>
+      <div class="stadium-card" onclick="go('https://en.wikipedia.org/wiki/Gillette_Stadium')">
+        <img src="assets/gillette stadium.jpg" alt="Arrowhead Stadium" onerror="this.src='https://via.placeholder.com/640x200/111133/gold?text=Arrowhead+Stadium'">
+        <span class="stadium-flag flag-us-badge">🇺🇸 USA</span>
+        <div class="stadium-card-info">
+          <div class="stadium-name">Gillete Stadium</div>
+          <div class="stadium-city">Boston (Foxborough), Massachusetts</div>
+        </div>
+      </div>
+      <div class="stadium-card" onclick="go('https://en.wikipedia.org/wiki/BMO_Field')">
+        <img src="assets/BMO Field.jpg" alt="Arrowhead Stadium" onerror="this.src='https://via.placeholder.com/640x200/111133/gold?text=Arrowhead+Stadium'">
+        <span class="stadium-flag flag-ca-badge">🇨🇦 CAN</span>
+        <div class="stadium-card-info">
+          <div class="stadium-name">BMO Field</div>
+          <div class="stadium-city">Toronto</div>
+        </div>
+      </div>
+      <div class="stadium-card" onclick="go('https://en.wikipedia.org/wiki/Estadio_Akron')">
+        <img src="assets/Estadio Acron.jpg" alt="Arrowhead Stadium" onerror="this.src='https://via.placeholder.com/640x200/111133/gold?text=Arrowhead+Stadium'">
+        <span class="stadium-flag flag-mx-badge">🇲🇽 MEX</span>
+        <div class="stadium-card-info">
+          <div class="stadium-name">Estadio Akron</div>
+          <div class="stadium-city">Guadalajara(Zapopan)</div>
+        </div>
+      </div>
+      <div class="stadium-card" onclick="go('https://en.wikipedia.org/wiki/Estadio_BBVA')">
+        <img src="assets/Estadio BBVA.jpg" alt="Arrowhead Stadium" onerror="this.src='https://via.placeholder.com/640x200/111133/gold?text=Arrowhead+Stadium'">
+        <span class="stadium-flag flag-mx-badge">🇲🇽 MEX</span>
+        <div class="stadium-card-info">
+          <div class="stadium-name">Estadio BBVA</div>
+          <div class="stadium-city">Monterrey(Guadalupe)</div>
+        </div>
+      </div>
+      <div class="stadium-card" onclick="go('https://en.wikipedia.org/wiki/NRG_Stadium')">
+        <img src="assets/NRG stadium.jfif" alt="Arrowhead Stadium" onerror="this.src='https://via.placeholder.com/640x200/111133/gold?text=Arrowhead+Stadium'">
+        <span class="stadium-flag flag-us-badge">🇺🇸 USA</span>
+        <div class="stadium-card-info">
+          <div class="stadium-name">NRG Stadium</div>
+          <div class="stadium-city">Houston, Texas</div>
+>>>>>>> 1f08134 (Update Jonah Browser to v1.3.7)
         </div>
       </div>
     </div>
