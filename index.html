@@ -278,6 +278,31 @@ nav{
   border-radius:20px;
   overflow:hidden;
 }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    align-items:center;
+    gap:70px;
+}
+
+.hero-image{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.hero-image img{
+    width:100%;
+    max-width:520px;
+    height:auto;
+    display:block;
+    object-fit:contain;
+
+    /* No border, no background, no shadow */
+    border:none;
+    background:none;
+    box-shadow:none;
+}
 .feature-card{
   background:#fff;
   padding:34px 30px;
@@ -490,7 +515,7 @@ footer{
 <section class="hero" id="home">
   <div class="wrap hero-grid">
     <div>
-      <img src="logo.png" alt="Jonah Browser logo"
+      
       <span class="eyebrow">Next Generation Web Browser</span>
       <h1>Browse Smarter.<br>Browse Faster.<br>Browse Jonah.</h1>
       <p class="lead">Jonah Browser is a next-gen browser built for speed, privacy, and productivity. Experience the web the way it was meant to be.</p>
@@ -504,7 +529,9 @@ footer{
         <span><i class='bx bxs-shield-alt-2'></i> Built for You</span>
       </div>
     </div>
-
+    <div class="hero-image">
+      <img src="logo.png" alt="Jonah Browser Logo">
+    </div>
     <!-- HERO IMAGE SPACE: put your screenshot/mockup file path below -->
     
   </div>
