@@ -797,6 +797,45 @@ footer{
   </div>
 </footer>
 <script>
+// Disable right click
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+// Disable keyboard shortcuts
+document.onkeydown = function(e) {
+
+  // F12
+  if (e.keyCode == 123) {
+    return false;
+  }
+
+  // Ctrl+Shift+I
+  if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+    return false;
+  }
+
+  // Ctrl+Shift+J
+  if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+    return false;
+  }
+
+  // Ctrl+Shift+C
+  if (e.ctrlKey && e.shiftKey && e.keyCode == 67) {
+    return false;
+  }
+
+  // Ctrl+U
+  if (e.ctrlKey && e.keyCode == 85) {
+    return false;
+  }
+
+  // Ctrl+S
+  if (e.ctrlKey && e.keyCode == 83) {
+    e.preventDefault();
+    return false;
+  }
+};
+</script>
+<script>
 // ---- download handler ----
 // sourceFile: path/filename on your server (e.g. /downloads/Jonah-Setup-1.2.9.exe)
 // saveAsName: the filename the user's browser will save it as
