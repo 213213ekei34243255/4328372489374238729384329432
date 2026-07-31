@@ -801,39 +801,54 @@ footer{
 document.addEventListener('contextmenu', e => e.preventDefault());
 
 // Disable keyboard shortcuts
-document.onkeydown = function(e) {
+document.addEventListener('keydown', function (e) {
 
   // F12
-  if (e.keyCode == 123) {
-    return false;
-  }
-
-  // Ctrl+Shift+I
-  if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
-    return false;
-  }
-
-  // Ctrl+Shift+J
-  if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
-    return false;
-  }
-
-  // Ctrl+Shift+C
-  if (e.ctrlKey && e.shiftKey && e.keyCode == 67) {
-    return false;
-  }
-
-  // Ctrl+U
-  if (e.ctrlKey && e.keyCode == 85) {
-    return false;
-  }
-
-  // Ctrl+S
-  if (e.ctrlKey && e.keyCode == 83) {
+  if (e.key === "F12") {
     e.preventDefault();
     return false;
   }
-};
+
+  // Windows/Linux
+  if (e.ctrlKey && e.shiftKey &&
+      (e.key === "I" || e.key === "i" ||
+       e.key === "J" || e.key === "j" ||
+       e.key === "C" || e.key === "c")) {
+    e.preventDefault();
+    return false;
+  }
+
+  // macOS (⌘ + Option + I/J/C)
+  if (e.metaKey && e.altKey &&
+      (e.key === "I" || e.key === "i" ||
+       e.key === "J" || e.key === "j" ||
+       e.key === "C" || e.key === "c")) {
+    e.preventDefault();
+    return false;
+  }
+
+  // macOS (⌘ + Shift + C) - used by some browsers
+  if (e.metaKey && e.shiftKey &&
+      (e.key === "C" || e.key === "c")) {
+    e.preventDefault();
+    return false;
+  }
+
+  // Ctrl+U / Cmd+U (View Source)
+  if ((e.ctrlKey || e.metaKey) &&
+      (e.key === "U" || e.key === "u")) {
+    e.preventDefault();
+    return false;
+  }
+
+  // Ctrl+S / Cmd+S
+  if ((e.ctrlKey || e.metaKey) &&
+      (e.key === "S" || e.key === "s")) {
+    e.preventDefault();
+    return false;
+  }
+
+});
 </script>
 <script>
 // ---- download handler ----
