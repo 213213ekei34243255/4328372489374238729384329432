@@ -1,0 +1,497 @@
+<title>Jonah Privacy Policy</title>
+<style>
+  :root {
+    --paper: #f6f7f9;
+    --paper-raised: #ffffff;
+    --ink: #14181f;
+    --ink-muted: #545b66;
+    --ink-faint: #88909b;
+    --rule: #dde1e6;
+    --accent: #1b4b4a;
+    --accent-ink: #ffffff;
+    --accent-soft: #e4eeed;
+    --accent-soft-rule: #c7dcda;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12151a;
+      --paper-raised: #1a1f26;
+      --ink: #e7e9ec;
+      --ink-muted: #9aa3af;
+      --ink-faint: #6b7280;
+      --rule: #2a303a;
+      --accent: #5fcfc4;
+      --accent-ink: #0b1716;
+      --accent-soft: #1b2c2b;
+      --accent-soft-rule: #2c4443;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12151a;
+    --paper-raised: #1a1f26;
+    --ink: #e7e9ec;
+    --ink-muted: #9aa3af;
+    --ink-faint: #6b7280;
+    --rule: #2a303a;
+    --accent: #5fcfc4;
+    --accent-ink: #0b1716;
+    --accent-soft: #1b2c2b;
+    --accent-soft-rule: #2c4443;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Public Sans", -apple-system, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    padding-inline: 20px;
+    padding-block: 56px 96px;
+  }
+
+  .doc {
+    max-width: 700px;
+    margin-inline: auto;
+  }
+
+  header.masthead {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .brandline {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .brandmark {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: 0.01em;
+  }
+
+  .brandmark .dot {
+    color: var(--accent);
+  }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  h1 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2rem, 5vw, 2.6rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .meta-row {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    color: var(--ink-muted);
+  }
+
+  .meta-row strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .summary-box {
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-soft-rule);
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-block: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .summary-box .label {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .summary-box p {
+    margin: 0;
+    font-size: 0.96rem;
+    color: var(--ink);
+  }
+
+  .summary-box ul {
+    margin: 0;
+    padding-left: 1.15em;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.94rem;
+  }
+
+  nav.toc {
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding-block: 14px;
+    margin-block: 30px 40px;
+  }
+
+  nav.toc .label {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  nav.toc ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    columns: 2;
+    column-gap: 24px;
+    font-size: 0.88rem;
+  }
+
+  nav.toc li {
+    break-inside: avoid;
+    margin-bottom: 6px;
+  }
+
+  nav.toc a {
+    color: var(--ink-muted);
+    text-decoration: none;
+  }
+
+  nav.toc a:hover, nav.toc a:focus-visible {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  section {
+    margin-bottom: 38px;
+  }
+
+  section h2 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.32rem;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 0 0 14px;
+    text-wrap: balance;
+    scroll-margin-top: 20px;
+  }
+
+  section h2 .num {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--accent);
+  }
+
+  section p {
+    margin: 0 0 14px;
+    max-width: 62ch;
+    color: var(--ink);
+  }
+
+  section p.muted {
+    color: var(--ink-muted);
+    font-size: 0.92rem;
+  }
+
+  section ul {
+    margin: 0 0 14px;
+    padding-left: 1.3em;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 62ch;
+  }
+
+  section li {
+    padding-left: 2px;
+  }
+
+  .datatable {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    margin-block: 4px 16px;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 480px;
+    font-size: 0.88rem;
+  }
+
+  caption {
+    text-align: left;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 8px;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 9px 14px 9px 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+
+  th {
+    font-weight: 600;
+    color: var(--ink-muted);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  td.mono {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.82rem;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .pill {
+    display: inline-block;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid var(--accent-soft-rule);
+  }
+
+  a {
+    color: var(--accent);
+  }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 24px;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+  }
+
+  footer strong {
+    color: var(--ink);
+  }
+
+  @media (max-width: 520px) {
+    nav.toc ol { columns: 1; }
+    body { padding-block: 40px 72px; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    section { scroll-margin-top: 12px; }
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<div class="doc">
+  <header class="masthead">
+    <div class="brandline">
+      <span class="brandmark">Jonah<span class="dot">.</span></span>
+      <span class="eyebrow">by CogniAI Studios</span>
+    </div>
+    <h1>Privacy Policy</h1>
+    <div class="meta-row">
+      <span>Effective <strong>15 September 2026</strong></span>
+      <span>Applies to <strong>Jonah</strong> on Android and iOS</span>
+    </div>
+  </header>
+
+  <div class="summary-box">
+    <span class="label">In short</span>
+    <p>Jonah is a browser with an AI assistant built in. Your bookmarks and history stay on your device. When you use the assistant, Trust Engine, or Lens, the specific thing you asked about — a message, a page's domain, an image — is sent to our server to generate a response. We don't sell your data or run ads in Jonah.</p>
+    <ul>
+      <li>On-device: bookmarks, browsing history, saved settings, subscription status</li>
+      <li>Sent to our server: chat messages, page text you ask about, domains checked by Trust Engine, media submitted to Lens</li>
+      <li>Handled entirely by Google: your payment details for subscriptions — we never see them</li>
+    </ul>
+  </div>
+
+  <nav class="toc" aria-label="Sections">
+    <span class="label">On this page</span>
+    <ol>
+      <li><a href="#collect">1. Information we collect</a></li>
+      <li><a href="#device">2. Processed only on your device</a></li>
+      <li><a href="#use">3. How we use information</a></li>
+      <li><a href="#third-parties">4. Services we rely on</a></li>
+      <li><a href="#retention">5. How long we keep it</a></li>
+      <li><a href="#choices">6. Your choices</a></li>
+      <li><a href="#children">7. Children's privacy</a></li>
+      <li><a href="#security">8. Security</a></li>
+      <li><a href="#changes">9. Changes to this policy</a></li>
+      <li><a href="#contact">10. Contact</a></li>
+    </ol>
+  </nav>
+
+  <section id="collect">
+    <h2><span class="num">1</span> Information we collect</h2>
+    <p>What Jonah collects depends entirely on which features you use. We built the app so that most of what makes it useful — your bookmarks, your history, your settings — never has to leave your phone.</p>
+
+    <div class="datatable">
+      <table>
+        <caption>Data collected by feature</caption>
+        <thead>
+          <tr><th>Feature</th><th>What's collected</th><th>Where it goes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Browsing</td>
+            <td>Bookmarks, history, ad-block preference</td>
+            <td class="mono">On-device only</td>
+          </tr>
+          <tr>
+            <td>Assistant chat</td>
+            <td>Your messages, the page content you ask about</td>
+            <td class="mono">Our server</td>
+          </tr>
+          <tr>
+            <td>Chat attachments</td>
+            <td>Text extracted from a photo or file you attach</td>
+            <td class="mono">Our server</td>
+          </tr>
+          <tr>
+            <td>Trust Engine</td>
+            <td>The domain name of the site you're visiting</td>
+            <td class="mono">Our server, public sources</td>
+          </tr>
+          <tr>
+            <td>Lens (media search)</td>
+            <td>The image or video frames you submit</td>
+            <td class="mono">Our server, Google</td>
+          </tr>
+          <tr>
+            <td>Voice commands</td>
+            <td>Your spoken audio, transcribed on-device</td>
+            <td class="mono">Your device's speech recognizer</td>
+          </tr>
+          <tr>
+            <td>Google account picker (Android only)</td>
+            <td>Names of Google accounts already on your device</td>
+            <td class="mono">Read locally, never sent</td>
+          </tr>
+          <tr>
+            <td>Subscriptions</td>
+            <td>Purchase and entitlement status</td>
+            <td class="mono">Google Play / Apple App Store</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="muted">On Android, we never see your Google account password or its stored data — the account picker only reads the list of names already signed in on your device, so you don't have to retype an email address. This feature doesn't exist on iOS.</p>
+  </section>
+
+  <section id="device">
+    <h2><span class="num">2</span> Processed only on your device</h2>
+    <p>A few features do real work locally and send nothing anywhere unless you then choose to share the result in a chat message:</p>
+    <ul>
+      <li><strong>Text recognition and image labeling</strong> on photos you attach — this runs on-device (Apple's Vision framework on iOS, Google's ML Kit on Android), not a cloud service.</li>
+      <li><strong>Reading PDF and text file attachments</strong> — extracted on your device before you decide whether to send it.</li>
+      <li><strong>Scene detection in videos</strong> submitted to Lens — we pick out a handful of representative frames on your device rather than uploading the whole file.</li>
+    </ul>
+  </section>
+
+  <section id="use">
+    <h2><span class="num">3</span> How we use information</h2>
+    <p>We use what you send us for exactly one purpose: answering the thing you asked. Chat messages and page content go to our AI model to generate a reply. A domain you're visiting goes into Trust Engine's scoring so it can tell you whether a site looks trustworthy. An image goes into Lens's search so it can tell you where else that image appears online.</p>
+    <p>We don't build advertising profiles, we don't sell data to third parties, and Jonah has no ad SDK or analytics tracker built in.</p>
+  </section>
+
+  <section id="third-parties">
+    <h2><span class="num">4</span> Services we rely on</h2>
+    <p>Some features work by calling other services on your behalf. Here's exactly which ones, and what each one sees:</p>
+    <ul>
+      <li><strong>Our own backend</strong> (noahai.live) — receives chat messages, Trust Engine domain checks, and Lens media to generate responses.</li>
+      <li><strong>Our search proxy</strong> (jonahbrowser.store) — forwards search and news queries to Google's and NewsAPI's services without exposing our API keys to your device.</li>
+      <li><strong>Reddit's public search</strong> — Trust Engine reads publicly available Reddit posts about a brand or domain; no Reddit account is involved.</li>
+      <li><strong>Google Play Billing (Android) / Apple's App Store (iOS)</strong> — handles your subscription purchase entirely; we receive only a confirmation of which plan you're on.</li>
+    </ul>
+  </section>
+
+  <section id="retention">
+    <h2><span class="num">5</span> How long we keep it</h2>
+    <p>Bookmarks and history live on your device until you clear them yourself, in Settings. Chat and Trust Engine requests are processed to generate a response and are not linked to your identity beyond a temporary session identifier used to keep a conversation coherent. Uninstalling Jonah removes everything stored on your device, including your usage-plan status — a fresh install starts over on the free tier until you sign back in to restore a purchase.</p>
+  </section>
+
+  <section id="choices">
+    <h2><span class="num">6</span> Your choices</h2>
+    <ul>
+      <li>Clear your browsing history any time from Settings → Data.</li>
+      <li>Deny the microphone or (on Android) Google-account permission at the OS level — Jonah still works as a browser without them, just without voice commands or the account picker.</li>
+      <li>Uninstall the app to remove all on-device data. To also stop future backend processing, simply stop using the affected features before uninstalling.</li>
+    </ul>
+  </section>
+
+  <section id="children">
+    <h2><span class="num">7</span> Children's privacy</h2>
+    <p>Jonah is not directed at children under 13, and we don't knowingly collect personal information from them. If you believe a child has provided us information, contact us and we'll remove it.</p>
+  </section>
+
+  <section id="security">
+    <h2><span class="num">8</span> Security</h2>
+    <p>Data sent to our backend travels over encrypted HTTPS connections. Subscription and usage-plan data stored on your device is kept in your device's encrypted storage — the Keychain on iOS, encrypted local storage on Android — not in plain text. No method of transmission or storage is perfectly secure, but we don't store anything we don't need to answer your request.</p>
+  </section>
+
+  <section id="changes">
+    <h2><span class="num">9</span> Changes to this policy</h2>
+    <p>If we change what we collect or how we use it, we'll update the effective date at the top of this page. Continued use of Jonah after a change means you accept the updated policy.</p>
+  </section>
+
+  <section id="contact">
+    <h2><span class="num">10</span> Contact</h2>
+    <p>Questions about this policy or your data: <a href="mailto:cogniaistudios@gmail.com">cogniaistudios@gmail.com</a></p>
+  </section>
+
+  <footer>
+    <span><strong>CogniAI Studios</strong> — Jonah Browser</span>
+    <span>This page is written in plain language and is not a substitute for legal advice.</span>
+  </footer>
+</div>
