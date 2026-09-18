@@ -1,0 +1,916 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jonah Child Safety Standards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f7f9;
+    --paper-raised: #ffffff;
+    --ink: #14181f;
+    --ink-muted: #545b66;
+    --ink-faint: #7b838f;
+    --rule: #dde1e6;
+    --accent: #1b4b4a;
+    --accent-ink: #ffffff;
+    --accent-soft: #e4eeed;
+    --accent-soft-rule: #c7dcda;
+
+    --sky-a: #bfe3f5;
+    --sky-b: #fdf1d8;
+    --sun: #f2b84b;
+    --ray-o: 0.9;
+    --star-o: 0;
+    --hill-a: #8fd3ae;
+    --hill-b: #b5e2c6;
+    --cloud: #ffffff;
+    --coral: #ef7d6b;
+    --lilac: #a897e0;
+    --skyblue: #5aa9d6;
+    --mint: #56b99c;
+    --amb-o: 0.2;
+    --note-bg: #fbf6ea;
+    --note-rule: #e6d6ae;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #12151a;
+      --paper-raised: #1a1f26;
+      --ink: #e7e9ec;
+      --ink-muted: #9aa3af;
+      --ink-faint: #7c8592;
+      --rule: #2a303a;
+      --accent: #5fcfc4;
+      --accent-ink: #0b1716;
+      --accent-soft: #1b2c2b;
+      --accent-soft-rule: #2c4443;
+
+      --sky-a: #182142;
+      --sky-b: #3a3163;
+      --sun: #f6e7a8;
+      --ray-o: 0.22;
+      --star-o: 0.9;
+      --hill-a: #1c4a3f;
+      --hill-b: #245c4e;
+      --cloud: #3a4272;
+      --coral: #f08f7f;
+      --lilac: #b9abee;
+      --skyblue: #74bfe8;
+      --mint: #6fd0b3;
+      --amb-o: 0.24;
+      --note-bg: #22201a;
+      --note-rule: #4a3f22;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #12151a;
+    --paper-raised: #1a1f26;
+    --ink: #e7e9ec;
+    --ink-muted: #9aa3af;
+    --ink-faint: #7c8592;
+    --rule: #2a303a;
+    --accent: #5fcfc4;
+    --accent-ink: #0b1716;
+    --accent-soft: #1b2c2b;
+    --accent-soft-rule: #2c4443;
+
+    --sky-a: #182142;
+    --sky-b: #3a3163;
+    --sun: #f6e7a8;
+    --ray-o: 0.22;
+    --star-o: 0.9;
+    --hill-a: #1c4a3f;
+    --hill-b: #245c4e;
+    --cloud: #3a4272;
+    --coral: #f08f7f;
+    --lilac: #b9abee;
+    --skyblue: #74bfe8;
+    --mint: #6fd0b3;
+    --amb-o: 0.24;
+    --note-bg: #22201a;
+    --note-rule: #4a3f22;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Public Sans", -apple-system, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    padding-inline: 20px;
+    padding-block: 40px 96px;
+    margin: 0;
+  }
+
+  /* ---------- Ambient background: drifting baby / child / teenager figures ---------- */
+  .ambient {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .amb {
+    position: absolute;
+    opacity: var(--amb-o);
+    animation: drift var(--d, 10s) ease-in-out infinite alternate;
+    animation-delay: var(--dl, 0s);
+  }
+  @keyframes drift {
+    from { transform: translate(0, 0) rotate(-5deg); }
+    to   { transform: translate(14px, -30px) rotate(5deg); }
+  }
+
+  .progress {
+    position: fixed;
+    top: env(safe-area-inset-top, 0px);
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 50;
+  }
+  .progress span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: var(--accent);
+  }
+
+  .doc {
+    position: relative;
+    z-index: 1;
+    max-width: 820px;
+    margin-inline: auto;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-radius: 22px;
+    overflow: hidden;
+    margin-bottom: 30px;
+  }
+  .hero-text {
+    padding: 28px 26px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .brandline { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .brandmark { font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 1.15rem; letter-spacing: 0.01em; }
+  .brandmark .dot { color: var(--accent); }
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  h1 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2rem, 5.6vw, 3.05rem);
+    line-height: 1.06;
+    letter-spacing: -0.015em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  h1 em { font-style: italic; color: var(--accent); font-weight: 600; }
+  .lede { margin: 0; max-width: 60ch; font-size: 1.04rem; color: var(--ink-muted); }
+  .meta-row {
+    display: flex; gap: 6px 18px; flex-wrap: wrap;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.76rem; color: var(--ink-muted);
+  }
+  .meta-row strong { color: var(--ink); font-weight: 500; }
+  .cta-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font: 600 0.92rem "Public Sans", sans-serif;
+    padding: 11px 18px;
+    border-radius: 10px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--accent-ink);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .btn.ghost { background: transparent; color: var(--accent); }
+  .btn:hover { filter: brightness(1.08); }
+  .btn:focus-visible, a:focus-visible, summary:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+
+  .scene svg { display: block; width: 100%; height: auto; }
+  .scene .cloud ellipse { fill: var(--cloud); }
+  .scene .hill-a { fill: var(--hill-a); }
+  .scene .hill-b { fill: var(--hill-b); }
+  .scene .sun-core { fill: var(--sun); }
+  .scene .ray { stroke: var(--sun); opacity: var(--ray-o); }
+  .scene .star { fill: #fff; opacity: var(--star-o); }
+  .scene .shield-line { stroke: var(--accent); }
+
+  .fig { animation: bob 3.6s ease-in-out infinite; }
+  .fig.child { animation-duration: 4.1s; animation-delay: -0.9s; }
+  .fig.teen  { animation-duration: 4.7s; animation-delay: -1.7s; }
+  @keyframes bob {
+    0%, 100% { transform: translateY(0) rotate(-1deg); }
+    50%      { transform: translateY(-5px) rotate(1deg); }
+  }
+  .rattle   { transform-origin: 21px -30px; animation: shake 1.3s ease-in-out infinite; }
+  @keyframes shake { 0%,100% { transform: rotate(-12deg); } 50% { transform: rotate(14deg); } }
+  .kitegrp  { transform-origin: 34px -112px; animation: sway 4.2s ease-in-out infinite; }
+  @keyframes sway { 0%,100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+  .wave     { transform-origin: 22px -120px; animation: waveArm 2.4s ease-in-out infinite; }
+  @keyframes waveArm { 0%,100% { transform: rotate(4deg); } 50% { transform: rotate(-20deg); } }
+  .shield-pulse { transform-origin: 380px 165px; animation: pulse 5s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { transform: scale(1); opacity: 0.92; } 50% { transform: scale(1.03); opacity: 1; } }
+  .heart-beat { transform-origin: 0 6px; animation: beat 1.8s ease-in-out infinite; }
+  @keyframes beat { 0%,100% { transform: scale(1); } 15% { transform: scale(1.16); } 30% { transform: scale(1); } 45% { transform: scale(1.1); } }
+  .cloud.c1 { animation: slideA 24s ease-in-out infinite alternate; }
+  .cloud.c2 { animation: slideB 30s ease-in-out infinite alternate; }
+  .cloud.c3 { animation: slideA 36s ease-in-out infinite alternate; }
+  @keyframes slideA { from { transform: translateX(-24px); } to { transform: translateX(52px); } }
+  @keyframes slideB { from { transform: translateX(30px); } to { transform: translateX(-46px); } }
+  .rays { animation: spin 70s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .balloon { animation: floaty 4.6s ease-in-out infinite alternate; }
+  @keyframes floaty { from { transform: translate(0, 4px) rotate(-3deg); } to { transform: translate(6px, -12px) rotate(3deg); } }
+  .twinkle { animation: tw 2.6s ease-in-out infinite alternate; }
+  @keyframes tw { from { transform: scale(0.6); } to { transform: scale(1.25); } }
+
+  /* ---------- Summary + chips ---------- */
+  .summary-box {
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-soft-rule);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-block: 6px 30px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .label {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .summary-box p { margin: 0; font-size: 0.98rem; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 0; padding: 0; list-style: none; }
+  .chips li {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.7rem; letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    background: var(--paper-raised); color: var(--accent);
+    border: 1px solid var(--accent-soft-rule);
+  }
+
+  nav.toc {
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+    padding-block: 14px; margin-block: 30px 40px;
+  }
+  nav.toc .label { display: block; margin-bottom: 10px; color: var(--ink-faint); }
+  nav.toc ol { margin: 0; padding: 0; list-style: none; columns: 2; column-gap: 24px; font-size: 0.9rem; }
+  nav.toc li { break-inside: avoid; margin-bottom: 6px; }
+  nav.toc a { color: var(--ink-muted); text-decoration: none; }
+  nav.toc a:hover { color: var(--accent); text-decoration: underline; }
+
+  /* ---------- Sections ---------- */
+  section { margin-bottom: 44px; }
+  section h2 {
+    font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 1.4rem;
+    display: flex; align-items: baseline; gap: 10px;
+    margin: 0 0 14px; text-wrap: balance; scroll-margin-top: 20px;
+  }
+  section h2 .num { font-family: "IBM Plex Mono", ui-monospace, monospace; font-weight: 500; font-size: 0.95rem; color: var(--accent); }
+  section p { margin: 0 0 14px; max-width: 64ch; }
+  section p.muted { color: var(--ink-muted); font-size: 0.92rem; }
+  section ul.plain { margin: 0 0 14px; padding-left: 1.3em; display: flex; flex-direction: column; gap: 9px; max-width: 64ch; }
+  a { color: var(--accent); }
+
+  .datatable { width: 100%; overflow-x: auto; margin-block: 4px 16px; }
+  table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 0.9rem; }
+  caption {
+    text-align: left; font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ink-faint); margin-bottom: 8px;
+  }
+  th, td { text-align: left; padding: 10px 16px 10px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font-weight: 600; color: var(--ink-muted); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  td.term { font-weight: 600; white-space: nowrap; }
+  td.mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.8rem; white-space: nowrap; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-block: 6px 20px; }
+  .card { background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 14px; padding: 18px; }
+  .card svg { width: 30px; height: 30px; color: var(--accent); margin-bottom: 10px; }
+  .card h3 { font-family: "Fraunces", Georgia, serif; font-size: 1.05rem; font-weight: 600; margin: 0 0 6px; }
+  .card p { margin: 0; font-size: 0.92rem; color: var(--ink-muted); }
+
+  .note {
+    background: var(--note-bg); border: 1px dashed var(--note-rule);
+    border-radius: 12px; padding: 18px 20px; margin-block: 8px 6px;
+  }
+  .note .label { color: var(--ink-muted); display: block; margin-bottom: 6px; }
+  .note p { margin: 0; font-size: 0.95rem; }
+
+  .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px; }
+  .panel { background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 14px; padding: 20px; }
+  .panel h3 { font-family: "Fraunces", Georgia, serif; font-size: 1.1rem; font-weight: 600; margin: 0 0 8px; }
+  .panel p, .panel li { font-size: 0.93rem; }
+  .panel ul { margin: 0 0 12px; padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; }
+  .emailbox {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+    background: var(--accent-soft); border: 1px solid var(--accent-soft-rule);
+    border-radius: 10px; padding: 12px 14px; margin-block: 10px 14px;
+  }
+  .emailbox code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.88rem; color: var(--ink); word-break: break-all; user-select: all; }
+
+  ol.steps { list-style: none; margin: 8px 0 18px; padding: 0; counter-reset: step; max-width: 66ch; }
+  ol.steps li { counter-increment: step; position: relative; padding: 0 0 22px 52px; }
+  ol.steps li::before {
+    content: counter(step);
+    position: absolute; left: 0; top: 0;
+    width: 34px; height: 34px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--accent); color: var(--accent-ink);
+    font-family: "IBM Plex Mono", ui-monospace, monospace; font-weight: 500; font-size: 0.9rem;
+  }
+  ol.steps li::after {
+    content: ""; position: absolute; left: 16px; top: 38px; bottom: 4px; width: 2px; background: var(--accent-soft-rule);
+  }
+  ol.steps li:last-child { padding-bottom: 0; }
+  ol.steps li:last-child::after { display: none; }
+  ol.steps h3 { margin: 4px 0 4px; font-size: 1rem; font-weight: 600; }
+  ol.steps p { margin: 0; font-size: 0.94rem; color: var(--ink-muted); }
+
+  .help-list { list-style: none; margin: 0 0 14px; padding: 0; display: flex; flex-direction: column; gap: 0; }
+  .help-list li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 0.92rem; }
+  .help-list li span:last-child { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 0.82rem; color: var(--ink-muted); }
+  .emergency {
+    background: var(--accent); color: var(--accent-ink);
+    border-radius: 12px; padding: 14px 18px; margin-block: 6px 16px; font-weight: 600;
+  }
+  .emergency span { font-weight: 400; opacity: 0.9; }
+
+  details { border-bottom: 1px solid var(--rule); }
+  details:first-of-type { border-top: 1px solid var(--rule); }
+  summary {
+    cursor: pointer; list-style: none; padding: 15px 34px 15px 0; position: relative;
+    font-weight: 600; max-width: 64ch;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after {
+    content: "+"; position: absolute; right: 4px; top: 12px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 1.3rem; color: var(--accent);
+  }
+  details[open] summary::after { content: "\2212"; }
+  details p { margin: 0 0 16px; color: var(--ink-muted); max-width: 62ch; font-size: 0.95rem; }
+
+  .totop {
+    position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    z-index: 40; width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid var(--accent-soft-rule); background: var(--paper-raised); color: var(--accent);
+    font-size: 1.1rem; cursor: pointer;
+  }
+
+  footer {
+    border-top: 1px solid var(--rule); padding-top: 24px; margin-top: 50px;
+    display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; color: var(--ink-muted);
+  }
+  footer strong { color: var(--ink); }
+
+  @media (max-width: 560px) {
+    nav.toc ol { columns: 1; }
+    body { padding-block: 32px 80px; }
+    .hero-text { padding: 22px 18px 20px; }
+    td.term { white-space: normal; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<!-- Reusable glyphs for the ambient background -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="g-balloon" viewBox="0 0 24 36"><ellipse cx="12" cy="12" rx="10" ry="12" fill="currentColor"/><path d="M12 24 Q9 30 12 35" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>
+    <symbol id="g-star" viewBox="0 0 24 24"><path d="M12 1.5l3 7.2 7.6.6-5.8 5 1.8 7.5L12 17.7 5.4 21.8l1.8-7.5-5.8-5 7.6-.6z" fill="currentColor"/></symbol>
+    <symbol id="g-heart" viewBox="0 0 24 22"><path d="M12 21C3 14 1 9.5 1 6.5 1 3.4 3.4 1 6.4 1 8.6 1 10.9 2.3 12 4.5 13.1 2.3 15.4 1 17.6 1 20.6 1 23 3.4 23 6.5c0 3-2 7.5-11 14.5z" fill="currentColor"/></symbol>
+    <symbol id="g-kite" viewBox="0 0 30 48"><path d="M15 1l13 16-13 19L2 17z" fill="currentColor"/><path d="M15 36q-6 6 0 12" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+    <symbol id="g-cloud" viewBox="0 0 64 32"><ellipse cx="32" cy="22" rx="28" ry="9" fill="currentColor"/><ellipse cx="22" cy="15" rx="15" ry="11" fill="currentColor"/><ellipse cx="41" cy="13" rx="15" ry="12" fill="currentColor"/></symbol>
+    <symbol id="g-baby" viewBox="0 0 40 48"><circle cx="20" cy="13" r="10" fill="currentColor"/><path d="M18 3q-3-5 3-4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><ellipse cx="20" cy="33" rx="12" ry="12" fill="currentColor"/><ellipse cx="7" cy="30" rx="4" ry="6" fill="currentColor"/><ellipse cx="33" cy="30" rx="4" ry="6" fill="currentColor"/></symbol>
+    <symbol id="g-child" viewBox="0 0 40 52"><circle cx="20" cy="9" r="8" fill="currentColor"/><rect x="11" y="18" width="18" height="17" rx="6" fill="currentColor"/><rect x="12" y="34" width="6" height="16" rx="3" fill="currentColor"/><rect x="22" y="34" width="6" height="16" rx="3" fill="currentColor"/><path d="M12 22L4 11M28 22L36 11" fill="none" stroke="currentColor" stroke-width="4.4" stroke-linecap="round"/></symbol>
+    <symbol id="g-teen" viewBox="0 0 40 58"><circle cx="20" cy="11" r="8.5" fill="currentColor"/><path d="M10 11a10 10 0 0 1 20 0" fill="none" stroke="currentColor" stroke-width="2.6"/><rect x="7" y="9" width="4.5" height="8" rx="2" fill="currentColor"/><rect x="28.5" y="9" width="4.5" height="8" rx="2" fill="currentColor"/><rect x="9" y="21" width="22" height="22" rx="8" fill="currentColor"/><rect x="11" y="42" width="8" height="15" rx="3" fill="currentColor"/><rect x="21" y="42" width="8" height="15" rx="3" fill="currentColor"/></symbol>
+  </defs>
+</svg>
+
+<div class="progress" aria-hidden="true"><span></span></div>
+
+<div class="ambient" aria-hidden="true">
+  <svg class="amb" style="left:4%;top:13%;width:30px;color:var(--coral);--d:9s" viewBox="0 0 24 36"><use href="#g-balloon"/></svg>
+  <svg class="amb" style="left:90%;top:9%;width:22px;color:var(--sun);--d:7s;--dl:-2s" viewBox="0 0 24 24"><use href="#g-star"/></svg>
+  <svg class="amb" style="left:83%;top:27%;width:44px;color:var(--lilac);--d:11s;--dl:-4s" viewBox="0 0 40 48"><use href="#g-baby"/></svg>
+  <svg class="amb" style="left:7%;top:39%;width:36px;color:var(--skyblue);--d:12s;--dl:-1s" viewBox="0 0 30 48"><use href="#g-kite"/></svg>
+  <svg class="amb" style="left:94%;top:50%;width:22px;color:var(--coral);--d:6s;--dl:-3s" viewBox="0 0 24 22"><use href="#g-heart"/></svg>
+  <svg class="amb" style="left:3%;top:62%;width:38px;color:var(--sun);--d:10s;--dl:-5s" viewBox="0 0 40 52"><use href="#g-child"/></svg>
+  <svg class="amb" style="left:78%;top:68%;width:64px;color:var(--skyblue);--d:14s;--dl:-2s" viewBox="0 0 64 32"><use href="#g-cloud"/></svg>
+  <svg class="amb" style="left:90%;top:80%;width:40px;color:var(--mint);--d:9s;--dl:-6s" viewBox="0 0 40 58"><use href="#g-teen"/></svg>
+  <svg class="amb" style="left:13%;top:86%;width:28px;color:var(--lilac);--d:8s;--dl:-1s" viewBox="0 0 24 36"><use href="#g-balloon"/></svg>
+  <svg class="amb" style="left:52%;top:5%;width:16px;color:var(--lilac);--d:6s;--dl:-2s" viewBox="0 0 24 24"><use href="#g-star"/></svg>
+  <svg class="amb" style="left:19%;top:24%;width:18px;color:var(--lilac);--d:7s;--dl:-3s" viewBox="0 0 24 22"><use href="#g-heart"/></svg>
+  <svg class="amb" style="left:66%;top:90%;width:34px;color:var(--coral);--d:13s;--dl:-7s" viewBox="0 0 40 48"><use href="#g-baby"/></svg>
+  <svg class="amb" style="left:36%;top:94%;width:30px;color:var(--mint);--d:12s;--dl:-4s" viewBox="0 0 40 52"><use href="#g-child"/></svg>
+  <svg class="amb" style="left:58%;top:47%;width:14px;color:var(--sun);--d:5s;--dl:-1s" viewBox="0 0 24 24"><use href="#g-star"/></svg>
+</div>
+
+<div class="doc">
+
+  <header class="hero">
+    <div class="hero-text">
+      <div class="brandline">
+        <span class="brandmark">Jonah<span class="dot">.</span></span>
+        <span class="eyebrow">by CogniAI Studios</span>
+      </div>
+      <span class="eyebrow">Child safety standards &middot; against CSAE</span>
+      <h1>Zero tolerance for child sexual abuse and <em>exploitation.</em></h1>
+      <p class="lede">Jonah is built to protect young people, not just to browse for them. Child sexual abuse and exploitation is banned outright, every report is acted on, and confirmed material goes to the authorities. No exceptions, and nothing to negotiate.</p>
+      <div class="meta-row">
+        <span>Effective <strong>18 September 2026</strong></span>
+        <span>Applies to <strong>Jonah</strong> on Android and iOS</span>
+      </div>
+      <div class="cta-row">
+        <a class="btn" href="mailto:cogniaistudios@gmail.com?subject=Child%20safety%20report">Report a concern</a>
+        <a class="btn ghost" href="#commitment">Read the standards</a>
+      </div>
+    </div>
+
+    <div class="scene">
+      <svg viewBox="0 0 760 320" role="img" aria-label="Illustration: a baby with a rattle, a child flying a kite and a teenager in headphones stand together on a green hill inside a glowing shield with a heart on it.">
+        <defs>
+          <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" style="stop-color:var(--sky-a)"/>
+            <stop offset="1" style="stop-color:var(--sky-b)"/>
+          </linearGradient>
+          <linearGradient id="shieldG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" style="stop-color:var(--accent);stop-opacity:0.30"/>
+            <stop offset="1" style="stop-color:var(--accent);stop-opacity:0.06"/>
+          </linearGradient>
+        </defs>
+
+        <rect width="760" height="320" fill="url(#skyG)"/>
+
+        <g>
+          <circle class="star twinkle" cx="70" cy="40" r="2.2" style="animation-delay:-.4s"/>
+          <circle class="star twinkle" cx="150" cy="90" r="1.8" style="animation-delay:-1.2s"/>
+          <circle class="star twinkle" cx="250" cy="34" r="2.4" style="animation-delay:-.8s"/>
+          <circle class="star twinkle" cx="520" cy="30" r="2" style="animation-delay:-1.6s"/>
+          <circle class="star twinkle" cx="600" cy="100" r="2.4" style="animation-delay:-.2s"/>
+          <circle class="star twinkle" cx="710" cy="150" r="1.8" style="animation-delay:-1s"/>
+          <circle class="star twinkle" cx="40" cy="160" r="2" style="animation-delay:-1.9s"/>
+        </g>
+
+        <g transform="translate(662 66)">
+          <g class="rays">
+            <line class="ray" x1="0" y1="-44" x2="0" y2="-56" stroke-width="3" stroke-linecap="round"/>
+            <line class="ray" x1="0" y1="-44" x2="0" y2="-56" stroke-width="3" stroke-linecap="round" transform="rotate(45)"/>
+            <line class="ray" x1="0" y1="-44" x2="0" y2="-56" stroke-width="3" stroke-linecap="round" transform="rotate(90)"/>
+            <line class="ray" x1="0" y1="-44" x2="0" y2="-56" stroke-width="3" stroke-linecap="round" transform="rotate(135)"/>
+            <line class="ray" x1="0" y1="-44" x2="0" y2="-56" stroke-width="3" stroke-linecap="round" transform="rotate(180)"/>
+            <line class="ray" x1="0" y1="-44" x2="0" y2="-56" stroke-width="3" stroke-linecap="round" transform="rotate(225)"/>
+            <line class="ray" x1="0" y1="-44" x2="0" y2="-56" stroke-width="3" stroke-linecap="round" transform="rotate(270)"/>
+            <line class="ray" x1="0" y1="-44" x2="0" y2="-56" stroke-width="3" stroke-linecap="round" transform="rotate(315)"/>
+          </g>
+          <circle class="sun-core" r="32"/>
+        </g>
+
+        <g class="cloud c1"><ellipse cx="112" cy="70" rx="38" ry="12"/><ellipse cx="92" cy="62" rx="22" ry="13"/><ellipse cx="134" cy="60" rx="24" ry="15"/></g>
+        <g class="cloud c2"><ellipse cx="560" cy="128" rx="34" ry="10"/><ellipse cx="544" cy="121" rx="19" ry="11"/><ellipse cx="578" cy="120" rx="21" ry="13"/></g>
+        <g class="cloud c3"><ellipse cx="300" cy="46" rx="30" ry="9"/><ellipse cx="286" cy="40" rx="16" ry="9"/><ellipse cx="316" cy="39" rx="18" ry="11"/></g>
+
+        <path class="hill-b" d="M0 246 C 120 212, 250 228, 380 246 S 640 222, 760 242 L760 320 L0 320Z"/>
+
+        <g class="shield-pulse">
+          <path d="M380 22 C 440 44, 500 50, 548 54 C 548 150, 514 226, 380 292 C 246 226, 212 150, 212 54 C 260 50, 320 44, 380 22 Z" fill="url(#shieldG)"/>
+          <path class="shield-line" d="M380 22 C 440 44, 500 50, 548 54 C 548 150, 514 226, 380 292 C 246 226, 212 150, 212 54 C 260 50, 320 44, 380 22 Z" fill="none" stroke-width="3" stroke-linejoin="round"/>
+        </g>
+        <g transform="translate(380 88)">
+          <g class="heart-beat"><path d="M0 24C-17 10-21 1-21-6-21-13-16-18-10-18-6-18-2-16 0-12 2-16 6-18 10-18 16-18 21-13 21-6 21 1 17 10 0 24Z" fill="#ef7d6b"/></g>
+        </g>
+
+        <path class="hill-a" d="M0 274 C 140 250, 300 264, 420 269 S 650 256, 760 271 L760 320 L0 320Z"/>
+
+        <g transform="translate(168 150)"><g class="balloon"><ellipse cx="0" cy="0" rx="15" ry="19" fill="#ef7d6b"/><path d="M0 19 Q -5 32 0 44 T 0 70" fill="none" stroke="#8a93a3" stroke-width="1.3"/></g></g>
+        <g transform="translate(604 176)"><g class="balloon" style="animation-delay:-2s"><ellipse cx="0" cy="0" rx="14" ry="18" fill="#a897e0"/><path d="M0 18 Q 5 30 0 42 T 0 64" fill="none" stroke="#8a93a3" stroke-width="1.3"/></g></g>
+
+        <!-- Baby -->
+        <g transform="translate(300 268)">
+          <g class="fig baby">
+            <ellipse cx="-13" cy="-5" rx="10" ry="6" fill="#f5d0b0"/>
+            <ellipse cx="13" cy="-5" rx="10" ry="6" fill="#f5d0b0"/>
+            <ellipse cx="0" cy="-24" rx="19" ry="21" fill="#a897e0"/>
+            <ellipse cx="-21" cy="-30" rx="6" ry="9" transform="rotate(20 -21 -30)" fill="#f5d0b0"/>
+            <g class="rattle">
+              <ellipse cx="21" cy="-30" rx="6" ry="9" transform="rotate(-20 21 -30)" fill="#f5d0b0"/>
+              <line x1="24" y1="-36" x2="34" y2="-56" stroke="#8a5a3a" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="36" cy="-60" r="7" fill="#f2b84b"/>
+              <circle cx="36" cy="-60" r="2.5" fill="#fff" opacity=".75"/>
+            </g>
+            <circle cx="0" cy="-58" r="20" fill="#f5d0b0"/>
+            <path d="M-3 -77 C -6 -88, 6 -90, 5 -80" fill="none" stroke="#6b4a2f" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="-7" cy="-58" r="2.2" fill="#2a2a2a"/><circle cx="7" cy="-58" r="2.2" fill="#2a2a2a"/>
+            <path d="M-6 -50 Q0 -44 6 -50" fill="none" stroke="#2a2a2a" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="-13" cy="-53" r="3.5" fill="#ef7d6b" opacity=".35"/><circle cx="13" cy="-53" r="3.5" fill="#ef7d6b" opacity=".35"/>
+          </g>
+        </g>
+
+        <!-- Child with kite -->
+        <g transform="translate(385 268)">
+          <g class="fig child">
+            <rect x="-12" y="-44" width="9" height="38" rx="4" fill="#b9784c"/>
+            <rect x="3" y="-44" width="9" height="38" rx="4" fill="#b9784c"/>
+            <ellipse cx="-8" cy="-4" rx="9" ry="4.5" fill="#fff" stroke="#c9ced6"/>
+            <ellipse cx="8" cy="-4" rx="9" ry="4.5" fill="#fff" stroke="#c9ced6"/>
+            <rect x="-15" y="-62" width="30" height="22" rx="7" fill="#5aa9d6"/>
+            <line x1="-17" y1="-88" x2="-27" y2="-64" stroke="#b9784c" stroke-width="7" stroke-linecap="round"/>
+            <rect x="-19" y="-96" width="38" height="40" rx="12" fill="#f2b84b"/>
+            <g class="kitegrp">
+              <line x1="18" y1="-90" x2="34" y2="-112" stroke="#b9784c" stroke-width="7" stroke-linecap="round"/>
+              <circle cx="34" cy="-112" r="4.6" fill="#b9784c"/>
+              <path d="M34 -112 Q 48 -150 73 -181" fill="none" stroke="#8a93a3" stroke-width="1.4"/>
+              <g transform="translate(80 -206) rotate(18)">
+                <polygon points="0,-24 17,0 0,28 -17,0" fill="#ef7d6b"/>
+                <line x1="0" y1="-24" x2="0" y2="28" stroke="#fff" stroke-width="1.2" opacity=".6"/>
+                <line x1="-17" y1="0" x2="17" y2="0" stroke="#fff" stroke-width="1.2" opacity=".6"/>
+                <path d="M0 28 Q 10 44 0 60 T 8 86" fill="none" stroke="#8a93a3" stroke-width="1.4"/>
+                <circle cx="5" cy="44" r="3.4" fill="#f2b84b"/>
+                <circle cx="2" cy="66" r="3.4" fill="#a897e0"/>
+              </g>
+            </g>
+            <circle cx="0" cy="-116" r="21" fill="#b9784c"/>
+            <path d="M-21 -118 C -22 -142, 22 -142, 21 -118 C 12 -130, -12 -130, -21 -118 Z" fill="#2b1d16"/>
+            <circle cx="-7" cy="-114" r="2.2" fill="#2a2a2a"/><circle cx="7" cy="-114" r="2.2" fill="#2a2a2a"/>
+            <path d="M-7 -106 Q0 -99 7 -106" fill="none" stroke="#2a2a2a" stroke-width="2" stroke-linecap="round"/>
+          </g>
+        </g>
+
+        <!-- Teenager -->
+        <g transform="translate(478 268)">
+          <g class="fig teen">
+            <rect x="-33" y="-118" width="15" height="48" rx="6" fill="#f2b84b"/>
+            <rect x="-15" y="-66" width="13" height="58" rx="5" fill="#3d5a80"/>
+            <rect x="2" y="-66" width="13" height="58" rx="5" fill="#3d5a80"/>
+            <ellipse cx="-9" cy="-5" rx="11" ry="5" fill="#fff" stroke="#c9ced6"/>
+            <ellipse cx="9" cy="-5" rx="11" ry="5" fill="#fff" stroke="#c9ced6"/>
+            <line x1="-22" y1="-116" x2="-28" y2="-80" stroke="#2f8f86" stroke-width="10" stroke-linecap="round"/>
+            <circle cx="-28" cy="-76" r="5" fill="#7a4a2e"/>
+            <rect x="-24" y="-128" width="48" height="66" rx="14" fill="#3aa89c"/>
+            <rect x="-13" y="-86" width="26" height="14" rx="5" fill="#2f8f86" opacity=".65"/>
+            <g class="wave">
+              <line x1="22" y1="-120" x2="40" y2="-146" stroke="#2f8f86" stroke-width="10" stroke-linecap="round"/>
+              <circle cx="42" cy="-150" r="5.5" fill="#7a4a2e"/>
+            </g>
+            <rect x="-6" y="-134" width="12" height="10" rx="3" fill="#7a4a2e"/>
+            <circle cx="0" cy="-152" r="22" fill="#7a4a2e"/>
+            <circle cx="-13" cy="-168" r="9" fill="#1c1410"/>
+            <circle cx="0" cy="-174" r="10" fill="#1c1410"/>
+            <circle cx="13" cy="-168" r="9" fill="#1c1410"/>
+            <path d="M-23 -152 C -24 -186, 24 -186, 23 -152" fill="none" stroke="#2a2f3a" stroke-width="5" stroke-linecap="round"/>
+            <rect x="-29" y="-160" width="9" height="18" rx="4" fill="#2a2f3a"/>
+            <rect x="20" y="-160" width="9" height="18" rx="4" fill="#2a2f3a"/>
+            <circle cx="-7" cy="-150" r="2.3" fill="#f4f4f4"/><circle cx="7" cy="-150" r="2.3" fill="#f4f4f4"/>
+            <path d="M-7 -141 Q0 -134 7 -141" fill="none" stroke="#f4f4f4" stroke-width="2" stroke-linecap="round"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </header>
+
+  <div class="summary-box">
+    <span class="label">Our position, in short</span>
+    <p>Child sexual abuse and exploitation has no place in Jonah. We prohibit it, we act on every report, and we report it to the authorities. Jonah also has no messaging between users, no public profiles and nowhere to post content for other people to see, so it gives abusers none of the routes they rely on.</p>
+    <ul class="chips" aria-label="Facts about Jonah">
+      <li>No user-to-user chat</li>
+      <li>No public profiles</li>
+      <li>No ads</li>
+      <li>No ad tracking</li>
+      <li>No location or contacts access</li>
+    </ul>
+  </div>
+
+  <nav class="toc" aria-label="Sections">
+    <span class="label">On this page</span>
+    <ol>
+      <li><a href="#commitment">1. Our commitment</a></li>
+      <li><a href="#prohibited">2. What we prohibit</a></li>
+      <li><a href="#protection">3. How Jonah protects young people</a></li>
+      <li><a href="#ai">4. The Noah assistant and Lens</a></li>
+      <li><a href="#report">5. Reporting a concern</a></li>
+      <li><a href="#response">6. What we do when we find abuse</a></li>
+      <li><a href="#law">7. Laws and standards we follow</a></li>
+      <li><a href="#help">8. Help for young people and families</a></li>
+      <li><a href="#audience">9. Who Jonah is for</a></li>
+      <li><a href="#faq">10. Common questions</a></li>
+      <li><a href="#contact">11. Accountability and contact</a></li>
+    </ol>
+  </nav>
+
+  <section id="commitment">
+    <h2><span class="num">1</span> Our commitment</h2>
+    <p>CogniAI Studios, the company behind Jonah, will not let its products be used to harm children. We hold ourselves to these standards:</p>
+    <ul class="plain">
+      <li>We prohibit child sexual abuse and exploitation (CSAE) and child sexual abuse material (CSAM) in every form, in every part of Jonah, for every user.</li>
+      <li>We act on every report we receive, and we put anything that suggests a child is at immediate risk at the front of the queue.</li>
+      <li>We report apparent CSAM and child endangerment to the relevant authorities, and we cooperate with their investigations.</li>
+      <li>We design Jonah so that it does not create a route for adults to contact, groom or exploit children.</li>
+      <li>We review these standards at least once a year, and after any serious incident, and publish the updated version at this address.</li>
+    </ul>
+    <p class="muted">These standards apply to CogniAI Studios, its staff and contractors, and every feature of Jonah on Android and iOS.</p>
+  </section>
+
+  <section id="prohibited">
+    <h2><span class="num">2</span> What we prohibit</h2>
+    <p>The following are banned in Jonah and on every service we run. Anyone under 18 counts as a child under these standards, whatever the local age of consent, and whatever a person says about their own age.</p>
+    <div class="datatable">
+      <table>
+        <caption>Prohibited conduct and content</caption>
+        <thead><tr><th>Term</th><th>What it means to us</th></tr></thead>
+        <tbody>
+          <tr><td class="term">CSAM</td><td>Any image, video, audio, text or other content that sexually depicts or describes a person under 18. This covers real, edited, drawn, animated and AI-generated material.</td></tr>
+          <tr><td class="term">Grooming</td><td>Building trust with a child, or with someone close to them, in order to sexually abuse or exploit them, online or offline.</td></tr>
+          <tr><td class="term">Sextortion</td><td>Threatening to share, or actually sharing, intimate images of a child to force money, more images or contact.</td></tr>
+          <tr><td class="term">Sexualisation of minors</td><td>Content or requests that present children in a sexual way, including suggestive framing of a minor and so-called &ldquo;age play&rdquo;.</td></tr>
+          <tr><td class="term">Soliciting and sharing</td><td>Asking for, offering, trading, linking to or explaining where to find any of the above.</td></tr>
+          <tr><td class="term">Trafficking</td><td>Recruiting, moving or advertising a child for sexual or other exploitation.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="protection">
+    <h2><span class="num">3</span> How Jonah protects young people</h2>
+    <p>The strongest protection is a design that leaves abusers with nothing to work with. These are facts about how Jonah is built today.</p>
+
+    <div class="cards">
+      <div class="card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.8-6 6.5-6"/><circle cx="17.5" cy="9" r="2.8"/><path d="M13 20c.4-2.6 2.1-4 4.5-4"/><path d="M3 3l18 18"/></svg>
+        <h3>No route for strangers</h3>
+        <p>Jonah has no messaging, comments, friend lists, public profiles or content feeds. Nobody can contact, follow or find another user inside the app.</p>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V5M7 10l5-5 5 5"/><path d="M4 19h16"/><path d="M3 3l18 18"/></svg>
+        <h3>Nothing shared with others</h3>
+        <p>You can attach a photo or file to a chat with the assistant, or send an image to Lens, but neither is ever shown to another user. Jonah does not host or publish what you submit.</p>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M8 15l1.6-6 1.6 6M8.6 13h2"/><path d="M14.5 15V9h1.4a1.8 1.8 0 010 3.6h-1.4"/><path d="M3 3l18 18"/></svg>
+        <h3>No ads, no ad profiling</h3>
+        <p>Jonah has no advertising SDK and does not collect an advertising ID. Nobody is shown targeted ads, and nobody&rsquo;s behaviour is sold.</p>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+        <h3>Trackers and pop-ups blocked</h3>
+        <p>Built-in ad and tracker blocking stops many known ad networks and trackers from loading, and keeps pop-up ads from opening without a real tap.</p>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l10 17H2z"/><path d="M12 10v4.5M12 17.4v.1"/></svg>
+        <h3>Scam and phishing warnings</h3>
+        <p>Trust Engine checks the reputation of the site you are on and warns you about suspected scams, the sort of sites criminals use to trick people, including young people.</p>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21"/></svg>
+        <h3>Minimal permissions</h3>
+        <p>Jonah does not ask for your location or contacts. The main sensitive permission is the microphone, for voice commands, plus the Google account picker on Android.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <span class="label">Straight talking</span>
+      <p>Jonah is a general-purpose web browser, not a filtered children&rsquo;s browser. It does not host websites, and it does not block every adult site on the open internet. For younger users we recommend switching on device-level controls such as Google Family Link or Apple Screen Time alongside Jonah, and talking with them about what they see online.</p>
+    </div>
+  </section>
+
+  <section id="ai">
+    <h2><span class="num">4</span> The Noah assistant and Lens</h2>
+    <p>Noah, Jonah&rsquo;s AI assistant, and Lens, its media-source finder, send what you submit to our servers to produce an answer (the <a href="https://claude.ai/artifact/CurXN9asRGYejd66d25BMW">Privacy Policy</a> explains exactly what). Because that content leaves the device, these standards apply to it directly.</p>
+    <ul class="plain">
+      <li>You must not use Noah to create, request, or describe in a sexualised way any content involving a person under 18, or to get help finding it. That includes fictional, stylised and AI-generated depictions.</li>
+      <li>You must not send any image, video or text that sexualises a child to Lens or as a chat attachment.</li>
+      <li>Any attempt breaches these standards. We may restrict access from the device involved and, where the content is or appears to be CSAM, report it to the authorities.</li>
+      <li>If Noah ever produces something that sexualises a child, or suggests a child is being harmed, we want to hear about it at once. Use the details in section 5.</li>
+    </ul>
+  </section>
+
+  <section id="report">
+    <h2><span class="num">5</span> Reporting a concern</h2>
+    <p>If you see or suspect child sexual abuse or exploitation, connected to Jonah or not, please act. Two routes matter, and you can use both.</p>
+
+    <div class="emergency">If a child is in immediate danger, call the emergency services first. <span>999 in the UK &middot; 911 in the US &middot; or your local emergency number.</span></div>
+
+    <div class="two-col">
+      <div class="panel">
+        <h3>Tell us</h3>
+        <p>Email our child safety contact with the subject line <strong>&ldquo;Child safety report&rdquo;</strong>.</p>
+        <div class="emailbox">
+          <code id="addr">cogniaistudios@gmail.com</code>
+          <button class="btn ghost" id="copyBtn" type="button">Copy address</button>
+        </div>
+        <p>Tell us what happened, when, and where: a web address, a feature such as chat or Lens, or a device or app version. Do not attach, forward or screenshot the material itself.</p>
+        <a class="btn" href="mailto:cogniaistudios@gmail.com?subject=Child%20safety%20report">Email a report</a>
+      </div>
+      <div class="panel">
+        <h3>Tell the experts</h3>
+        <ul>
+          <li>Report child sexual abuse imagery to the <a href="https://report.iwf.org.uk">Internet Watch Foundation</a> (UK).</li>
+          <li>Report online grooming or abuse to the <a href="https://www.ceop.police.uk/safety-centre/">CEOP Safety Centre</a> (UK).</li>
+          <li>Report to <a href="https://report.cybertip.org">NCMEC&rsquo;s CyberTipline</a> (US).</li>
+          <li>Find your national hotline through <a href="https://www.inhope.org">INHOPE</a>.</li>
+        </ul>
+        <p class="muted">Reporting to a hotline does not replace telling us. It helps get the material removed at source.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="response">
+    <h2><span class="num">6</span> What we do when we find abuse</h2>
+    <p>When a report reaches us, or we otherwise become aware of apparent CSAE, we follow the same steps every time.</p>
+    <ol class="steps">
+      <li>
+        <h3>Triage</h3>
+        <p>Every report is logged and read by our Child Safety Lead. Anything suggesting a child is at immediate risk moves to the front of the queue.</p>
+      </li>
+      <li>
+        <h3>Contain</h3>
+        <p>We restrict access for the device or service involved and stop the content spreading. We do not open, copy or forward suspected CSAM beyond what the law requires.</p>
+      </li>
+      <li>
+        <h3>Report</h3>
+        <p>We report apparent CSAM and child endangerment to the relevant authorities: the National Crime Agency (UK), NCMEC&rsquo;s CyberTipline (US), the Internet Watch Foundation and INHOPE hotlines, and local law enforcement where appropriate.</p>
+      </li>
+      <li>
+        <h3>Cooperate</h3>
+        <p>We keep only what the law requires us to preserve, and we respond promptly to lawful requests from law-enforcement and child-protection agencies.</p>
+      </li>
+      <li>
+        <h3>Learn and prevent</h3>
+        <p>We work out how it happened, close the gap, and update these standards and Jonah itself where needed.</p>
+      </li>
+    </ol>
+    <p>If a report is about a website rather than Jonah itself, we also pass it to the Internet Watch Foundation or the relevant hotline, and we will block that address in Jonah as soon as we are able.</p>
+  </section>
+
+  <section id="law">
+    <h2><span class="num">7</span> Laws and standards we follow</h2>
+    <p>We treat the following as our baseline. Where the law of a country where Jonah is available is stricter, we follow the stricter rule.</p>
+    <div class="datatable">
+      <table>
+        <caption>Legal and platform baseline</caption>
+        <thead><tr><th>Where</th><th>Law or standard</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">UK</td><td>Protection of Children Act 1978; Criminal Justice Act 1988 (s.160); Sexual Offences Act 2003; Coroners and Justice Act 2009 (s.62)</td><td>Make creating, sharing and possessing indecent images of children, and grooming, criminal offences.</td></tr>
+          <tr><td class="mono">UK</td><td>Online Safety Act 2023</td><td>Sets duties on online services to protect children and to tackle illegal content, including CSAM.</td></tr>
+          <tr><td class="mono">UK</td><td>ICO Age-Appropriate Design Code (the Children&rsquo;s Code)</td><td>Standards for how services treat children&rsquo;s data.</td></tr>
+          <tr><td class="mono">US</td><td>18 U.S.C. &sect; 2258A; COPPA</td><td>Requires providers to report apparent CSAM to NCMEC, and sets rules for the data of children under 13.</td></tr>
+          <tr><td class="mono">EU</td><td>GDPR, Article 8</td><td>Sets the age at which a child can consent to their own data being processed.</td></tr>
+          <tr><td class="mono">Stores</td><td>Google Play Child Safety Standards policy; Apple App Review Guidelines (Safety)</td><td>Conditions of distributing Jonah on Android and iOS.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="help">
+    <h2><span class="num">8</span> Help for young people and families</h2>
+    <div class="two-col">
+      <div class="panel">
+        <h3>If you are under 18</h3>
+        <p>Whatever has happened, you are not in trouble, and you can ask for help.</p>
+        <ul class="help-list">
+          <li><span>Childline (UK, free and confidential)</span><span>0800 1111</span></li>
+          <li><span>Remove an image of yourself</span><span><a href="https://takeitdown.ncmec.org">Take It Down</a></span></li>
+        </ul>
+        <p class="muted">If someone is pressuring you for images or money: stop replying, do not pay, keep usernames and messages but do not forward any images, then block and report them.</p>
+      </div>
+      <div class="panel">
+        <h3>If you are worried about a child</h3>
+        <ul class="help-list">
+          <li><span>NSPCC Helpline (UK)</span><span>0808 800 5000</span></li>
+          <li><span>Report a concern online</span><span><a href="https://www.ceop.police.uk/safety-centre/">CEOP Safety Centre</a></span></li>
+        </ul>
+        <p class="muted">Keep talking with the young people in your life, use Family Link or Screen Time, and make sure they know they can always tell you or another trusted adult, without fear of being punished.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="audience">
+    <h2><span class="num">9</span> Who Jonah is for</h2>
+    <p>Jonah is a general-audience app. It is not directed at children under 13, and we do not knowingly collect personal information from them (see section 7 of the <a href="https://claude.ai/artifact/CurXN9asRGYejd66d25BMW">Privacy Policy</a>). Young people aged 13 to 17 should use Jonah with a parent or carer&rsquo;s guidance where appropriate.</p>
+    <p>Whatever a user&rsquo;s age, these standards protect everyone under 18.</p>
+  </section>
+
+  <section id="faq">
+    <h2><span class="num">10</span> Common questions</h2>
+    <details>
+      <summary>Can a stranger message my child through Jonah?</summary>
+      <p>No. Jonah has no messaging, comments, friend lists or profiles, so there is nothing in the app for one user to use to reach another.</p>
+    </details>
+    <details>
+      <summary>Does Jonah show ads or track my child?</summary>
+      <p>No. Jonah has no advertising SDK and no analytics tracker of its own, and it blocks many known ad networks and trackers on the sites you visit.</p>
+    </details>
+    <details>
+      <summary>Does Jonah filter adult websites?</summary>
+      <p>Not fully. Jonah is a general-purpose browser and does not block every adult site on the open internet. Use Google Family Link or Apple Screen Time as well, and talk with your child about what they might come across.</p>
+    </details>
+    <details>
+      <summary>Can Noah be used to make harmful content about children?</summary>
+      <p>No. Using Noah to create, request or describe sexualised content involving anyone under 18 is prohibited. If Noah ever does produce something like that, please report it to us straight away.</p>
+    </details>
+    <details>
+      <summary>What if I find abuse material on a site I opened in Jonah?</summary>
+      <p>Close the page and do not share or screenshot it. Report the web address to the Internet Watch Foundation, and email it to us so we can act as well. If a child is in immediate danger, call the emergency services.</p>
+    </details>
+    <details>
+      <summary>What happens after I report something?</summary>
+      <p>We triage it, contain it, report it to the authorities where required, cooperate with any investigation, and fix whatever allowed it. Section 6 sets out each step.</p>
+    </details>
+  </section>
+
+  <section id="contact">
+    <h2><span class="num">11</span> Accountability and contact</h2>
+    <p>CogniAI Studios has a designated Child Safety Lead, who owns these standards, reads every report, and is the point of contact for regulators, law-enforcement and child-protection agencies.</p>
+    <p><strong>Child Safety Lead, CogniAI Studios:</strong> <a href="mailto:cogniaistudios@gmail.com?subject=Child%20safety">cogniaistudios@gmail.com</a></p>
+    <div class="datatable">
+      <table>
+        <caption>Version history</caption>
+        <thead><tr><th>Version</th><th>Date</th><th>Change</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">1.0</td><td class="mono">18 September 2026</td><td>First publication of Jonah&rsquo;s child safety standards.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted">We review these standards at least once a year and after any serious incident.</p>
+  </section>
+
+  <footer>
+    <span><strong>CogniAI Studios</strong> &mdash; Jonah Browser</span>
+    <span>These standards describe our commitments in plain language and are not legal advice.</span>
+  </footer>
+</div>
+
+<button class="totop" id="totop" type="button" aria-label="Back to top" hidden>&uarr;</button>
+
+<script>
+(function () {
+  var bar = document.querySelector('.progress span');
+  var topBtn = document.getElementById('totop');
+  var ticking = false;
+  function update() {
+    ticking = false;
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - window.innerHeight;
+    var y = window.scrollY || doc.scrollTop || 0;
+    if (bar) bar.style.width = (max > 0 ? Math.min(100, (y / max) * 100) : 0) + '%';
+    if (topBtn) topBtn.hidden = y < 600;
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+
+  if (topBtn) topBtn.addEventListener('click', function () {
+    try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) { window.scrollTo(0, 0); }
+  });
+
+  var copyBtn = document.getElementById('copyBtn');
+  var addr = document.getElementById('addr');
+  if (copyBtn && addr) copyBtn.addEventListener('click', function () {
+    var text = addr.textContent.trim();
+    var done = function (ok) {
+      copyBtn.textContent = ok ? 'Copied' : 'Select the address to copy';
+      setTimeout(function () { copyBtn.textContent = 'Copy address'; }, 2200);
+    };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+        return;
+      }
+    } catch (e) {}
+    try {
+      var range = document.createRange();
+      range.selectNodeContents(addr);
+      var sel = window.getSelection();
+      sel.removeAllRanges(); sel.addRange(range);
+      done(document.execCommand('copy'));
+    } catch (e) { done(false); }
+  });
+})();
+</script>
+</body>
+</html>
