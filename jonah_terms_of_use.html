@@ -1,0 +1,363 @@
+<title>Jonah Terms of Use</title>
+<style>
+  :root{
+    --ink:#16181c;
+    --ink-soft:#4b5159;
+    --ink-faint:#8a909b;
+    --paper:#fbfbfa;
+    --paper-raised:#f1f2f0;
+    --line:#e3e5e2;
+    --accent:#0891a8;
+    --accent-soft:#e3f4f6;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#eef0f2;
+      --ink-soft:#aab0b8;
+      --ink-faint:#767c85;
+      --paper:#111315;
+      --paper-raised:#191c1f;
+      --line:#2a2d31;
+      --accent:#3fd0e6;
+      --accent-soft:#123138;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#eef0f2;
+    --ink-soft:#aab0b8;
+    --ink-faint:#767c85;
+    --paper:#111315;
+    --paper-raised:#191c1f;
+    --line:#2a2d31;
+    --accent:#3fd0e6;
+    --accent-soft:#123138;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.6;
+    padding-inline: 20px;
+    padding-block: 48px 80px;
+  }
+
+  .page{
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .masthead{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom: 36px;
+  }
+  .mark{
+    width:36px; height:36px;
+    border-radius:10px;
+    background: var(--accent);
+    display:flex; align-items:center; justify-content:center;
+    flex: none;
+  }
+  .mark svg{ width:20px; height:20px; }
+  .brand{
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: 0.01em;
+  }
+  .brand span{ color: var(--ink-faint); font-weight: 400; }
+
+  h1{
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2rem, 5vw, 2.6rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin: 0 0 10px;
+    text-wrap: balance;
+  }
+  .meta{
+    color: var(--ink-faint);
+    font-size: 0.86rem;
+    display:flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 32px;
+  }
+  .meta b{ color: var(--ink-soft); font-weight: 600; }
+
+  .lede{
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    max-width: 62ch;
+    margin-bottom: 36px;
+  }
+
+  nav.toc{
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin-bottom: 44px;
+  }
+  nav.toc p{
+    margin: 0 0 10px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+  }
+  nav.toc ol{
+    margin:0; padding:0;
+    list-style:none;
+    columns: 2;
+    column-gap: 24px;
+  }
+  nav.toc li{ break-inside: avoid; margin-bottom: 6px; }
+  nav.toc a{
+    color: var(--ink-soft);
+    text-decoration:none;
+    font-size: 0.92rem;
+  }
+  nav.toc a:hover{ color: var(--accent); }
+  nav.toc a b{ color: var(--ink-faint); font-weight: 500; margin-right: 6px; }
+
+  section{
+    padding-block: 30px;
+    border-bottom: 1px solid var(--line);
+    scroll-margin-top: 20px;
+  }
+  section:last-of-type{ border-bottom: none; }
+
+  h2{
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.3rem;
+    margin: 0 0 4px;
+    display:flex;
+    align-items:baseline;
+    gap: 10px;
+  }
+  h2 .num{
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.82rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  p{ margin: 12px 0; max-width: 66ch; color: var(--ink-soft); }
+  p strong, li strong{ color: var(--ink); font-weight: 600; }
+  ul{ margin: 12px 0; padding-left: 22px; max-width: 64ch; color: var(--ink-soft); }
+  li{ margin: 6px 0; }
+  a{ color: var(--accent); }
+
+  .plan-table{
+    width: 100%;
+    max-width: 66ch;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 0.9rem;
+  }
+  .plan-table th, .plan-table td{
+    text-align: left;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .plan-table th{
+    color: var(--ink-faint);
+    font-weight: 600;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .plan-table td{ color: var(--ink-soft); }
+  .plan-table td:first-child{ color: var(--ink); font-weight: 600; }
+
+  .callout{
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin: 16px 0;
+    max-width: 66ch;
+  }
+  .callout p{ margin: 0; color: var(--ink); font-size: 0.92rem; }
+
+  .contact{
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px;
+    margin-top: 8px;
+  }
+  .contact dl{
+    display:grid;
+    grid-template-columns: auto 1fr;
+    gap: 6px 16px;
+    margin: 0;
+    font-size: 0.92rem;
+  }
+  .contact dt{ color: var(--ink-faint); }
+  .contact dd{ margin: 0; color: var(--ink); font-weight: 500; }
+
+  footer{
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-faint);
+    font-size: 0.82rem;
+    display:flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  footer a{ color: var(--ink-faint); }
+
+  @media (max-width: 520px){
+    nav.toc ol{ columns: 1; }
+  }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Source+Sans+3:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+
+<div class="page">
+
+  <div class="masthead">
+    <div class="mark">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 12c2-5 6-8 8-8s6 3 8 8-6 8-8 8-6-3-8-8Z" stroke="white" stroke-width="1.6"/><circle cx="12" cy="12" r="2.4" fill="white"/></svg>
+    </div>
+    <div class="brand">Jonah <span>Browser</span></div>
+  </div>
+
+  <h1>Terms of Use</h1>
+  <div class="meta">
+    <span><b>Effective</b> September 23, 2026</span>
+    <span><b>Applies to</b> Jonah for iOS</span>
+    <span><b>Publisher</b> CogniAI Studios</span>
+  </div>
+
+  <p class="lede">These Terms of Use ("Terms") are a binding agreement between you and CogniAI Studios ("we," "us," "our") governing your use of the Jonah browser app, including its AI assistant Noah, Trust Engine, and any paid subscription or in-app purchase ("Jonah," the "App," the "Service"). By downloading, installing, or using Jonah, you agree to these Terms. If you don't agree, don't use the App.</p>
+
+  <nav class="toc" aria-label="Table of contents">
+    <p>On this page</p>
+    <ol>
+      <li><a href="#license"><b>01</b>License to use Jonah</a></li>
+      <li><a href="#subscriptions"><b>02</b>Subscriptions &amp; purchases</a></li>
+      <li><a href="#free"><b>03</b>Free usage &amp; limits</a></li>
+      <li><a href="#conduct"><b>04</b>Acceptable use</a></li>
+      <li><a href="#thirdparty"><b>05</b>Browsing &amp; third-party content</a></li>
+      <li><a href="#ip"><b>06</b>Intellectual property</a></li>
+      <li><a href="#warranty"><b>07</b>No warranty</a></li>
+      <li><a href="#liability"><b>08</b>Limitation of liability</a></li>
+      <li><a href="#apple"><b>09</b>Apple as third-party beneficiary</a></li>
+      <li><a href="#termination"><b>10</b>Termination</a></li>
+      <li><a href="#changes"><b>11</b>Changes to these Terms</a></li>
+      <li><a href="#law"><b>12</b>Governing law</a></li>
+      <li><a href="#contact"><b>13</b>Contact</a></li>
+    </ol>
+  </nav>
+
+  <section id="license">
+    <h2><span class="num">01</span>License to use Jonah</h2>
+    <p>We grant you a personal, non-exclusive, non-transferable, revocable license to install and use Jonah on Apple-branded devices you own or control, solely for your own personal, non-commercial use, and solely in accordance with Apple's App Store Terms of Service. This license doesn't give you any ownership in Jonah or its underlying technology.</p>
+  </section>
+
+  <section id="subscriptions">
+    <h2><span class="num">02</span>Subscriptions &amp; purchases</h2>
+    <p>Jonah is free to download and use. Certain features — extended Trust Engine and AI Agent usage, chat attachments, and other tools — are gated behind optional auto-renewing subscriptions, billed through your Apple ID account:</p>
+    <table class="plan-table">
+      <thead><tr><th>Plan</th><th>Billing period</th></tr></thead>
+      <tbody>
+        <tr><td>Premium</td><td>Monthly, auto-renewing</td></tr>
+        <tr><td>Premium Plus</td><td>Monthly, auto-renewing</td></tr>
+        <tr><td>Ultra Premium Plus</td><td>Yearly, auto-renewing</td></tr>
+      </tbody>
+    </table>
+    <div class="callout">
+      <p><strong>Auto-renewal:</strong> Payment is charged to your Apple ID account at confirmation of purchase. Subscriptions automatically renew at the same price and period unless cancelled at least 24 hours before the end of the current period. Your account is charged for renewal within 24 hours before the current period ends. Manage or cancel any time in <strong>Settings → your name → Subscriptions</strong> on your device.</p>
+    </div>
+    <p>Exact current pricing and terms for each plan are shown on the in-app purchase screen before you buy, and reflect the price for your storefront and currency. Prices, features and limits may change for future billing periods; we'll give you notice as required by Apple's guidelines before any change takes effect for you.</p>
+  </section>
+
+  <section id="free">
+    <h2><span class="num">03</span>Free usage &amp; limits</h2>
+    <p>The free tier of Jonah includes metered access to Trust Engine checks, the AI Agent, Lens Video, and chat attachments, each with its own allowance and cooldown as shown in the app. These limits exist to keep the free tier sustainable and may be adjusted from time to time.</p>
+  </section>
+
+  <section id="conduct">
+    <h2><span class="num">04</span>Acceptable use</h2>
+    <p>You agree not to:</p>
+    <ul>
+      <li>Use Jonah for any unlawful purpose, or to violate any third party's rights;</li>
+      <li>Reverse-engineer, decompile, or attempt to extract the source code of the App, except where applicable law permits it;</li>
+      <li>Interfere with, disrupt, or attempt to circumvent the App's usage limits, entitlement checks, or security measures;</li>
+      <li>Use automated means to access the Service in a way that sends more requests than a human could reasonably produce.</li>
+    </ul>
+  </section>
+
+  <section id="thirdparty">
+    <h2><span class="num">05</span>Browsing &amp; third-party content</h2>
+    <p>Jonah is a web browser. It lets you navigate to, view, and interact with websites and other content that we don't create, control, or vet — including pages you search for, radio streams, news, stock data, and any site you type into the address bar. Trust Engine's scoring is a best-effort signal, not a guarantee of a site's accuracy or safety, and shouldn't be your sole basis for trusting a page, a claim, or a transaction. You're responsible for how you use content you access through Jonah, and for exercising your own judgment about any third-party site, including ones the Trust Engine flags as reliable.</p>
+  </section>
+
+  <section id="ip">
+    <h2><span class="num">06</span>Intellectual property</h2>
+    <p>Jonah, its design, code, and the "Jonah" and "Noah" names and marks are owned by CogniAI Studios or its licensors. Nothing in these Terms transfers any of that to you beyond the limited license in Section 1.</p>
+  </section>
+
+  <section id="warranty">
+    <h2><span class="num">07</span>No warranty</h2>
+    <p>Jonah is provided "as is" and "as available," without warranties of any kind, express or implied, including merchantability, fitness for a particular purpose, and non-infringement. We don't warrant that the App will be uninterrupted, error-free, or that any AI-generated content, summary, translation, or Trust Engine assessment will be accurate or complete.</p>
+  </section>
+
+  <section id="liability">
+    <h2><span class="num">08</span>Limitation of liability</h2>
+    <p>To the maximum extent permitted by law, CogniAI Studios won't be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of data, revenue, or goodwill, arising from your use of Jonah — including decisions made based on Trust Engine output, AI Agent actions, or third-party content accessed through the browser.</p>
+  </section>
+
+  <section id="apple">
+    <h2><span class="num">09</span>Apple as third-party beneficiary</h2>
+    <p>These Terms are between you and CogniAI Studios only — Apple is not a party to them. Apple has no obligation to furnish any maintenance or support for Jonah. In the event of any failure of Jonah to conform to an applicable warranty, you may notify Apple, and Apple will refund the purchase price, if any, for the App to you; to the maximum extent permitted, Apple has no other warranty obligation with respect to Jonah. Apple is not responsible for addressing any claims relating to Jonah, including product liability claims, claims that Jonah fails to conform to legal or regulatory requirements, or claims under consumer protection law. Apple is a third-party beneficiary of these Terms as they relate to your license to use Jonah, and, upon your acceptance, will have the right to enforce them against you.</p>
+  </section>
+
+  <section id="termination">
+    <h2><span class="num">10</span>Termination</h2>
+    <p>You can stop using Jonah and delete it at any time. We may suspend or terminate your access if you materially breach these Terms. Sections that by their nature should survive termination (ownership, warranty disclaimers, liability limits) will survive.</p>
+  </section>
+
+  <section id="changes">
+    <h2><span class="num">11</span>Changes to these Terms</h2>
+    <p>We may update these Terms from time to time. If we make material changes, we'll update the effective date above and, where required, notify you in the App. Continuing to use Jonah after a change takes effect means you accept the updated Terms.</p>
+  </section>
+
+  <section id="law">
+    <h2><span class="num">12</span>Governing law</h2>
+    <p>These Terms are governed by the laws of your country or region of residence, without regard to conflict-of-laws principles, except where Apple's own Licensed Application End User License Agreement terms apply and take precedence for App Store distribution matters.</p>
+  </section>
+
+  <section id="contact">
+    <h2><span class="num">13</span>Contact</h2>
+    <p>Questions about these Terms, or about a subscription or purchase, can be sent to us directly.</p>
+    <div class="contact">
+      <dl>
+        <dt>Publisher</dt><dd>CogniAI Studios</dd>
+        <dt>Email</dt><dd>cogniaistudios@gmail.com</dd>
+        <dt>Privacy Policy</dt><dd><a href="https://jonahbrowser.com/jonah-privacy-policy">jonahbrowser.com/jonah-privacy-policy</a></dd>
+      </dl>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 CogniAI Studios. All rights reserved.</span>
+    <span><a href="https://jonahbrowser.com/jonah-privacy-policy">Privacy Policy</a></span>
+  </footer>
+
+</div>
