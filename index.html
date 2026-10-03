@@ -680,6 +680,16 @@ document.addEventListener('keydown', function (e) {
 window.JONAH_SITE = Object.assign({
   repo: "213213ekei34243255/299239404503yuios9293923045949932i-253547869",
   downloadBase: "",            // e.g. "https://jonah-downloads.YOUR-NAME.workers.dev"  (empty = browser's own download panel, no live percent)
+
+  // THE FILES, written out. The page normally finds the newest release by itself; these are used ONLY when GitHub's release list cannot
+  // be reached (GitHub allows about 60 lookups an hour per visitor). When you publish a new version, change the version in these names.
+  fallbackTag: "v1.4.4",
+  fallbackFiles: {
+    win:          "Jonah-Web-Setup-1.4.4.exe",     // Windows: the small installer
+    macArm:       "Jonah-1.4.4-arm64.dmg",         // Mac, Apple Silicon (M1, M2, M3, M4)
+    macIntel:     "Jonah-1.4.4-x64.dmg",           // Mac, Intel
+    macInstaller: "Jonah-Mac-Installer.zip",       // Mac: the small installer (optional link)
+  },
 }, window.JONAH_SITE || {});
 
 (function () {
@@ -717,9 +727,16 @@ window.JONAH_SITE = Object.assign({
       }
       if (state.assets.macInstaller) { const l = $("macInstallerLink"); l.style.display = ""; l.dataset.target = "macInstaller"; }
     } catch (e) {
-      // cannot reach GitHub's API (offline, or its hourly limit): send people to the releases page instead of a broken button
-      $("versionPill").textContent = "Latest release";
-      state.fallback = "https://github.com/" + SITE.repo + "/releases/latest";
+      // cannot reach GitHub's release list (offline, or its hourly limit): use the file names written out in JONAH_SITE above
+      const tag = SITE.fallbackTag, files = SITE.fallbackFiles || {};
+      state.tag = tag; state.assets = {};
+      for (const k of Object.keys(files)) state.assets[k] = { name: files[k], size: 0, url: "https://github.com/" + SITE.repo + "/releases/download/" + tag + "/" + files[k] };
+      const v = String(tag || "").replace(/^v/, "");
+      $("versionPill").textContent = v ? "Latest · v" + v : "Latest release";
+      $("footerVersion").textContent = v ? "v" + v : "Jonah";
+      for (const k of ["win", "macArm", "macIntel"]) $("btn-" + k).disabled = !state.assets[k];
+      if (state.assets.macInstaller) { const l = $("macInstallerLink"); l.style.display = ""; l.dataset.target = "macInstaller"; }
+      state.fallback = "https://github.com/" + SITE.repo + "/releases/latest"; // last resort if even the written-out names are missing
     }
   }
 
@@ -812,7 +829,7 @@ window.JONAH_SITE = Object.assign({
 
   document.querySelectorAll(".dl-btn").forEach((b) => b.addEventListener("click", () => start(b.dataset.target)));
   $("macInstallerLink").addEventListener("click", (e) => { e.preventDefault(); start("macInstaller"); });
-  window.JonahDownload = { start, state, hooks, stream: streamWithProgress, ui, fmtMB, fmtTime }; // used by the page's own tests
+  window.JonahDownload = { start, state, hooks, stream: streamWithProgress, ui, fmtMB, fmtTime, reload: loadRelease }; // used by the page's own tests
   loadRelease();
 })();
 </script>
