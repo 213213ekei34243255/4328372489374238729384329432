@@ -567,7 +567,7 @@ footer .logo img{height:30px;}
       <div class="status-live"><span class="dot-pulse"></span> All Systems Operational</div>
       <div class="status-updated" id="statusUpdated">Updated just now</div>
     </div>
-    
+    <span class="preview-note">Illustrative preview &middot; figures below are sample data, not live measurements</span>
     <p class="section-sub" style="text-align:left;margin:14px 0 0;max-width:560px;">Health across Jonah's core services.</p>
 
     <div class="status-overview">
@@ -670,74 +670,51 @@ document.addEventListener('keydown', function (e) {
 /* =====================================================================================================================
    DOWNLOADS with a LIVE PROGRESS BAR
 
-   The page asks GitHub which release is the newest (GitHub's API lets any web page do that) and offers its files.
+   This page talks ONLY to Jonah's download service (a small Cloudflare Worker, see download-worker.mjs). It asks the service which
+   version is current, then streams the file from it and shows percent, MB, speed and time left, with Cancel. The page does not know,
+   and never names, where the files are stored.
 
-   Progress: a web page may only watch a download's progress if the file's server allows it (CORS). GitHub's download servers do NOT,
-   so with GitHub alone the file is handed to the browser's own download panel and this page cannot see the percentage.
-   To get the live percentage, put the small relay in download-worker.js on Cloudflare (free) and set `downloadBase` below to its address.
-   The page then streams the file itself and shows: percent, MB so far, speed and time left, with Cancel. Nothing else needs changing.
+   Set `api` below to the address of your download service once, after you deploy download-worker.mjs.
    ===================================================================================================================== */
 window.JONAH_SITE = Object.assign({
-  repo: "213213ekei34243255/299239404503yuios9293923045949932i-253547869",
-  downloadBase: "",            // e.g. "https://jonah-downloads.YOUR-NAME.workers.dev"  (empty = browser's own download panel, no live percent)
-
-  // THE FILES, written out. The page normally finds the newest release by itself; these are used ONLY when GitHub's release list cannot
-  // be reached (GitHub allows about 60 lookups an hour per visitor). When you publish a new version, change the version in these names.
-  fallbackTag: "v1.4.4",
-  fallbackFiles: {
-    win:          "Jonah-Web-Setup-1.4.4.exe",     // Windows: the small installer
-    macArm:       "Jonah-1.4.4-arm64.dmg",         // Mac, Apple Silicon (M1, M2, M3, M4)
-    macIntel:     "Jonah-1.4.4-x64.dmg",           // Mac, Intel
-    macInstaller: "Jonah-Mac-Installer.zip",       // Mac: the small installer (optional link)
-  },
+  api: "",   // e.g. "https://jonah-downloads.YOUR-NAME.workers.dev"  (or your own domain attached to the Worker)
 }, window.JONAH_SITE || {});
 
 (function () {
   const $ = (id) => document.getElementById(id);
   const SITE = window.JONAH_SITE;
+  const KEYS = ["win", "macArm", "macIntel", "macInstaller"];
+  const DEFAULT_NAME = { win: "Jonah-Web-Setup.exe", macArm: "Jonah-arm64.dmg", macIntel: "Jonah-Intel.dmg", macInstaller: "Jonah-Mac-Installer.zip" };
   const fmtMB = (b) => b >= 1e9 ? (b / 1e9).toFixed(2) + " GB" : b >= 1e6 ? (b / 1e6).toFixed(b >= 1e8 ? 0 : 1) + " MB" : Math.max(1, Math.round(b / 1e3)) + " KB";
   const fmtTime = (s) => !isFinite(s) ? "" : s < 60 ? Math.ceil(s) + "s left" : Math.floor(s / 60) + "m " + String(Math.ceil(s % 60)).padStart(2, "0") + "s left";
+  const base = () => String(SITE.api || "").replace(/\/+$/, "");
+  const state = { assets: {}, busy: false, ctl: null };
 
-  const state = { tag: "", assets: {}, busy: false, ctl: null };
+  function setButtons(enabled) { for (const k of ["win", "macArm", "macIntel"]) $("btn-" + k).disabled = !enabled || !state.assets[k]; }
 
-  /* ---- which files exist in the newest published release ---- */
-  function pick(assets) {
-    const find = (re) => assets.find((a) => re.test(a.name));
-    return {
-      win: find(/^Jonah-Web-Setup-.*\.exe$/i) || find(/Setup.*\.exe$/i),
-      macArm: find(/arm64\.dmg$/i),
-      macIntel: find(/(x64|intel)\.dmg$/i) || find(/^Jonah-\d[\d.]*\.dmg$/i),
-      macInstaller: find(/^Jonah-Mac-Installer\.zip$/i),
-    };
-  }
+  /* ---- which version is current, and how big each file is ---- */
   async function loadRelease() {
-    try {
-      const r = await fetch("https://api.github.com/repos/" + SITE.repo + "/releases/latest", { headers: { Accept: "application/vnd.github+json" } });
-      if (!r.ok) throw new Error("GitHub answered " + r.status);
-      const rel = await r.json();
-      state.tag = rel.tag_name;
-      state.assets = pick((rel.assets || []).map((a) => ({ name: a.name, size: a.size, url: a.browser_download_url })));
-      const v = String(rel.tag_name || "").replace(/^v/, "");
-      $("versionPill").textContent = "Latest · v" + v;
-      $("footerVersion").textContent = "v" + v;
-      for (const k of ["win", "macArm", "macIntel"]) {
-        const a = state.assets[k];
-        if (a) $("sz-" + k).textContent = (k === "win" ? "Installer · " : "") + fmtMB(a.size);
-        else $("btn-" + k).disabled = true;
-      }
-      if (state.assets.macInstaller) { const l = $("macInstallerLink"); l.style.display = ""; l.dataset.target = "macInstaller"; }
-    } catch (e) {
-      // cannot reach GitHub's release list (offline, or its hourly limit): use the file names written out in JONAH_SITE above
-      const tag = SITE.fallbackTag, files = SITE.fallbackFiles || {};
-      state.tag = tag; state.assets = {};
-      for (const k of Object.keys(files)) state.assets[k] = { name: files[k], size: 0, url: "https://github.com/" + SITE.repo + "/releases/download/" + tag + "/" + files[k] };
-      const v = String(tag || "").replace(/^v/, "");
-      $("versionPill").textContent = v ? "Latest · v" + v : "Latest release";
-      $("footerVersion").textContent = v ? "v" + v : "Jonah";
-      for (const k of ["win", "macArm", "macIntel"]) $("btn-" + k).disabled = !state.assets[k];
-      if (state.assets.macInstaller) { const l = $("macInstallerLink"); l.style.display = ""; l.dataset.target = "macInstaller"; }
-      state.fallback = "https://github.com/" + SITE.repo + "/releases/latest"; // last resort if even the written-out names are missing
+    state.assets = {};
+    if (!base()) { // the download service has not been set up yet
+      $("versionPill").textContent = "Downloads coming soon";
+      setButtons(false);
+      return;
     }
+    try {
+      const r = await fetch(base() + "/api/latest");
+      if (!r.ok) throw new Error("service answered " + r.status);
+      const j = await r.json();
+      for (const k of KEYS) if (j.assets && j.assets[k]) state.assets[k] = { key: k, name: j.assets[k].name, size: j.assets[k].size };
+      $("versionPill").textContent = "Latest · v" + j.version;
+      $("footerVersion").textContent = "v" + j.version;
+      for (const k of ["win", "macArm", "macIntel"]) { const a = state.assets[k]; if (a) $("sz-" + k).textContent = (k === "win" ? "Installer · " : "") + fmtMB(a.size); }
+    } catch (e) {
+      // the version question failed: the downloads themselves may still work, so offer them (the service always serves the newest file)
+      for (const k of KEYS) state.assets[k] = { key: k, name: DEFAULT_NAME[k], size: 0 };
+      $("versionPill").textContent = "Latest release";
+    }
+    setButtons(true);
+    $("macInstallerLink").style.display = state.assets.macInstaller ? "" : "none";
   }
 
   /* ---- progress panel ---- */
@@ -758,17 +735,17 @@ window.JONAH_SITE = Object.assign({
     msg(text, cls, html) { const m = $("pgMsg"); m.className = "pg-msg " + (cls || ""); if (html) m.innerHTML = text; else m.textContent = text; },
   };
 
-  /* ---- the two ways to deliver a file ---- */
   const hooks = { saveBlob(blob, name) { const u = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = u; a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 60000); } };
-  function handOff(asset) { // browser downloads it itself: no live percent possible (see the note at the top of this script)
-    const a = document.createElement("a"); a.href = asset.url; a.rel = "noopener"; document.body.appendChild(a); a.click(); a.remove();
+  function handOff(url) { // only for a browser that cannot stream: it downloads the file itself, without a live percentage
+    const a = document.createElement("a"); a.href = url; a.rel = "noopener"; document.body.appendChild(a); a.click(); a.remove();
   }
 
   async function streamWithProgress(asset, url) {
     ui.open(asset.name);
     let writable = null, handle = null;
-    // Chrome / Edge can write straight to a file you choose, so even a 600 MB file never sits in memory
-    if (typeof window.showSaveFilePicker === "function" && asset.size > 60e6) {
+    const big = asset.size ? asset.size > 60e6 : /^mac(Arm|Intel)$/.test(asset.key);
+    // Chrome / Edge can write straight to a file you choose, so even a 400 MB file never sits in memory
+    if (typeof window.showSaveFilePicker === "function" && big) {
       try { handle = await window.showSaveFilePicker({ suggestedName: asset.name }); writable = await handle.createWritable(); }
       catch (e) { if (e && e.name === "AbortError") { ui.fail("Download cancelled."); return; } handle = null; writable = null; }
     }
@@ -777,7 +754,7 @@ window.JONAH_SITE = Object.assign({
     const chunks = [];
     try {
       const res = await fetch(url, { signal: ctl.signal });
-      if (!res.ok) throw new Error("The server answered " + res.status);
+      if (!res.ok) throw new Error("The service answered " + res.status);
       const total = Number(res.headers.get("content-length")) || asset.size || 0;
       const reader = res.body.getReader();
       let done = 0, lastPaint = 0, win = [{ t: performance.now(), b: 0 }];
@@ -801,29 +778,27 @@ window.JONAH_SITE = Object.assign({
     } catch (e) {
       try { if (writable) await writable.abort(); } catch (_) {}
       if (e && e.name === "AbortError") ui.fail("Download cancelled.");
-      else ui.fail("The download could not be completed. <a href=\"" + asset.url + "\">Download it directly</a> instead.", true);
+      else ui.fail("The download could not be completed. <a href=\"" + url + "\">Try the direct download</a> instead.", true);
     } finally { state.ctl = null; }
   }
 
   async function start(key) {
     if (state.busy) return;
     const asset = state.assets[key];
-    if (!asset) { if (state.fallback) window.open(state.fallback, "_blank", "noopener"); return; }
+    if (!asset || !base()) return;
     state.busy = true;
     document.querySelectorAll(".dl-btn").forEach((b) => (b.disabled = true));
     try {
-      if (SITE.downloadBase) await streamWithProgress(asset, SITE.downloadBase.replace(/\/+$/, "") + "/" + state.tag + "/" + asset.name);
+      const url = base() + "/download/" + key;
+      if (window.ReadableStream && window.fetch) await streamWithProgress(asset, url);
       else {
-        ui.open(asset.name);
-        handOff(asset);
-        $("pgPct").textContent = "";
-        $("pgBar").className = "pg-bar done"; $("pgFill").style.width = "100%"; $("pgCancel").style.display = "none";
-        $("pgBytes").textContent = fmtMB(asset.size);
-        ui.msg("Your browser has started downloading " + asset.name + ". Follow its progress in your browser's downloads list (Ctrl+J), then open the file to install Jonah.", "ok");
+        ui.open(asset.name); handOff(url);
+        $("pgPct").textContent = ""; $("pgBar").className = "pg-bar done"; $("pgFill").style.width = "100%"; $("pgCancel").style.display = "none";
+        ui.msg("Your browser has started downloading " + asset.name + ". Follow it in your browser's downloads list, then open the file to install Jonah.", "ok");
       }
     } finally {
       state.busy = false;
-      document.querySelectorAll(".dl-btn").forEach((b) => { b.disabled = !state.assets[b.dataset.target]; });
+      setButtons(true);
     }
   }
 
