@@ -4,492 +4,353 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jonah Browser</title>
-<link rel="icon" href="/favicon.png">
+<meta name="description" content="Jonah is a next-generation browser built for speed, privacy and productivity, with a built-in AI assistant.">
+<meta name="theme-color" content="#08070c">
+<link rel="icon" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 <style>
+/* ===== Jonah theme: the same palette as the browser's own start page (home.html) ===== */
 :root{
-  --black:#0a0a0b;
-  --panel:#141416;
-  --line: rgba(255,255,255,0.10);
-  --line-soft: rgba(255,255,255,0.06);
-  --white:#ffffff;
-  --muted: rgba(255,255,255,0.55);
-  --muted-dark: rgba(10,10,11,0.55);
-  --ink:#0a0a0b;
+  --bg-base:#08070c;
+  --bg-deep:#0c0a14;
+  --violet-1:#8b5cf6;
+  --violet-2:#a78bfa;
+  --violet-3:#6d28d9;
+  --indigo:#6366f1;
+  --lav-1:#f6f2ff;
+  --lav-2:#ece4ff;
+  --lav-3:#c4b5fd;
+  --glow-soft:rgba(139,92,246,0.35);
+  --glass-bg:rgba(255,255,255,0.035);
+  --glass-bg-strong:rgba(255,255,255,0.065);
+  --glass-border:rgba(168,139,250,0.16);
+  --glass-border-hover:rgba(168,139,250,0.4);
+  --text-bright:#ffffff;
+  --text-muted:rgba(235,232,245,0.62);
+  --text-faint:rgba(235,232,245,0.40);
+  --ink:#1a1030;
+  --ink-muted:rgba(26,16,48,0.62);
+  --ok:#4ade80;
+  --bad:#f87171;
+  --accent-grad:linear-gradient(135deg,#8b5cf6 0%,#6366f1 100%);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;scroll-padding-top:84px;}
 body{
   font-family:'Inter',sans-serif;
-  background:var(--black);
-  color:var(--white);
+  background:var(--bg-base);
+  color:var(--text-bright);
   -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
 }
 a{color:inherit;text-decoration:none;}
 img{display:block;max-width:100%;}
-.wrap{max-width:1280px;margin:0 auto;padding:0 40px;}
+.wrap{max-width:1240px;margin:0 auto;padding:0 40px;}
+h1,h2,h3,.display{font-family:'Space Grotesk','Inter',sans-serif;}
 
-/* ---------- placeholder boxes (swap these for your own files) ---------- */
-.ph{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
-  border:1.5px dashed rgba(255,255,255,0.25);
-  border-radius:14px;
-  color:rgba(255,255,255,0.4);
-  font-family:'JetBrains Mono',monospace;
-  font-size:11px;
-  letter-spacing:0.5px;
-  text-align:center;
-  width:100%;height:100%;
-  background:rgba(255,255,255,0.02);
+/* soft violet light behind the whole page, like the start page */
+body::before{
+  content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% -5%, rgba(139,92,246,0.30) 0%, rgba(124,58,237,0.12) 38%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 90% 60%, rgba(99,102,241,0.10) 0%, transparent 70%),
+    var(--bg-base);
 }
-.ph i{font-size:22px;}
 
 /* ---------- NAV ---------- */
 nav{
   position:sticky;top:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:20px 40px;
-  background:rgba(10,10,11,0.85);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--line-soft);
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:14px 40px;
+  background:rgba(8,7,12,0.72);
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  border-bottom:1px solid var(--glass-border);
 }
-.logo{display:flex;align-items:center;gap:10px;}
-.logo-slot{width:34px;height:34px;flex-shrink:0;}
-.logo-slot img{width:100%;height:100%;object-fit:contain;}
-.logo-name{font-size:17px;font-weight:700;letter-spacing:0.3px;}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.logo img{height:40px;width:auto;}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{white-space:nowrap;font-size:14px;font-weight:500;color:var(--text-muted);transition:color .2s;position:relative;padding:6px 0;}
+.nav-links a:hover,.nav-links a.active{color:var(--text-bright);}
+.nav-links a::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;border-radius:2px;background:var(--accent-grad);transform:scaleX(0);transition:transform .25s;}
+.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1);}
 
-.nav-links{display:flex;gap:34px;list-style:none;}
-.nav-links a{font-size:14px;font-weight:500;color:var(--muted);transition:color .2s;}
-.nav-links a:hover{color:var(--white);}
-.nav-links a.active{color:var(--white);}
-
-.nav-cta{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:10px 20px;border-radius:10px;
-  background:var(--white);color:var(--ink);
-  font-size:14px;font-weight:600;
-  border:none;cursor:pointer;
-  transition:transform .2s, opacity .2s;
+.btn{
+  white-space:nowrap;
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  padding:13px 26px;border-radius:12px;border:1px solid transparent;
+  font:600 14px 'Inter',sans-serif;cursor:pointer;color:#fff;
+  transition:transform .2s, box-shadow .2s, background .2s, border-color .2s, opacity .2s;
 }
-.nav-cta:hover{transform:translateY(-1px);opacity:.9;}
+.btn-primary{
+  background:var(--accent-grad);
+  box-shadow:0 0 30px rgba(139,92,246,0.5), inset 0 1px 0 rgba(255,255,255,0.28);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 44px rgba(139,92,246,0.75), inset 0 1px 0 rgba(255,255,255,0.35);}
+.btn-ghost{background:var(--glass-bg-strong);border-color:var(--glass-border);backdrop-filter:blur(14px);}
+.btn-ghost:hover{border-color:var(--glass-border-hover);background:rgba(139,92,246,0.14);transform:translateY(-2px);}
+.btn:disabled{opacity:.55;cursor:default;transform:none;}
+.btn-sm{padding:10px 18px;font-size:13.5px;border-radius:10px;}
 
 .menu-toggle{
-  display:none;
-  align-items:center;justify-content:center;
-  width:38px;height:38px;
-  border-radius:9px;
-  border:1px solid var(--line);
-  background:transparent;
-  color:var(--white);
-  font-size:20px;
-  cursor:pointer;
-  flex-shrink:0;
+  display:none;align-items:center;justify-content:center;
+  width:40px;height:40px;border-radius:10px;
+  border:1px solid var(--glass-border);background:var(--glass-bg);
+  color:#fff;font-size:22px;cursor:pointer;flex-shrink:0;
 }
 .mobile-menu{
-  display:none;
-  position:fixed;
-  top:73px;left:0;right:0;
-  z-index:99;
-  background:rgba(10,10,11,0.98);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--line-soft);
-  max-height:0;
-  overflow:hidden;
-  transition:max-height .35s ease;
+  display:none;position:fixed;top:68px;left:0;right:0;z-index:99;
+  background:rgba(8,7,12,0.97);backdrop-filter:blur(22px);
+  border-bottom:1px solid var(--glass-border);
+  max-height:0;overflow:hidden;transition:max-height .35s ease;
 }
-.mobile-menu.open{max-height:520px;}
-.mobile-menu ul{list-style:none;padding:8px 24px 4px;display:flex;flex-direction:column;}
-.mobile-menu a{
-  display:block;
-  padding:15px 4px;
-  font-size:15px;font-weight:500;
-  color:var(--muted);
-  border-bottom:1px solid var(--line-soft);
-}
-.mobile-menu a.active{color:var(--white);}
-.mobile-menu .nav-cta{
-  margin:18px 24px 24px;
-  width:calc(100% - 48px);
-  justify-content:center;
-}
+.mobile-menu.open{max-height:620px;}
+.mobile-menu ul{list-style:none;padding:8px 24px 4px;}
+.mobile-menu a{display:block;padding:15px 4px;font-size:15px;font-weight:500;color:var(--text-muted);border-bottom:1px solid rgba(255,255,255,0.06);}
+.mobile-menu a:hover{color:#fff;}
+.mobile-menu .btn{margin:18px 24px 24px;width:calc(100% - 48px);}
 
-@media(max-width:900px){
-  .nav-links{display:none;}
-  nav > .nav-cta{display:none;}
-  .menu-toggle{display:flex;}
-  .mobile-menu{display:block;}
-  .hero-grid{grid-template-columns:1fr;}
-  .hero-visual{aspect-ratio:16/10;order:-1;}
-  .hero h1{font-size:clamp(34px,9vw,48px);}
-  .hero p.lead{max-width:100%;}
-}
-
-@media(max-width:600px){
-  .wrap{padding:0 22px;}
-  nav{padding:16px 20px;}
-  .hero{padding:52px 0 40px;}
-  .hero-grid{gap:34px;}
-  .hero-actions{gap:10px;}
-  .hero-actions button{flex:1;justify-content:center;padding:14px 16px;}
-  .features,.security,.about{padding-top:70px;padding-bottom:60px;}
-  .performance{padding-bottom:70px;}
-  .status{padding:70px 0;}
-  .perf-inner,.about-inner{padding:28px 22px;}
-  .status-card{padding:20px 18px;}
-  .cta{padding:48px 0;}
-  .cta-inner{flex-direction:column;align-items:flex-start;}
-  .cta-right{align-items:flex-start;width:100%;}
-  .cta-right .btn-solid{width:100%;justify-content:center;}
-  .cta-right small{align-self:flex-start;}
-  footer .wrap{flex-direction:column;align-items:flex-start;gap:10px;}
-  .service-row{padding:18px 16px;}
-  .uptime-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;}
-  .uptime-inner{min-width:620px;}
-}
-
-/* ---------- HERO ---------- */
-.hero{
-  padding:90px 0 60px;
-  background:
-    radial-gradient(ellipse 900px 500px at 80% 10%, rgba(255,255,255,0.05), transparent 60%),
-    var(--black);
-}
-.hero-grid{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap:60px;
-  align-items:center;
-}
+/* ---------- section scaffolding ---------- */
+section{position:relative;}
 .eyebrow{
-  display:inline-block;
-  padding:7px 16px;
-  border:1px solid var(--line);
-  border-radius:100px;
-  font-size:12px;font-weight:500;
-  color:var(--muted);
-  margin-bottom:26px;
-}
-.hero h1{
-  font-size:clamp(38px,4.6vw,56px);
-  font-weight:800;
-  line-height:1.08;
-  letter-spacing:-1px;
-  margin-bottom:22px;
-}
-.hero p.lead{
-  font-size:16px;
-  line-height:1.7;
-  color:var(--muted);
-  max-width:460px;
-  margin-bottom:34px;
-  font-weight:400;
-}
-.hero-actions{display:flex;gap:14px;margin-bottom:30px;flex-wrap:wrap;}
-.btn-solid{
-  padding:14px 28px;border-radius:10px;border:none;
-  background:var(--white);color:var(--ink);
-  font-size:14px;font-weight:600;
   display:inline-flex;align-items:center;gap:8px;
-  cursor:pointer;transition:transform .2s, opacity .2s;
+  padding:7px 16px;border:1px solid var(--glass-border);border-radius:100px;
+  background:var(--glass-bg);backdrop-filter:blur(12px);
+  font-size:12px;font-weight:500;color:var(--violet-2);letter-spacing:.3px;
 }
-.btn-solid:hover{transform:translateY(-2px);opacity:.9;}
-.btn-outline{
-  padding:14px 28px;border-radius:10px;
-  border:1px solid var(--line);
-  background:transparent;color:var(--white);
-  font-size:14px;font-weight:600;
-  cursor:pointer;transition:background .2s, border-color .2s;
-}
-.btn-outline:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.3);}
-
-.trust-row{display:flex;gap:22px;flex-wrap:wrap;font-size:13px;color:var(--muted);}
-.trust-row span{display:inline-flex;align-items:center;gap:6px;}
-.trust-row i{color:var(--white);font-size:15px;}
-
-/* hero right — browser mockup / your image */
-.hero-visual{
-  aspect-ratio: 1.15 / 1;
-  border-radius:18px;
-  overflow:hidden;
-}
-
-/* ---------- LOGO STRIP ---------- */
-.logo-strip{
-  padding:44px 0;
-  border-top:1px solid var(--line-soft);
-  border-bottom:1px solid var(--line-soft);
-  background:var(--black);
-}
-.logo-strip-label{
-  text-align:center;
-  font-size:11px;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  color:var(--muted);
-  margin-bottom:28px;
-  font-family:'JetBrains Mono',monospace;
-}
-.logo-strip-row{
-  display:flex;justify-content:space-between;align-items:center;
-  flex-wrap:wrap;gap:28px 40px;
-  opacity:.55;
-}
-.logo-strip-row .brand{
-  font-size:19px;font-weight:700;letter-spacing:-0.3px;
-  display:flex;align-items:center;gap:8px;
-}
-
-/* ---------- FEATURES (light section) ---------- */
-.features{
-  background:var(--white);
-  color:var(--ink);
-  padding:110px 0 90px;
-}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--violet-1);box-shadow:0 0 10px var(--violet-1);}
 .section-eyebrow{
-  text-align:center;
-  font-size:12px;letter-spacing:2px;text-transform:uppercase;
-  color:rgba(10,10,11,0.5);
-  margin-bottom:16px;
-  font-weight:600;
+  text-align:center;font-size:12px;letter-spacing:2.4px;text-transform:uppercase;
+  color:var(--violet-2);margin-bottom:16px;font-weight:600;
 }
 .section-title{
-  text-align:center;
-  font-size:clamp(32px,4vw,46px);
-  font-weight:800;
-  letter-spacing:-1px;
-  line-height:1.15;
-  margin-bottom:16px;
+  text-align:center;font-size:clamp(32px,4vw,48px);font-weight:700;
+  letter-spacing:-1.2px;line-height:1.12;margin-bottom:16px;
 }
-.section-sub{
-  text-align:center;
-  max-width:520px;margin:0 auto 64px;
-  color:rgba(10,10,11,0.55);
-  font-size:15px;line-height:1.7;
-}
+.section-sub{text-align:center;max-width:560px;margin:0 auto 60px;color:var(--text-muted);font-size:15.5px;line-height:1.7;}
+.grad{background:linear-gradient(135deg,#ffffff 0%,#c4b5fd 45%,#8b5cf6 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
 
-.feature-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:1px;
-  background:rgba(10,10,11,0.10);
-  border:1px solid rgba(10,10,11,0.10);
-  border-radius:20px;
-  overflow:hidden;
-}
-  .hero-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    align-items:center;
-    gap:70px;
-}
+/* ---------- HERO ---------- */
+.hero{padding:96px 0 80px;overflow:hidden;}
+.hero-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:60px;align-items:center;}
+.hero h1{font-size:clamp(40px,5vw,66px);font-weight:700;line-height:1.05;letter-spacing:-2px;margin:24px 0 22px;}
+.hero p.lead{font-size:17px;line-height:1.7;color:var(--text-muted);max-width:480px;margin-bottom:34px;}
+.hero-actions{display:flex;gap:14px;margin-bottom:34px;flex-wrap:wrap;}
+.trust-row{display:flex;gap:22px;flex-wrap:wrap;font-size:13px;color:var(--text-muted);}
+.trust-row span{display:inline-flex;align-items:center;gap:7px;}
+.trust-row i{color:var(--violet-2);font-size:16px;}
 
-.hero-image{
-    display:flex;
-    justify-content:center;
-    align-items:center;
+.hero-visual{position:relative;display:flex;justify-content:center;align-items:center;min-height:380px;}
+.orb{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;}
+.orb.a{width:340px;height:340px;background:rgba(139,92,246,0.55);top:8%;left:12%;animation:drift 9s ease-in-out infinite;}
+.orb.b{width:260px;height:260px;background:rgba(99,102,241,0.40);bottom:6%;right:8%;animation:drift 11s ease-in-out infinite reverse;}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(18px,-22px) scale(1.08);}}
+.hero-card{
+  position:relative;width:100%;max-width:560px;padding:44px 40px;border-radius:28px;
+  background:linear-gradient(160deg,rgba(255,255,255,0.075),rgba(255,255,255,0.02));
+  border:1px solid var(--glass-border);
+  backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);
+  box-shadow:0 30px 80px rgba(0,0,0,0.55), 0 0 60px rgba(139,92,246,0.22), inset 0 1px 0 rgba(255,255,255,0.1);
+  animation:float 6s ease-in-out infinite;
 }
+.hero-card img{width:100%;height:auto;filter:drop-shadow(0 0 28px rgba(139,92,246,0.55));}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
 
-.hero-image img{
-    width:100%;
-    max-width:520px;
-    height:auto;
-    display:block;
-    object-fit:contain;
-
-    /* No border, no background, no shadow */
-    border:none;
-    background:none;
-    box-shadow:none;
-}
+/* ---------- feature / security cards ---------- */
+.features,.security{padding:100px 0 40px;}
+.security{padding-bottom:100px;}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
 .feature-card{
-  background:#fff;
-  padding:34px 30px;
-  transition:background .2s;
+  padding:32px 28px;border-radius:20px;
+  background:var(--glass-bg);border:1px solid var(--glass-border);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:0 8px 24px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+  transition:transform .25s, border-color .25s, box-shadow .25s, background .25s;
 }
-.feature-card:hover{background:rgba(10,10,11,0.02);}
+.feature-card:hover{
+  transform:translateY(-5px);border-color:var(--glass-border-hover);background:var(--glass-bg-strong);
+  box-shadow:0 18px 45px rgba(0,0,0,0.55), 0 0 30px rgba(139,92,246,0.25);
+}
 .feature-icon{
-  width:44px;height:44px;
-  border:1.5px solid rgba(10,10,11,0.15);
-  border-radius:12px;
+  width:48px;height:48px;border-radius:14px;margin-bottom:20px;
   display:flex;align-items:center;justify-content:center;
-  margin-bottom:20px;
+  background:linear-gradient(135deg,rgba(139,92,246,0.32),rgba(99,102,241,0.14));
+  border:1px solid var(--glass-border);
+  box-shadow:0 0 22px rgba(139,92,246,0.25);
 }
-.feature-icon i{font-size:20px;}
-.feature-card h3{font-size:16px;font-weight:700;margin-bottom:9px;letter-spacing:-0.2px;}
-.feature-card p{font-size:13.5px;line-height:1.7;color:rgba(10,10,11,0.55);margin-bottom:16px;}
-.feature-card .learn{
-  font-size:13px;font-weight:600;
-  display:inline-flex;align-items:center;gap:6px;
+.feature-icon i{font-size:23px;color:#fff;}
+.feature-card h3{font-size:18px;font-weight:600;margin-bottom:9px;letter-spacing:-0.3px;}
+.feature-card p{font-size:14px;line-height:1.7;color:var(--text-muted);margin-bottom:16px;}
+.learn{font-size:13.5px;font-weight:600;display:inline-flex;align-items:center;gap:6px;color:var(--violet-2);}
+.learn i{font-size:16px;transition:transform .2s;}
+.feature-card:hover .learn i{transform:translateX(4px);}
+
+.security-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:28px;}
+.security-stat{
+  padding:30px 24px;text-align:center;border-radius:20px;
+  background:linear-gradient(160deg,rgba(139,92,246,0.16),rgba(99,102,241,0.05));
+  border:1px solid var(--glass-border);
+}
+.security-stat .num{font-family:'Space Grotesk',sans-serif;font-size:38px;font-weight:700;letter-spacing:-1px;margin-bottom:6px;}
+.security-stat .label{font-size:13px;color:var(--text-muted);}
+
+/* ---------- LIGHT LAVENDER PANELS (performance, about) ---------- */
+.light{
+  background:linear-gradient(180deg,var(--lav-1) 0%,var(--lav-2) 100%);
   color:var(--ink);
+  padding:100px 0;
+  position:relative;overflow:hidden;
 }
-.feature-card .learn i{font-size:14px;transition:transform .2s;}
-.feature-card:hover .learn i{transform:translateX(3px);}
-
-@media(max-width:900px){.feature-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:600px){.feature-grid{grid-template-columns:1fr;}}
-
-/* ---------- PERFORMANCE ---------- */
-.performance{
-  background:var(--white);
-  color:var(--ink);
-  padding:0 0 110px;
+.light::before{
+  content:'';position:absolute;top:-180px;left:50%;transform:translateX(-50%);
+  width:900px;height:360px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(139,92,246,0.28),transparent 70%);pointer-events:none;
 }
-.perf-inner{
-  display:grid;
-  grid-template-columns: 1.1fr 1.6fr;
-  gap:40px;
-  align-items:center;
-  background: rgba(10,10,11,0.03);
-  border:1px solid rgba(10,10,11,0.08);
-  border-radius:24px;
-  padding:48px;
+.light .section-eyebrow{color:var(--violet-3);}
+.light .section-title{color:var(--ink);}
+.light .section-sub{color:var(--ink-muted);margin-bottom:48px;}
+.panel{
+  position:relative;
+  display:grid;grid-template-columns:1fr 1.6fr;gap:40px;align-items:center;
+  padding:44px;border-radius:28px;
+  background:rgba(255,255,255,0.72);
+  border:1px solid rgba(139,92,246,0.22);
+  box-shadow:0 30px 70px rgba(109,40,217,0.14), inset 0 1px 0 #fff;
+  backdrop-filter:blur(20px);
 }
-.perf-inner .tag{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(10,10,11,0.5);font-weight:600;margin-bottom:14px;}
-.perf-inner h3{font-size:30px;font-weight:800;letter-spacing:-0.5px;margin-bottom:14px;}
-.perf-inner p{font-size:14.5px;color:rgba(10,10,11,0.55);line-height:1.7;margin-bottom:18px;max-width:340px;}
-.perf-inner .see{font-size:13.5px;font-weight:600;display:inline-flex;align-items:center;gap:6px;}
-
-.stat-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
-.stat-col{background:#fff;border:1px solid rgba(10,10,11,0.08);border-radius:16px;padding:22px 20px;}
+.panel .tag{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--violet-3);font-weight:600;margin-bottom:14px;}
+.panel h3{font-size:32px;font-weight:700;letter-spacing:-0.8px;margin-bottom:14px;}
+.panel p{font-size:15px;color:var(--ink-muted);line-height:1.75;margin-bottom:16px;max-width:380px;}
+.panel .see{font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:6px;color:var(--violet-3);}
+.stat-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.stat-col{background:#fff;border:1px solid rgba(139,92,246,0.16);border-radius:18px;padding:22px 20px;box-shadow:0 8px 24px rgba(109,40,217,0.08);}
 .stat-head{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
-.stat-head i{font-size:18px;}
-.stat-head span{font-size:12.5px;color:rgba(10,10,11,0.55);font-weight:500;}
-.stat-num{font-size:28px;font-weight:800;letter-spacing:-0.5px;margin-bottom:4px;}
-.stat-name{font-size:12px;color:rgba(10,10,11,0.5);margin-bottom:14px;}
-.bar{height:5px;border-radius:100px;background:rgba(10,10,11,0.08);overflow:hidden;}
-.bar-fill{height:100%;background:var(--ink);border-radius:100px;}
+.stat-head i{font-size:20px;color:var(--violet-1);}
+.stat-head span{font-size:13px;color:var(--ink-muted);font-weight:500;}
+.stat-num{font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:700;letter-spacing:-1px;margin-bottom:2px;}
+.stat-name{font-size:12.5px;color:var(--ink-muted);margin-bottom:14px;}
+.meter{height:6px;border-radius:100px;background:rgba(139,92,246,0.14);overflow:hidden;}
+.meter-fill{height:100%;border-radius:100px;background:var(--accent-grad);box-shadow:0 0 12px rgba(139,92,246,0.6);width:0;transition:width 1.2s cubic-bezier(.2,.8,.2,1);}
 
-@media(max-width:850px){.perf-inner{grid-template-columns:1fr;}}
-@media(max-width:600px){.stat-cols{grid-template-columns:1fr;}}
-
-/* ---------- CTA ---------- */
-.cta{
-  background:var(--black);
-  color:var(--white);
-  padding:64px 0;
-}
-.cta-inner{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:30px;flex-wrap:wrap;
-}
-.cta-inner h3{font-size:clamp(24px,3vw,32px);font-weight:800;letter-spacing:-0.5px;line-height:1.2;margin-bottom:8px;}
-.cta-inner p{color:var(--muted);font-size:14px;}
-.cta-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
-.cta-right small{color:var(--muted);font-size:12.5px;}
-
-/* ---------- FOOTER ---------- */
-footer{
-  background:var(--black);
-  border-top:1px solid var(--line-soft);
-  padding:34px 0;
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:14px;
-}
-.footer-text{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;}
-
-/* ---------- SECURITY ---------- */
-.security{background:var(--white);color:var(--ink);padding:0 0 110px;}
-.security-stats{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
-  background:rgba(10,10,11,0.10);border:1px solid rgba(10,10,11,0.10);
-  border-radius:20px;overflow:hidden;margin-top:40px;
-}
-.security-stat{background:#fff;padding:32px 24px;text-align:center;}
-.security-stat .num{font-size:32px;font-weight:800;letter-spacing:-1px;margin-bottom:6px;}
-.security-stat .label{font-size:12.5px;color:rgba(10,10,11,0.55);}
-@media(max-width:600px){.security-stats{grid-template-columns:1fr;}}
-
-/* ---------- ABOUT ---------- */
-.about{background:var(--white);color:var(--ink);padding:0 0 110px;}
-.about-inner{
-  display:grid;grid-template-columns:1.2fr 1fr;gap:50px;align-items:center;
-  background:rgba(10,10,11,0.03);border:1px solid rgba(10,10,11,0.08);
-  border-radius:24px;padding:48px;margin-top:40px;
-}
-.about-inner p{font-size:14.5px;line-height:1.8;color:rgba(10,10,11,0.6);margin-bottom:14px;max-width:480px;}
 .about-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
-.about-stat{background:#fff;border:1px solid rgba(10,10,11,0.08);border-radius:14px;padding:20px;}
-.about-stat .num{font-size:24px;font-weight:800;letter-spacing:-0.5px;}
-.about-stat .label{font-size:12px;color:rgba(10,10,11,0.5);margin-top:4px;}
-@media(max-width:850px){.about-inner{grid-template-columns:1fr;}}
+.about-stat{background:#fff;border:1px solid rgba(139,92,246,0.16);border-radius:16px;padding:22px;box-shadow:0 8px 24px rgba(109,40,217,0.08);}
+.about-stat .num{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;letter-spacing:-0.6px;}
+.about-stat .label{font-size:12.5px;color:var(--ink-muted);margin-top:4px;}
 
-/* ---------- LIVE STATUS DASHBOARD ---------- */
-.status{background:var(--black);color:var(--white);padding:110px 0;border-top:1px solid var(--line-soft);}
-.status-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin:26px 0 10px;}
-.status-live{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:700;}
-.dot-pulse{position:relative;width:10px;height:10px;border-radius:50%;background:#34d399;flex-shrink:0;}
-.dot-pulse::before{
-  content:'';position:absolute;inset:-6px;border-radius:50%;background:#34d399;opacity:0.35;
-  animation:pulse 1.8s ease-out infinite;
-}
-@keyframes pulse{0%{transform:scale(0.6);opacity:0.5;}100%{transform:scale(2.4);opacity:0;}}
-.status-updated{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:0.3px;}
-
-.status-overview{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
-  background:var(--line-soft);border:1px solid var(--line-soft);
-  border-radius:20px;overflow:hidden;margin:34px 0 56px;
-}
-.status-card{background:var(--panel);padding:26px 24px;}
-.status-card .k{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;font-family:'JetBrains Mono',monospace;}
-.status-card .v{font-size:25px;font-weight:800;letter-spacing:-0.5px;margin-bottom:12px;}
+/* ---------- STATUS (dark glass) ---------- */
+.status{padding:100px 0;}
+.status-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin:24px 0 10px;}
+.status-live{display:flex;align-items:center;gap:10px;font:700 17px 'Space Grotesk',sans-serif;}
+.dot-pulse{position:relative;width:10px;height:10px;border-radius:50%;background:var(--ok);flex-shrink:0;}
+.dot-pulse::before{content:'';position:absolute;inset:-6px;border-radius:50%;background:var(--ok);opacity:.35;animation:pulse 1.8s ease-out infinite;}
+@keyframes pulse{0%{transform:scale(.6);opacity:.5;}100%{transform:scale(2.4);opacity:0;}}
+.status-updated{font:12px 'JetBrains Mono',monospace;color:var(--text-faint);}
+.preview-note{display:inline-block;margin:4px 0 0;padding:4px 12px;border-radius:100px;border:1px dashed var(--glass-border-hover);font-size:11.5px;color:var(--violet-2);}
+.status-overview{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:30px 0 44px;}
+.status-card{padding:24px;border-radius:18px;background:var(--glass-bg);border:1px solid var(--glass-border);backdrop-filter:blur(18px);}
+.status-card .k{font:11px 'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:1px;color:var(--text-faint);margin-bottom:10px;}
+.status-card .v{font:700 26px 'Space Grotesk',sans-serif;letter-spacing:-0.5px;margin-bottom:12px;}
 .status-card canvas{width:100%;height:44px;display:block;}
-
 .service-list{display:flex;flex-direction:column;gap:14px;}
-.service-row{background:var(--panel);border:1px solid var(--line-soft);border-radius:16px;padding:22px 24px;}
+.service-row{padding:22px 24px;border-radius:18px;background:var(--glass-bg);border:1px solid var(--glass-border);backdrop-filter:blur(18px);}
 .service-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;}
 .service-name{font-size:14.5px;font-weight:600;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-.status-pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#34d399;font-weight:600;}
-.status-pill .d{width:6px;height:6px;border-radius:50%;background:#34d399;}
-.service-uptime-num{font-size:12px;color:var(--muted);font-family:'JetBrains Mono',monospace;}
-
-.uptime-scroll{overflow-x:visible;}
-.uptime-inner{min-width:0;}
-
+.status-pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ok);font-weight:600;}
+.status-pill .d{width:6px;height:6px;border-radius:50%;background:var(--ok);}
+.service-uptime-num{font:12px 'JetBrains Mono',monospace;color:var(--text-faint);}
 .month-labels{position:relative;height:16px;margin-bottom:6px;}
-.month-labels span{position:absolute;top:0;font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;}
-
+.month-labels span{position:absolute;top:0;font:10px 'JetBrains Mono',monospace;color:var(--text-faint);letter-spacing:.5px;}
 .uptime-bars{display:flex;gap:2px;align-items:flex-end;height:30px;}
-.uptime-bars .bar{flex:1;height:100%;border-radius:2px;background:#1c8a5e;}
+.uptime-bars .bar{flex:1;height:100%;border-radius:2px;background:linear-gradient(180deg,#a78bfa,#6d28d9);opacity:.85;}
 .uptime-bars .bar.degraded{background:#d9a441;}
 .uptime-bars .bar.down{background:#d9534f;}
 
-@media(max-width:900px){.status-overview{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:600px){.status-overview{grid-template-columns:1fr;}}
-.dl-status{
-  font-size:11.5px;
-  color:var(--muted);
-  margin-top:6px;
-  text-align:center;
-  font-family:'JetBrains Mono',monospace;
-  min-height:14px;
+/* ---------- DOWNLOAD ---------- */
+.download{padding:100px 0 110px;overflow:hidden;}
+.dl-box{
+  position:relative;padding:56px 48px;border-radius:32px;overflow:hidden;
+  background:linear-gradient(160deg,rgba(139,92,246,0.22),rgba(99,102,241,0.06) 60%,rgba(255,255,255,0.02));
+  border:1px solid var(--glass-border);
+  box-shadow:0 40px 100px rgba(0,0,0,0.55), 0 0 80px rgba(139,92,246,0.18), inset 0 1px 0 rgba(255,255,255,0.1);
 }
-.dl-status.error{color:#d9534f;}
-.dl-status.success{color:#34d399;}
+.dl-box::before{content:'';position:absolute;top:-120px;right:-80px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(167,139,250,0.42),transparent 65%);pointer-events:none;}
+.dl-head{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:30px;flex-wrap:wrap;margin-bottom:34px;}
+.dl-head h2{font-size:clamp(28px,3.4vw,42px);font-weight:700;letter-spacing:-1px;line-height:1.12;margin-bottom:10px;}
+.dl-head p{color:var(--text-muted);font-size:15px;}
+.dl-buttons{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.dl-btn{
+  display:flex;align-items:center;gap:16px;text-align:left;width:100%;
+  padding:20px 22px;border-radius:18px;cursor:pointer;color:#fff;
+  background:var(--glass-bg-strong);border:1px solid var(--glass-border);
+  backdrop-filter:blur(18px);font-family:inherit;
+  transition:transform .2s, border-color .2s, box-shadow .2s, background .2s;
+}
+.dl-btn:hover:not(:disabled){transform:translateY(-3px);border-color:var(--glass-border-hover);background:rgba(139,92,246,0.18);box-shadow:0 14px 40px rgba(0,0,0,0.5), 0 0 30px rgba(139,92,246,0.3);}
+.dl-btn:disabled{opacity:.6;cursor:default;}
+.dl-btn i.os{font-size:34px;color:#fff;flex-shrink:0;}
+.dl-btn .t1{font-size:16px;font-weight:600;display:block;}
+.dl-btn .t2{font-size:12.5px;color:var(--text-muted);display:block;margin-top:3px;}
+.dl-note{position:relative;margin-top:22px;font-size:13px;color:var(--text-muted);display:flex;gap:18px;flex-wrap:wrap;}
+.dl-note a{color:var(--violet-2);font-weight:600;border-bottom:1px solid rgba(167,139,250,0.4);}
+.dl-note a:hover{color:#fff;}
 
-/* live download progress bar (the only addition to the styles) */
-.dl-bar{height:6px;border-radius:100px;background:rgba(255,255,255,0.12);overflow:hidden;margin-top:8px;display:none;}
-.dl-bar.show{display:block;}
-.dl-bar > div{height:100%;width:0%;background:#fff;border-radius:100px;transition:width .15s linear;}
-.dl-bar.done > div{background:#34d399;}
-.dl-bar.failed > div{background:#d9534f;}
+/* status line under each download button */
+.dl-item{display:flex;flex-direction:column;}
+.dl-status{font:12px 'JetBrains Mono',monospace;color:var(--text-muted);margin-top:10px;min-height:16px;line-height:1.5;text-align:center;}
+.dl-status.success{color:var(--ok);}
+.dl-status.error{color:var(--bad);}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:1px solid var(--glass-border);padding:30px 0;background:rgba(8,7,12,0.6);}
+footer .wrap{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;}
+footer .logo img{height:30px;}
+.footer-text{font:12px 'JetBrains Mono',monospace;color:var(--text-faint);letter-spacing:.4px;}
+
+/* ---------- responsive ---------- */
+@media(max-width:1180px){
+  .nav-links{display:none;}
+  nav > .btn{display:none;}
+  .menu-toggle{display:flex;}
+  .mobile-menu{display:block;}
+}
+@media(max-width:1000px){
+  .hero-grid{grid-template-columns:1fr;gap:40px;}
+  .hero-visual{order:-1;min-height:0;}
+  .hero p.lead{max-width:100%;}
+  .feature-grid{grid-template-columns:repeat(2,1fr);}
+  .panel{grid-template-columns:1fr;}
+  .status-overview{grid-template-columns:repeat(2,1fr);}
+  .dl-buttons{grid-template-columns:1fr;}
+}
+@media(max-width:620px){
+  .wrap{padding:0 20px;}
+  nav{padding:12px 20px;}
+  .hero{padding:48px 0 50px;}
+  .hero-card{padding:26px 22px;border-radius:22px;}
+  .hero-actions .btn{flex:1;}
+  .feature-grid,.security-stats,.stat-cols,.status-overview{grid-template-columns:1fr;}
+  .about-stats{grid-template-columns:1fr 1fr;}
+  .features,.security,.status,.download,.light{padding-top:64px;padding-bottom:64px;}
+  .panel{padding:26px 20px;}
+  .dl-box{padding:32px 20px;border-radius:24px;}
+  .pg-pct{font-size:26px;}
+  footer .wrap{flex-direction:column;align-items:flex-start;}
+  .uptime-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;}
+  .uptime-inner{min-width:560px;}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important;}
+  html{scroll-behavior:auto;}
+}
 </style>
-<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
 
 <!-- ========== NAV ========== -->
 <nav>
-  <div class="logo">
-    <!-- LOGO SPACE: put your logo file path below, e.g. src="images/logo.svg" -->
-    <div class="logo-slot">
-      <img src="logo.png" alt="Jonah Browser logo"
-        onerror="this.parentElement.innerHTML='<div class=&quot;ph&quot; style=&quot;font-size:9px&quot;><i class=&quot;bx bx-image&quot;></i>logo</div>'">
-    </div>
-    <span class="logo-name">Jonah</span>
-  </div>
+  <a class="logo" href="#home" aria-label="Jonah home"><img src="logo.png" alt="Jonah"></a>
   <ul class="nav-links">
     <li><a href="#home" class="active">Home</a></li>
     <li><a href="#features">Features</a></li>
@@ -501,15 +362,13 @@ footer{
     <li><a href="jonah_child_safety_standards.html">Child Safety</a></li>
     <li><a href="#about">About</a></li>
   </ul>
-  <a href="#download" class="nav-cta"><i class='bx bx-download'></i> Download Jonah</a>
-  <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
-    <i class='bx bx-menu'></i>
-  </button>
+  <a href="#download" class="btn btn-primary btn-sm"><i class='bx bx-download'></i> Download Jonah</a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false"><i class='bx bx-menu'></i></button>
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
   <ul>
-    <li><a href="#home" class="active">Home</a></li>
+    <li><a href="#home">Home</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#security">Security</a></li>
     <li><a href="#performance">Performance</a></li>
@@ -519,20 +378,19 @@ footer{
     <li><a href="jonah_child_safety_standards.html">Child Safety</a></li>
     <li><a href="#about">About</a></li>
   </ul>
-  <a href="#download" class="nav-cta"><i class='bx bx-download'></i> Download Jonah</a>
+  <a href="#download" class="btn btn-primary"><i class='bx bx-download'></i> Download Jonah</a>
 </div>
 
 <!-- ========== HERO ========== -->
 <section class="hero" id="home">
   <div class="wrap hero-grid">
     <div>
-
-      <span class="eyebrow">Next Generation Web Browser</span>
-      <h1>Browse Smarter.<br>Browse Faster.<br>Browse Jonah.</h1>
+      <span class="eyebrow"><span class="dot"></span> Next Generation Web Browser</span>
+      <h1>Browse Smarter.<br>Browse Faster.<br><span class="grad">Browse Jonah.</span></h1>
       <p class="lead">Jonah Browser is a next-gen browser built for speed, privacy, and productivity. Experience the web the way it was meant to be.</p>
       <div class="hero-actions">
-        <button class="btn-solid" onclick="document.getElementById('download').scrollIntoView({behavior:'smooth'})"><i class='bx bx-download'></i> Download Now</button>
-        <button class="btn-outline" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Explore Features</button>
+        <a class="btn btn-primary" href="#download"><i class='bx bx-download'></i> Download Now</a>
+        <a class="btn btn-ghost" href="#features">Explore Features</a>
       </div>
       <div class="trust-row">
         <span><i class='bx bxs-shield-alt-2'></i> 100% Secure</span>
@@ -540,25 +398,9 @@ footer{
         <span><i class='bx bxs-shield-alt-2'></i> Built for You</span>
       </div>
     </div>
-    <div class="hero-image">
-      <img src="logo.png" alt="Jonah Browser Logo">
-    </div>
-    <!-- HERO IMAGE SPACE: put your screenshot/mockup file path below -->
-
-  </div>
-</section>
-
-<!-- ========== TRUSTED BY ========== -->
-<section class="logo-strip">
-  <div class="wrap">
-    <div class="logo-strip-label">Trusted by innovators worldwide</div>
-    <div class="logo-strip-row">
-      <span class="brand"><i class='bx bxl-nvidia'></i> NVIDIA</span>
-      <span class="brand"><i class='bx bxl-microsoft'></i> Microsoft</span>
-      <span class="brand"><i class='bx bxl-google'></i> Google</span>
-      <span class="brand"><i class='bx bxl-aws'></i> AWS</span>
-      <span class="brand"><i class='bx bxs-cloud'></i> Cloudflare</span>
-      <span class="brand"><i class='bx bx-triangle'></i> Vercel</span>
+    <div class="hero-visual">
+      <div class="orb a"></div><div class="orb b"></div>
+      <div class="hero-card"><img src="logo.png" alt="Jonah Browser logo"></div>
     </div>
   </div>
 </section>
@@ -567,14 +409,11 @@ footer{
 <section class="features" id="features">
   <div class="wrap">
     <div class="section-eyebrow">Features</div>
-    <div class="section-title">Everything you need.<br>Nothing you don't.</div>
+    <h2 class="section-title">Everything you need.<br><span class="grad">Nothing you don't.</span></h2>
     <p class="section-sub">Jonah Browser comes packed with powerful features designed to give you a better browsing experience.</p>
-
     <div class="feature-grid">
       <div class="feature-card">
-        <div class="feature-icon">
-            <i class='bx bxs-bolt'></i>
-        </div>
+        <div class="feature-icon"><i class='bx bxs-bolt'></i></div>
         <h3>Blazing Fast</h3>
         <p>Engineered for speed to load pages instantly and handle anything you throw at it.</p>
         <a class="learn" href="#">Learn more <i class='bx bx-right-arrow-alt'></i></a>
@@ -617,9 +456,8 @@ footer{
 <section class="security" id="security">
   <div class="wrap">
     <div class="section-eyebrow">Security</div>
-    <div class="section-title">Security, built into<br>every layer.</div>
+    <h2 class="section-title">Security, built into<br><span class="grad">every layer.</span></h2>
     <p class="section-sub">From the network to the tab, Jonah is engineered to keep you protected without ever getting in your way.</p>
-
     <div class="feature-grid">
       <div class="feature-card">
         <div class="feature-icon"><i class='bx bx-lock-alt'></i></div>
@@ -658,43 +496,42 @@ footer{
         <a class="learn" href="jonah-security-architecture.html">Learn more <i class='bx bx-right-arrow-alt'></i></a>
       </div>
     </div>
-
     <div class="security-stats">
-      <div class="security-stat"><div class="num">50M+</div><div class="label">Threats blocked this year</div></div>
-      <div class="security-stat"><div class="num">256-bit</div><div class="label">Encryption standard</div></div>
-      <div class="security-stat"><div class="num">0</div><div class="label">Data points ever sold</div></div>
+      <div class="security-stat"><div class="num grad">50M+</div><div class="label">Threats blocked this year</div></div>
+      <div class="security-stat"><div class="num grad">256-bit</div><div class="label">Encryption standard</div></div>
+      <div class="security-stat"><div class="num grad">0</div><div class="label">Data points ever sold</div></div>
     </div>
   </div>
 </section>
 
-<!-- ========== PERFORMANCE ========== -->
-<section class="performance" id="performance">
+<!-- ========== PERFORMANCE (light lavender) ========== -->
+<section class="light" id="performance">
   <div class="wrap">
-    <div class="perf-inner">
+    <div class="section-eyebrow">Performance</div>
+    <h2 class="section-title">Light on your machine.<br>Heavy on speed.</h2>
+    <p class="section-sub">Optimized from the ground up to use fewer resources while delivering maximum performance.</p>
+    <div class="panel">
       <div>
         <div class="tag">Performance</div>
         <h3>Built for Performance</h3>
-        <p>Optimized from the ground up to use fewer resources while delivering maximum performance.</p>
+        <p>Every part of Jonah is tuned to start fast, stay responsive, and sip power instead of gulping it.</p>
         <a class="see" href="jonah-performance-architecture.html">See how we do it <i class='bx bx-right-arrow-alt'></i></a>
       </div>
       <div class="stat-cols">
         <div class="stat-col">
           <div class="stat-head"><i class='bx bx-tachometer'></i><span>Speed</span></div>
-          <div class="stat-num">98%</div>
-          <div class="stat-name">Faster Loading</div>
-          <div class="bar"><div class="bar-fill" style="width:98%"></div></div>
+          <div class="stat-num">98%</div><div class="stat-name">Faster Loading</div>
+          <div class="meter"><div class="meter-fill" data-w="98"></div></div>
         </div>
         <div class="stat-col">
           <div class="stat-head"><i class='bx bx-chip'></i><span>Memory Usage</span></div>
-          <div class="stat-num">72%</div>
-          <div class="stat-name">Lower Memory</div>
-          <div class="bar"><div class="bar-fill" style="width:72%"></div></div>
+          <div class="stat-num">72%</div><div class="stat-name">Lower Memory</div>
+          <div class="meter"><div class="meter-fill" data-w="72"></div></div>
         </div>
         <div class="stat-col">
           <div class="stat-head"><i class='bx bx-battery'></i><span>Battery Efficiency</span></div>
-          <div class="stat-num">85%</div>
-          <div class="stat-name">More Efficient</div>
-          <div class="bar"><div class="bar-fill" style="width:85%"></div></div>
+          <div class="stat-num">85%</div><div class="stat-name">More Efficient</div>
+          <div class="meter"><div class="meter-fill" data-w="85"></div></div>
         </div>
       </div>
     </div>
@@ -704,48 +541,34 @@ footer{
 <!-- ========== STATUS ========== -->
 <section class="status" id="status">
   <div class="wrap">
-    <div class="section-eyebrow" style="color:var(--muted)">Status</div>
+    <div class="section-eyebrow" style="text-align:left">Status</div>
     <div class="status-head">
       <div class="status-live"><span class="dot-pulse"></span> All Systems Operational</div>
       <div class="status-updated" id="statusUpdated">Updated just now</div>
     </div>
-    <p class="section-sub" style="text-align:left;margin:0;color:var(--muted);max-width:560px;">Live health across Jonah's core services, refreshed in real time.</p>
+    <span class="preview-note">Illustrative preview &middot; figures below are sample data, not live measurements</span>
+    <p class="section-sub" style="text-align:left;margin:14px 0 0;max-width:560px;">Health across Jonah's core services.</p>
 
     <div class="status-overview">
-      <div class="status-card">
-        <div class="k">Uptime · 90 Days</div>
-        <div class="v">99.98%</div>
-      </div>
-      <div class="status-card">
-        <div class="k">Global Latency</div>
-        <div class="v" id="latencyVal">—</div>
-        <canvas id="chartLatency"></canvas>
-      </div>
-      <div class="status-card">
-        <div class="k">Active Sessions</div>
-        <div class="v" id="sessionsVal">—</div>
-        <canvas id="chartSessions"></canvas>
-      </div>
-      <div class="status-card">
-        <div class="k">Requests / Sec</div>
-        <div class="v" id="throughputVal">—</div>
-        <canvas id="chartThroughput"></canvas>
-      </div>
+      <div class="status-card"><div class="k">Uptime · 90 Days</div><div class="v">99.98%</div></div>
+      <div class="status-card"><div class="k">Global Latency</div><div class="v" id="latencyVal">—</div><canvas id="chartLatency"></canvas></div>
+      <div class="status-card"><div class="k">Active Sessions</div><div class="v" id="sessionsVal">—</div><canvas id="chartSessions"></canvas></div>
+      <div class="status-card"><div class="k">Requests / Sec</div><div class="v" id="throughputVal">—</div><canvas id="chartThroughput"></canvas></div>
     </div>
-
     <div class="service-list" id="serviceList"></div>
   </div>
 </section>
 
-<!-- ========== ABOUT ========== -->
-<section class="about" id="about">
+<!-- ========== ABOUT (light lavender) ========== -->
+<section class="light" id="about">
   <div class="wrap">
     <div class="section-eyebrow">About</div>
-    <div class="section-title">Building the browser<br>the web deserves.</div>
-    <div class="about-inner">
+    <h2 class="section-title">Building the browser<br>the web deserves.</h2>
+    <p class="section-sub">Fast by default, private by design, and smart enough to get out of your way.</p>
+    <div class="panel" style="grid-template-columns:1.2fr 1fr;">
       <div>
-        <p>Jonah started with a simple frustration: browsers had gotten slower, noisier, and less honest about what they do with your data. We set out to build something different — fast by default, private by design, and smart enough to get out of your way.</p>
-        <p>Today, Jonah is used by people who just want the web to work the way it's supposed to: quickly, quietly, and on their own terms.</p>
+        <p style="max-width:none;">Jonah started with a simple frustration: browsers had gotten slower, noisier, and less honest about what they do with your data. We set out to build something different — fast by default, private by design, and smart enough to get out of your way.</p>
+        <p style="max-width:none;margin-bottom:0;">Today, Jonah is used by people who just want the web to work the way it's supposed to: quickly, quietly, and on their own terms.</p>
       </div>
       <div class="about-stats">
         <div class="about-stat"><div class="num">2025</div><div class="label">Founded</div></div>
@@ -757,359 +580,202 @@ footer{
   </div>
 </section>
 
-<!-- ========== CTA ========== -->
-<section class="cta" id="download">
-  <div class="wrap cta-inner">
-    <div>
-      <h3>Ready to upgrade<br>your browsing?</h3>
-      <p>Join millions of users who are browsing smarter with Jonah Browser.</p>
-    </div>
-    <div class="cta-right">
-      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;">
+<!-- ========== DOWNLOAD ========== -->
+<section class="download" id="download">
+  <div class="wrap">
+    <div class="dl-box">
+      <div class="dl-head">
         <div>
-          <button class="btn-solid" id="winBtn"
-            onclick="downloadFile('win','Jonah-Setup.exe','winBtn','winStatus','winBar')">
-            <i class='bx bxl-windows'></i> Windows
-          </button>
-          <div class="dl-status" id="winStatus"></div>
-          <div class="dl-bar" id="winBar"><div></div></div>
-        </div>
-        <div>
-          <button class="btn-solid" id="macBtn"
-            onclick="downloadFile('macArm','Jonah-arm64.dmg','macBtn','macStatus','macBar')">
-            <i class='bx bxl-apple'></i> macOS (Apple Silicon)
-          </button>
-          <div class="dl-status" id="macStatus"></div>
-          <div class="dl-bar" id="macBar"><div></div></div>
-        </div>
-        <div>
-          <button class="btn-solid" id="intelBtn"
-            onclick="downloadFile('macIntel','Jonah-Intel.dmg','intelBtn','intelStatus','intelBar')">
-            <i class='bx bxl-apple'></i> macOS (Intel)
-          </button>
-          <div class="dl-status" id="intelStatus"></div>
-          <div class="dl-bar" id="intelBar"><div></div></div>
+          <h2>Ready to upgrade<br><span class="grad">your browsing?</span></h2>
+          <p>Join millions of users who are browsing smarter with Jonah Browser.</p>
         </div>
       </div>
-      <small>Available for Windows, macOS</small>
+
+      <!-- Each button downloads the file named in its onclick, from this website's own folder (upload the file next to this page).
+           When a new version is out: upload the new file and change the file name in the matching onclick. -->
+      <div class="dl-buttons">
+        <div class="dl-item">
+          <button class="dl-btn" id="winBtn" type="button"
+            onclick="downloadFile('Jonah-Web-Setup-1.4.4.exe','Jonah-Web-Setup.exe','winBtn','winStatus')">
+            <i class='bx bxl-windows os'></i><span><span class="t1">Windows</span><span class="t2">Installer</span></span>
+          </button>
+          <div class="dl-status" id="winStatus"></div>
+        </div>
+        <div class="dl-item">
+          <button class="dl-btn" id="macBtn" type="button"
+            onclick="downloadFile('Jonah-1.4.4-arm64.dmg','Jonah-arm64.dmg','macBtn','macStatus')">
+            <i class='bx bxl-apple os'></i><span><span class="t1">macOS · Apple Silicon</span><span class="t2">M1, M2, M3, M4</span></span>
+          </button>
+          <div class="dl-status" id="macStatus"></div>
+        </div>
+        <div class="dl-item">
+          <button class="dl-btn" id="intelBtn" type="button"
+            onclick="downloadFile('Jonah-1.4.4-x64.dmg','Jonah-Intel.dmg','intelBtn','intelStatus')">
+            <i class='bx bxl-apple os'></i><span><span class="t1">macOS · Intel</span><span class="t2">Intel processors</span></span>
+          </button>
+          <div class="dl-status" id="intelStatus"></div>
+        </div>
+      </div>
+
+      <div class="dl-note">
+        <span>Not sure which Mac you have? Apple menu &rarr; About This Mac.</span>
+      </div>
+      <small style="position:relative;display:block;margin-top:20px;color:var(--text-faint);font-size:12.5px;">Available for Windows and macOS.</small>
     </div>
   </div>
 </section>
 
 <!-- ========== FOOTER ========== -->
 <footer>
-  <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;">
-    <div class="logo">
-      <div class="logo-slot" style="width:26px;height:26px;">
-        <img src="logo.png" alt="Jonah Browser logo"
-          onerror="this.parentElement.innerHTML='<div class=&quot;ph&quot; style=&quot;font-size:8px&quot;><i class=&quot;bx bx-image&quot;></i></div>'">
-      </div>
-      <span class="logo-name" style="font-size:14px;">Jonah</span>
-    </div>
+  <div class="wrap">
+    <a class="logo" href="#home" aria-label="Jonah home"><img src="logo.png" alt="Jonah"></a>
     <div class="footer-text">© 2026 CogniAI Studios · All rights reserved</div>
-    <div class="footer-text">v1.2.9</div>
   </div>
 </footer>
+
 <script>
 // Disable right click
 document.addEventListener('contextmenu', e => e.preventDefault());
 
 // Disable keyboard shortcuts
 document.addEventListener('keydown', function (e) {
-
-  // F12
-  if (e.key === "F12") {
-    e.preventDefault();
-    return false;
-  }
-
-  // Windows/Linux
-  if (e.ctrlKey && e.shiftKey &&
-      (e.key === "I" || e.key === "i" ||
-       e.key === "J" || e.key === "j" ||
-       e.key === "C" || e.key === "c")) {
-    e.preventDefault();
-    return false;
-  }
-
-  // macOS (⌘ + Option + I/J/C)
-  if (e.metaKey && e.altKey &&
-      (e.key === "I" || e.key === "i" ||
-       e.key === "J" || e.key === "j" ||
-       e.key === "C" || e.key === "c")) {
-    e.preventDefault();
-    return false;
-  }
-
-  // macOS (⌘ + Shift + C) - used by some browsers
-  if (e.metaKey && e.shiftKey &&
-      (e.key === "C" || e.key === "c")) {
-    e.preventDefault();
-    return false;
-  }
-
-  // Ctrl+U / Cmd+U (View Source)
-  if ((e.ctrlKey || e.metaKey) &&
-      (e.key === "U" || e.key === "u")) {
-    e.preventDefault();
-    return false;
-  }
-
-  // Ctrl+S / Cmd+S
-  if ((e.ctrlKey || e.metaKey) &&
-      (e.key === "S" || e.key === "s")) {
-    e.preventDefault();
-    return false;
-  }
-
+  if (e.key === "F12") { e.preventDefault(); return false; }
+  if (e.ctrlKey && e.shiftKey && ["I","i","J","j","C","c"].includes(e.key)) { e.preventDefault(); return false; }
+  if (e.metaKey && e.altKey && ["I","i","J","j","C","c"].includes(e.key)) { e.preventDefault(); return false; }
+  if (e.metaKey && e.shiftKey && (e.key === "C" || e.key === "c")) { e.preventDefault(); return false; }
+  if ((e.ctrlKey || e.metaKey) && (e.key === "U" || e.key === "u")) { e.preventDefault(); return false; }
+  if ((e.ctrlKey || e.metaKey) && (e.key === "S" || e.key === "s")) { e.preventDefault(); return false; }
 });
 </script>
-<script>
-// ---- download handler: shows the live percentage ----
-// sourceFile: which download ('win', 'macArm' or 'macIntel') - Jonah's download service always sends the newest version
-// saveAsName: the file name used only if the service does not send one
-// btnId / statusId / barId: the button, the text line and the progress bar to update
-var DOWNLOAD_SERVICE = "https://jonah-downloads.abrahamshaunsunil.workers.dev";
 
-function downloadFile(sourceFile, saveAsName, btnId, statusId, barId){
+<script>
+// ---- download handler ----
+// sourceFile: the file on this website (e.g. Jonah-1.4.4-arm64.dmg), uploaded next to this page
+// saveAsName: the file name the browser saves it as
+// btnId / statusId: the button and the text line to show feedback in
+//
+// The file is handed straight to the browser, so the BROWSER'S OWN download indicator shows the percentage and speed
+// (Chrome / Edge: the download icon next to the address bar, or Ctrl+J; Safari: the download arrow in the toolbar).
+function downloadFile(sourceFile, saveAsName, btnId, statusId){
   const btn = document.getElementById(btnId);
   const status = document.getElementById(statusId);
-  const bar = document.getElementById(barId);
-  const fill = bar ? bar.firstElementChild : null;
-  const originalHTML = btn.innerHTML;
-  const mb = n => (n / 1048576).toFixed(n >= 1e8 ? 0 : 1);
-  const leftText = s => !isFinite(s) ? '' : s < 60 ? ' · ' + Math.ceil(s) + 's left' : ' · ' + Math.floor(s / 60) + 'm ' + String(Math.ceil(s % 60)).padStart(2, '0') + 's left';
 
   btn.disabled = true;
-  btn.style.opacity = '0.7';
-  status.textContent = 'Preparing download…';
+  status.textContent = 'Starting download…';
   status.className = 'dl-status';
-  if (bar) { bar.className = 'dl-bar show'; fill.style.width = '0%'; }
 
-  fetch(DOWNLOAD_SERVICE + '/download/' + sourceFile)
+  function startDownload(){
+    const a = document.createElement('a');
+    a.href = sourceFile;
+    a.download = saveAsName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    status.textContent = 'Download started ✓  Watch the progress in your browser\'s downloads';
+    status.className = 'dl-status success';
+  }
+
+  // a quick look (no file is transferred) so a missing file says so instead of failing silently
+  fetch(sourceFile, { method: 'HEAD', cache: 'no-store' })
     .then(res => {
       if (!res.ok) throw new Error('File not found (' + res.status + ')');
-      const total = Number(res.headers.get('content-length')) || 0;
-      const nameMatch = /filename="?([^";]+)"?/i.exec(res.headers.get('content-disposition') || '');
-      const fileName = nameMatch ? nameMatch[1] : saveAsName;
-      const reader = res.body.getReader();
-      const chunks = [];
-      let got = 0, lastPaint = 0, samples = [{ t: performance.now(), b: 0 }];
-      function pump(){
-        return reader.read().then(({ done, value }) => {
-          if (done) return { fileName, total: total || got };
-          chunks.push(value);
-          got += value.length;
-          const now = performance.now();
-          samples.push({ t: now, b: got });
-          while (samples.length > 2 && now - samples[0].t > 3000) samples.shift();
-          if (now - lastPaint > 90) {
-            lastPaint = now;
-            const secs = (now - samples[0].t) / 1000;
-            const speed = secs > 0.2 ? (got - samples[0].b) / secs : 0;
-            if (total) {
-              const pct = Math.min(100, Math.floor(got / total * 100));
-              status.textContent = 'Downloading… ' + pct + '% · ' + mb(got) + ' of ' + mb(total) + ' MB' + (speed ? ' · ' + mb(speed) + ' MB/s' + leftText((total - got) / speed) : '');
-              if (bar) fill.style.width = (got / total * 100) + '%';
-            } else {
-              status.textContent = 'Downloading… ' + mb(got) + ' MB';
-              if (bar) fill.style.width = '100%';
-            }
-          }
-          return pump();
-        });
-      }
-      return pump().then(info => ({ info, blob: new Blob(chunks, { type: 'application/octet-stream' }) }));
-    })
-    .then(({ info, blob }) => {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = info.fileName;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 60000);
-
-      if (bar) { fill.style.width = '100%'; bar.classList.add('done'); }
-      status.textContent = '100% · Download complete ✓';
-      status.className = 'dl-status success';
+      startDownload();
     })
     .catch(err => {
-      if (bar) bar.classList.add('failed');
-      status.textContent = 'Download failed — try again';
-      status.className = 'dl-status error';
-      console.error('Download error:', err);
+      if (err && /not found/i.test(err.message)) {
+        status.textContent = 'Download unavailable right now — try again later';
+        status.className = 'dl-status error';
+        console.error('Download error:', err);
+      } else {
+        startDownload(); // the check itself could not run: still let the browser try the download
+      }
     })
-    .finally(() => {
-      btn.disabled = false;
-      btn.style.opacity = '1';
-      btn.innerHTML = originalHTML;
-    });
+    .finally(() => { btn.disabled = false; });
 }
 </script>
+
 <script>
-// ---- mobile menu toggle ----
+// ---- mobile menu ----
 (function(){
-  const btn = document.getElementById('menuToggle');
-  const menu = document.getElementById('mobileMenu');
-  function setOpen(open){
-    menu.classList.toggle('open', open);
-    btn.setAttribute('aria-expanded', String(open));
-    btn.querySelector('i').className = open ? 'bx bx-x' : 'bx bx-menu';
-  }
+  const btn = document.getElementById('menuToggle'), menu = document.getElementById('mobileMenu');
+  function setOpen(open){ menu.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open)); btn.querySelector('i').className = open ? 'bx bx-x' : 'bx bx-menu'; }
   btn.addEventListener('click', () => setOpen(!menu.classList.contains('open')));
   menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
-  window.addEventListener('resize', () => { if (window.innerWidth > 900) setOpen(false); });
+  window.addEventListener('resize', () => { if (window.innerWidth > 1180) setOpen(false); });
 })();
 
-// ---- live "updated Xs ago" ticker ----
+// ---- highlight the section being read in the nav ----
 (function(){
-  const start = Date.now();
-  const el = document.getElementById('statusUpdated');
-  function tick(){
-    const s = Math.floor((Date.now() - start) / 1000);
-    el.textContent = s < 5 ? 'Updated just now' : `Updated ${s}s ago`;
-  }
-  setInterval(tick, 1000);
+  const links = [...document.querySelectorAll('.nav-links a[href^="#"]')];
+  const map = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && map.has(e.target.id)) { links.forEach(l => l.classList.remove('active')); map.get(e.target.id).classList.add('active'); } }), { rootMargin: '-45% 0px -50% 0px' });
+  map.forEach((_, id) => { const s = document.getElementById(id); if (s) io.observe(s); });
 })();
 
-// ---- tiny live-updating line charts (no external libs) ----
+// ---- performance bars fill when they scroll into view ----
+(function(){
+  // watch the visible track (a zero-width fill can never intersect), then fill the bar inside it
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { const f = e.target.querySelector('.meter-fill'); f.style.width = f.dataset.w + '%'; io.unobserve(e.target); } }), { threshold: .4 });
+  document.querySelectorAll('.meter').forEach(m => io.observe(m));
+})();
+
+// ---- illustrative status preview (sample data) ----
+(function(){
+  const start = Date.now(), el = document.getElementById('statusUpdated');
+  setInterval(() => { const s = Math.floor((Date.now() - start) / 1000); el.textContent = s < 5 ? 'Updated just now' : 'Updated ' + s + 's ago'; }, 1000);
+})();
+
 function makeChart(canvasId, opts){
-  const canvas = document.getElementById(canvasId);
-  const ctx = canvas.getContext('2d');
+  const canvas = document.getElementById(canvasId), ctx = canvas.getContext('2d');
   const min = opts.min, max = opts.max;
   let data = Array.from({length: 24}, () => opts.start);
-
-  function resize(){
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = Math.max(1, rect.width) * devicePixelRatio;
-    canvas.height = Math.max(1, rect.height) * devicePixelRatio;
-    draw();
-  }
+  function resize(){ const r = canvas.getBoundingClientRect(); canvas.width = Math.max(1, r.width) * devicePixelRatio; canvas.height = Math.max(1, r.height) * devicePixelRatio; draw(); }
   window.addEventListener('resize', resize);
-
   function draw(){
-    const w = canvas.width, h = canvas.height;
-    if (!w || !h) return;
+    const w = canvas.width, h = canvas.height; if (!w || !h) return;
     ctx.clearRect(0, 0, w, h);
-    const stepX = w / (data.length - 1);
-    const norm = v => h - ((v - min) / (max - min)) * h * 0.8 - h * 0.1;
-
-    ctx.beginPath();
-    ctx.moveTo(0, h);
-    data.forEach((v, i) => ctx.lineTo(i * stepX, norm(v)));
-    ctx.lineTo(w, h);
-    ctx.closePath();
-    const grad = ctx.createLinearGradient(0, 0, 0, h);
-    grad.addColorStop(0, 'rgba(52,211,153,0.35)');
-    grad.addColorStop(1, 'rgba(52,211,153,0)');
-    ctx.fillStyle = grad;
-    ctx.fill();
-
-    ctx.beginPath();
-    data.forEach((v, i) => i === 0 ? ctx.moveTo(0, norm(v)) : ctx.lineTo(i * stepX, norm(v)));
-    ctx.strokeStyle = '#34d399';
-    ctx.lineWidth = 2 * devicePixelRatio;
-    ctx.lineJoin = 'round';
-    ctx.stroke();
+    const stepX = w / (data.length - 1), norm = v => h - ((v - min) / (max - min)) * h * 0.8 - h * 0.1;
+    ctx.beginPath(); ctx.moveTo(0, h); data.forEach((v, i) => ctx.lineTo(i * stepX, norm(v))); ctx.lineTo(w, h); ctx.closePath();
+    const g = ctx.createLinearGradient(0, 0, 0, h); g.addColorStop(0, 'rgba(139,92,246,0.45)'); g.addColorStop(1, 'rgba(139,92,246,0)');
+    ctx.fillStyle = g; ctx.fill();
+    ctx.beginPath(); data.forEach((v, i) => i === 0 ? ctx.moveTo(0, norm(v)) : ctx.lineTo(i * stepX, norm(v)));
+    ctx.strokeStyle = '#a78bfa'; ctx.lineWidth = 2 * devicePixelRatio; ctx.lineJoin = 'round'; ctx.stroke();
   }
-
-  function step(){
-    const last = data[data.length - 1];
-    let next = last + (Math.random() - 0.5) * (max - min) * 0.14;
-    next = Math.max(min, Math.min(max, next));
-    data.push(next);
-    data.shift();
-    draw();
-  }
-
-  resize();
-  return { step, get: () => data[data.length - 1] };
+  function step(){ let n = data[data.length - 1] + (Math.random() - 0.5) * (max - min) * 0.14; n = Math.max(min, Math.min(max, n)); data.push(n); data.shift(); draw(); }
+  resize(); return { step, get: () => data[data.length - 1] };
 }
-
 const latencyChart = makeChart('chartLatency', { min: 12, max: 60, start: 26 });
 const sessionsChart = makeChart('chartSessions', { min: 80000, max: 145000, start: 112000 });
 const throughputChart = makeChart('chartThroughput', { min: 3000, max: 9500, start: 5400 });
-
-function fmt(n){ return Math.round(n).toLocaleString('en-US'); }
-
+const fmt = n => Math.round(n).toLocaleString('en-US');
 function refreshMetrics(){
   latencyChart.step(); sessionsChart.step(); throughputChart.step();
   document.getElementById('latencyVal').textContent = fmt(latencyChart.get()) + 'ms';
   document.getElementById('sessionsVal').textContent = fmt(sessionsChart.get());
   document.getElementById('throughputVal').textContent = fmt(throughputChart.get()) + '/s';
 }
-refreshMetrics();
-setInterval(refreshMetrics, 2200);
+refreshMetrics(); setInterval(refreshMetrics, 2200);
 
-// ---- per-service 90-day uptime graphs with month labels ----
 const SERVICES = [
-  { name: 'Browser Core', uptime: '99.99%' },
-  { name: 'Sync & Backup', uptime: '99.96%' },
-  { name: 'AI Assistant', uptime: '99.91%' },
-  { name: 'Trust Engine API', uptime: '99.98%' },
-  { name: 'Download CDN', uptime: '100.00%' },
-  { name: 'Account & Auth', uptime: '99.97%' },
+  { name: 'Browser Core', uptime: '99.99%' }, { name: 'Sync & Backup', uptime: '99.96%' }, { name: 'AI Assistant', uptime: '99.91%' },
+  { name: 'Trust Engine API', uptime: '99.98%' }, { name: 'Download CDN', uptime: '100.00%' }, { name: 'Account & Auth', uptime: '99.97%' },
 ];
 const DAYS = 90;
-
 function buildDays(){
-  const days = [];
-  const today = new Date();
-  for (let i = DAYS - 1; i >= 0; i--){
-    const d = new Date(today);
-    d.setDate(d.getDate() - i);
-    const r = Math.random();
-    let status = 'up';
-    if (r > 0.985) status = 'down';
-    else if (r > 0.96) status = 'degraded';
-    days.push({ date: d, status });
-  }
+  const days = [], today = new Date();
+  for (let i = DAYS - 1; i >= 0; i--){ const d = new Date(today); d.setDate(d.getDate() - i); const r = Math.random(); days.push({ date: d, status: r > 0.985 ? 'down' : r > 0.96 ? 'degraded' : 'up' }); }
   return days;
 }
-
 const serviceList = document.getElementById('serviceList');
 SERVICES.forEach(svc => {
-  const days = buildDays();
-  const row = document.createElement('div');
-  row.className = 'service-row';
-
-  const seenMonths = new Set();
-  const monthMarks = [];
-  days.forEach((d, i) => {
-    const key = d.date.getFullYear() + '-' + d.date.getMonth();
-    if (!seenMonths.has(key)){
-      seenMonths.add(key);
-      monthMarks.push({ i, label: d.date.toLocaleString('en-US', { month: 'short' }) });
-    }
-  });
-
-  const monthHtml = monthMarks.map(m => `<span style="left:${(m.i / DAYS) * 100}%">${m.label}</span>`).join('');
-  const barsHtml = days.map(d => {
-    const cls = d.status === 'up' ? '' : ' ' + d.status;
-    const label = d.status === 'up' ? 'Operational' : d.status === 'degraded' ? 'Degraded performance' : 'Outage';
-    return `<div class="bar${cls}" title="${d.date.toDateString()} · ${label}"></div>`;
-  }).join('');
-
-  row.innerHTML = `
-    <div class="service-top">
-      <div class="service-name">${svc.name}
-        <span class="status-pill"><span class="d"></span>Operational</span>
-      </div>
-      <div class="service-uptime-num">${svc.uptime} uptime</div>
-    </div>
-    <div class="uptime-scroll">
-      <div class="uptime-inner">
-        <div class="month-labels">${monthHtml}</div>
-        <div class="uptime-bars">${barsHtml}</div>
-      </div>
-    </div>
-  `;
+  const days = buildDays(), row = document.createElement('div'); row.className = 'service-row';
+  const seen = new Set(), marks = [];
+  days.forEach((d, i) => { const k = d.date.getFullYear() + '-' + d.date.getMonth(); if (!seen.has(k)){ seen.add(k); marks.push({ i, label: d.date.toLocaleString('en-US', { month: 'short' }) }); } });
+  const monthHtml = marks.map(m => `<span style="left:${(m.i / DAYS) * 100}%">${m.label}</span>`).join('');
+  const barsHtml = days.map(d => `<div class="bar${d.status === 'up' ? '' : ' ' + d.status}" title="${d.date.toDateString()} · ${d.status === 'up' ? 'Operational' : d.status === 'degraded' ? 'Degraded performance' : 'Outage'}"></div>`).join('');
+  row.innerHTML = `<div class="service-top"><div class="service-name">${svc.name}<span class="status-pill"><span class="d"></span>Operational</span></div><div class="service-uptime-num">${svc.uptime} uptime</div></div><div class="uptime-scroll"><div class="uptime-inner"><div class="month-labels">${monthHtml}</div><div class="uptime-bars">${barsHtml}</div></div></div>`;
   serviceList.appendChild(row);
 });
 </script>
-
-
 </body>
 </html>
