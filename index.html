@@ -296,6 +296,18 @@ section{position:relative;}
 .dl-note a{color:var(--violet-2);font-weight:600;border-bottom:1px solid rgba(167,139,250,0.4);}
 .dl-note a:hover{color:#fff;}
 
+/* mobile app stores: a second row of two */
+.dl-buttons.mobile{grid-template-columns:repeat(2,1fr);margin-top:16px;}
+.store-badge{height:50px;width:auto;flex-shrink:0;}
+.dl-btn.soon{cursor:default;opacity:.78;border-style:dashed;}
+.dl-btn.soon:hover{transform:none;border-color:var(--glass-border);background:var(--glass-bg-strong);box-shadow:none;}
+.soon-badge{
+  margin-left:auto;flex-shrink:0;align-self:center;
+  padding:5px 12px;border-radius:100px;
+  background:rgba(139,92,246,0.18);border:1px solid var(--glass-border-hover);
+  font-size:11.5px;font-weight:600;color:var(--violet-2);letter-spacing:.3px;white-space:nowrap;
+}
+
 /* status line under each download button */
 .dl-item{display:flex;flex-direction:column;}
 .dl-status{font:12px 'JetBrains Mono',monospace;color:var(--text-muted);margin-top:10px;min-height:16px;line-height:1.5;text-align:center;}
@@ -322,7 +334,7 @@ footer .logo img{height:30px;}
   .feature-grid{grid-template-columns:repeat(2,1fr);}
   .panel{grid-template-columns:1fr;}
   .status-overview{grid-template-columns:repeat(2,1fr);}
-  .dl-buttons{grid-template-columns:1fr;}
+  .dl-buttons,.dl-buttons.mobile{grid-template-columns:1fr;}
 }
 @media(max-width:620px){
   .wrap{padding:0 20px;}
@@ -546,7 +558,7 @@ footer .logo img{height:30px;}
       <div class="status-live"><span class="dot-pulse"></span> All Systems Operational</div>
       <div class="status-updated" id="statusUpdated">Updated just now</div>
     </div>
-    
+
     <p class="section-sub" style="text-align:left;margin:14px 0 0;max-width:560px;">Health across Jonah's core services.</p>
 
     <div class="status-overview">
@@ -596,31 +608,46 @@ footer .logo img{height:30px;}
       <div class="dl-buttons">
         <div class="dl-item">
           <button class="dl-btn" id="winBtn" type="button"
-            onclick="downloadFile('Jonah-Web-Setup-1.4.4.exe','Jonah-Web-Setup.exe','winBtn','winStatus')">
+            onclick="downloadFile('Jonah-Web-Setup-1.5.3.exe','Jonah-Web-Setup.exe','winBtn','winStatus')">
             <i class='bx bxl-windows os'></i><span><span class="t1">Windows</span><span class="t2">Installer</span></span>
           </button>
           <div class="dl-status" id="winStatus"></div>
         </div>
         <div class="dl-item">
           <button class="dl-btn" id="macBtn" type="button"
-            onclick="downloadFile('Jonah-1.4.4-arm64.dmg','Jonah-arm64.dmg','macBtn','macStatus')">
+            onclick="downloadFile('Jonah-1.5.3-arm64.dmg','Jonah-arm64.dmg','macBtn','macStatus')">
             <i class='bx bxl-apple os'></i><span><span class="t1">macOS · Apple Silicon</span><span class="t2">M1, M2, M3, M4</span></span>
           </button>
           <div class="dl-status" id="macStatus"></div>
         </div>
         <div class="dl-item">
           <button class="dl-btn" id="intelBtn" type="button"
-            onclick="downloadFile('Jonah-1.4.4-x64.dmg','Jonah-Intel.dmg','intelBtn','intelStatus')">
+            onclick="downloadFile('Jonah-1.5.3-x64.dmg','Jonah-Intel.dmg','intelBtn','intelStatus')">
             <i class='bx bxl-apple os'></i><span><span class="t1">macOS · Intel</span><span class="t2">Intel processors</span></span>
           </button>
           <div class="dl-status" id="intelStatus"></div>
         </div>
       </div>
 
+      <!-- Mobile: iOS goes to the App Store listing; Android is not released yet.
+           When Google Play is live: change the <div class="dl-btn soon"> below into
+           <a class="dl-btn" href="YOUR-PLAY-STORE-LINK" target="_blank" rel="noopener noreferrer">, remove the soon-badge span and update the t2 line. -->
+      <div class="dl-buttons mobile">
+        <a class="dl-btn" id="iosBtn" href="https://apps.apple.com/in/app/jonah-browser/id6814822913" target="_blank" rel="noopener noreferrer" aria-label="Download Jonah Browser on the App Store, for iOS 16.2 or later">
+          <img class="store-badge" src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" width="150" height="50" alt="Download on the App Store"
+            onerror="this.outerHTML='&lt;i class=&quot;bx bxl-apple os&quot;&gt;&lt;/i&gt;&lt;span class=&quot;t1&quot;&gt;Download on the App Store&lt;/span&gt;'">
+          <span class="t2">iPhone · iOS 16.2 or later</span>
+        </a>
+        <div class="dl-btn soon" id="androidBtn" role="group" aria-label="Google Play, coming soon">
+          <i class='bx bxl-play-store os'></i><span><span class="t1">Google Play</span><span class="t2">Android</span></span>
+          <span class="soon-badge">Coming soon</span>
+        </div>
+      </div>
+
       <div class="dl-note">
         <span>Not sure which Mac you have? Apple menu &rarr; About This Mac.</span>
       </div>
-      <small style="position:relative;display:block;margin-top:20px;color:var(--text-faint);font-size:12.5px;">Available for Windows and macOS.</small>
+      <small style="position:relative;display:block;margin-top:20px;color:var(--text-faint);font-size:12.5px;">Available for Windows, macOS and iOS. Android coming soon.</small>
     </div>
   </div>
 </section>
