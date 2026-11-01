@@ -1,0 +1,789 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jonah – CogniAI Initiative in Humanitarian Works</title>
+<meta name="description" content="Jonah – CogniAI Initiative funds safe homes and emergency transport for Palestinian families, and education and food for African communities. We work closely with the United Nations.">
+<meta name="theme-color" content="#0c2340">
+<meta property="og:title" content="Jonah – CogniAI Initiative in Humanitarian Works">
+<meta property="og:description" content="Safe homes. Safe passage. A future for every child. Fund shelter and emergency transport in Palestine, and education and food in African communities.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230c2340'/%3E%3Cpath d='M14 34 32 18l18 16v16H14z' fill='%23f7f2e8'/%3E%3Cpath d='M27 50V38a5 5 0 0 1 10 0v12z' fill='%23c24a24'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script>document.documentElement.classList.add('js');</script>
+
+<style>
+  :root{
+    --navy:#0c2340;
+    --navy-2:#143a64;
+    --teal:#1b7f8c;
+    --sand:#f7f2e8;
+    --sand-2:#eee5d3;
+    --ink:#16202e;
+    --muted:#566174;
+    --terra:#c24a24;
+    --terra-d:#a63c1a;
+    --olive:#55763b;
+    --white:#fff;
+    --line:rgba(12,35,64,.12);
+    --radius:20px;
+    --shadow:0 1px 2px rgba(12,35,64,.06), 0 12px 32px -12px rgba(12,35,64,.22);
+    --serif:'Fraunces', Georgia, 'Times New Roman', serif;
+    --sans:'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    --wrap:1160px;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:84px}
+  body{
+    margin:0;font-family:var(--sans);font-size:17px;line-height:1.65;
+    color:var(--ink);background:var(--sand);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  }
+  img,svg{display:block;max-width:100%}
+  a{color:inherit}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.12;margin:0;letter-spacing:-.01em;color:var(--navy)}
+  p{margin:0}
+  ul{margin:0;padding:0;list-style:none}
+  .wrap{width:min(var(--wrap),100% - 40px);margin-inline:auto}
+  section{padding:104px 0}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:.78rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);
+  }
+  .eyebrow::before{content:"";width:28px;height:2px;background:currentColor;border-radius:2px}
+  .lead{font-size:1.15rem;color:var(--muted);max-width:62ch}
+  .skip{position:absolute;left:-999px;top:8px;background:var(--navy);color:#fff;padding:10px 16px;border-radius:8px;z-index:100}
+  .skip:focus{left:12px}
+  :focus-visible{outline:3px solid #f2b66d;outline-offset:3px;border-radius:6px}
+
+  /* Buttons */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    font:600 1rem/1 var(--sans);text-decoration:none;cursor:pointer;
+    padding:16px 26px;border-radius:999px;border:2px solid transparent;
+    transition:transform .18s ease, background .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .btn svg{width:18px;height:18px;flex:none}
+  .btn-primary{background:var(--terra);color:#fff;box-shadow:0 10px 24px -10px rgba(194,74,36,.7)}
+  .btn-primary:hover{background:var(--terra-d);transform:translateY(-2px)}
+  .btn-ghost{color:#fff;border-color:rgba(255,255,255,.4)}
+  .btn-ghost:hover{background:rgba(255,255,255,.1);border-color:#fff}
+  .btn-outline{color:var(--navy);border-color:var(--navy)}
+  .btn-outline:hover{background:var(--navy);color:#fff}
+  .btn-lg{padding:20px 38px;font-size:1.1rem}
+  .btn-sm{padding:11px 20px;font-size:.92rem}
+
+  /* Navigation */
+  .nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(247,242,232,.88);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px;gap:20px}
+  .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+  .brand-mark{width:40px;height:40px;border-radius:11px;background:var(--navy);display:grid;place-items:center;flex:none}
+  .brand-mark svg{width:24px;height:24px}
+  .brand-text{display:flex;flex-direction:column;line-height:1.1}
+  .brand-text strong{font-family:var(--serif);font-size:1.25rem;color:var(--navy)}
+  .brand-text span{font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .nav-links{display:flex;align-items:center;gap:30px}
+  .nav-links a:not(.btn){text-decoration:none;font-size:.95rem;font-weight:500;color:var(--ink);position:relative}
+  .nav-links a:not(.btn)::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:var(--terra);transform:scaleX(0);transform-origin:left;transition:transform .25s ease}
+  .nav-links a:not(.btn):hover::after{transform:scaleX(1)}
+  .menu-btn{display:none;background:none;border:0;padding:8px;cursor:pointer;color:var(--navy)}
+  .menu-btn svg{width:26px;height:26px}
+
+  /* Hero */
+  .hero{
+    position:relative;overflow:hidden;color:#fff;padding:96px 0 0;
+    background:
+      radial-gradient(900px 500px at 85% 10%, rgba(27,127,140,.55), transparent 60%),
+      radial-gradient(700px 500px at 0% 100%, rgba(194,74,36,.22), transparent 60%),
+      linear-gradient(160deg, #0a1d36 0%, var(--navy) 45%, var(--navy-2) 100%);
+  }
+  .hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:56px;align-items:center;padding-bottom:96px}
+  .hero .eyebrow{color:#f2b66d}
+  .hero h1{color:#fff;font-size:clamp(2.5rem,5.4vw,4.35rem);margin:22px 0 24px}
+  .hero h1 em{font-style:normal;color:#f2b66d}
+  .hero p.lead{color:rgba(255,255,255,.84);font-size:1.2rem}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px}
+  .secure{display:flex;align-items:center;gap:10px;margin-top:22px;font-size:.88rem;color:rgba(255,255,255,.7)}
+  .secure svg{width:18px;height:18px;color:#f2b66d}
+  .hero-art{position:relative}
+  .hero-art svg{width:100%;height:auto;border-radius:28px;box-shadow:0 30px 60px -20px rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.12)}
+  .hero-tag{
+    position:absolute;left:-22px;bottom:34px;background:#fff;color:var(--navy);border-radius:16px;
+    padding:14px 18px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;font-size:.88rem;line-height:1.3;max-width:250px;
+  }
+  .hero-tag b{display:block;font-family:var(--serif);font-size:1rem}
+  .hero-tag svg{width:34px;height:34px;flex:none;padding:7px;border-radius:50%;background:var(--sand);color:var(--teal);box-shadow:none;border:0}
+
+  /* Trust strip */
+  .strip{background:var(--navy);border-top:1px solid rgba(255,255,255,.1);color:#fff}
+  .strip-inner{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+  .strip-item{display:flex;align-items:center;gap:16px;padding:26px 24px;border-left:1px solid rgba(255,255,255,.1)}
+  .strip-item:first-child{border-left:0;padding-left:0}
+  .strip-item svg{width:32px;height:32px;color:#f2b66d;flex:none}
+  .strip-item b{display:block;font-size:.98rem}
+  .strip-item span{font-size:.85rem;color:rgba(255,255,255,.68)}
+
+  /* Mission */
+  .mission-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+  .mission h2{font-size:clamp(2rem,3.8vw,3rem);margin:18px 0 24px}
+  .mission-copy p+p{margin-top:18px}
+  .pillars{display:grid;gap:16px}
+  .pillar{display:flex;gap:18px;padding:22px;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--line)}
+  .pillar-ico{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;flex:none;background:var(--sand);color:var(--navy)}
+  .pillar-ico svg{width:28px;height:28px}
+  .pillar h3{font-size:1.15rem;margin-bottom:4px}
+  .pillar p{font-size:.96rem;color:var(--muted)}
+
+  /* Founder's message */
+  .founder{background:var(--sand-2);padding:96px 0;border-top:1px solid var(--line)}
+  .founder-card{
+    position:relative;margin:0 auto;max-width:900px;text-align:center;
+    padding:60px 56px 56px;background:#fff;border-radius:32px;
+    border:1px solid var(--line);box-shadow:var(--shadow);
+  }
+  .founder-card .eyebrow{justify-content:center}
+  .qmark{width:56px;height:56px;color:var(--terra);margin:22px auto 8px;opacity:.9}
+  .founder blockquote{margin:0}
+  .founder blockquote p{font-family:var(--serif);font-weight:500;font-size:clamp(1.35rem,2.6vw,2rem);line-height:1.42;color:var(--navy)}
+  .founder blockquote p+p{margin-top:18px}
+  .founder blockquote strong{font-weight:700;color:var(--terra)}
+  .founder figcaption{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:34px;text-align:left}
+  .founder-mark{width:48px;height:48px;border-radius:50%;background:var(--navy);display:grid;place-items:center;flex:none}
+  .founder-mark svg{width:26px;height:26px}
+  .founder figcaption b{display:block;font-family:var(--serif);font-size:1.1rem;color:var(--navy);line-height:1.2}
+  .founder figcaption span.role{font-size:.88rem;color:var(--muted)}
+  .founder-card .btn{margin-top:34px}
+
+  /* Programs */
+  .programs{background:#fff;border-block:1px solid var(--line)}
+  .section-head{max-width:720px;margin-bottom:56px}
+  .section-head h2{font-size:clamp(2rem,3.8vw,3rem);margin:18px 0 18px}
+  .region{display:flex;align-items:center;gap:16px;margin:48px 0 22px}
+  .region:first-of-type{margin-top:0}
+  .region h3{font-size:1.5rem}
+  .region::after{content:"";flex:1;height:1px;background:var(--line)}
+  .region-dot{width:12px;height:12px;border-radius:50%;background:var(--terra)}
+  .region.africa .region-dot{background:var(--olive)}
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+  .card{
+    display:flex;flex-direction:column;padding:34px;border-radius:var(--radius);
+    background:var(--sand);border:1px solid var(--line);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+  .card-ico{width:60px;height:60px;border-radius:16px;display:grid;place-items:center;background:var(--navy);color:#fff;margin-bottom:22px}
+  .card.africa .card-ico{background:var(--olive)}
+  .card-ico svg{width:32px;height:32px}
+  .card h3{font-size:1.5rem;margin-bottom:12px}
+  .card>p{color:var(--muted)}
+  .card ul{margin:22px 0 28px;display:grid;gap:10px}
+  .card li{display:flex;gap:12px;font-size:.96rem;align-items:flex-start}
+  .card li svg{width:20px;height:20px;flex:none;margin-top:3px;color:var(--teal)}
+  .card.africa li svg{color:var(--olive)}
+  .card .btn{margin-top:auto;align-self:flex-start}
+
+  /* United Nations */
+  .un{
+    position:relative;color:#fff;overflow:hidden;
+    background:
+      radial-gradient(700px 420px at 100% 0%, rgba(27,127,140,.5), transparent 60%),
+      linear-gradient(150deg, var(--navy) 0%, #0f2d52 100%);
+  }
+  .un-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:72px;align-items:center}
+  .un .eyebrow{color:#f2b66d}
+  .un h2{color:#fff;font-size:clamp(2rem,3.8vw,3rem);margin:18px 0 24px}
+  .un p{color:rgba(255,255,255,.82)}
+  .un p+p{margin-top:18px}
+  .principles{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+  .chip{padding:9px 18px;border-radius:999px;border:1px solid rgba(255,255,255,.28);font-size:.9rem;font-weight:500;background:rgba(255,255,255,.06)}
+  .un-points{display:grid;gap:16px}
+  .un-point{display:flex;gap:18px;padding:24px;border-radius:var(--radius);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(6px)}
+  .un-point svg{width:30px;height:30px;color:#f2b66d;flex:none;margin-top:2px}
+  .un-point h3{color:#fff;font-size:1.15rem;margin-bottom:4px}
+  .un-point p{font-size:.95rem;margin:0!important;color:rgba(255,255,255,.75)}
+
+  /* How it works */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;counter-reset:step}
+  .step{position:relative;padding:34px 30px;background:#fff;border-radius:var(--radius);border:1px solid var(--line);box-shadow:var(--shadow)}
+  .step::before{
+    counter-increment:step;content:counter(step);
+    display:grid;place-items:center;width:46px;height:46px;border-radius:50%;
+    background:var(--terra);color:#fff;font-family:var(--serif);font-weight:700;font-size:1.2rem;margin-bottom:20px;
+  }
+  .step h3{font-size:1.3rem;margin-bottom:8px}
+  .step p{color:var(--muted);font-size:.98rem}
+
+  /* Donate */
+  .donate{padding-top:0}
+  .donate-card{
+    position:relative;overflow:hidden;border-radius:32px;color:#fff;text-align:center;
+    padding:84px 32px;
+    background:
+      radial-gradient(600px 300px at 15% 0%, rgba(242,182,109,.28), transparent 60%),
+      radial-gradient(600px 320px at 90% 100%, rgba(27,127,140,.55), transparent 60%),
+      linear-gradient(160deg, #0a1d36, var(--navy-2));
+    box-shadow:0 40px 80px -30px rgba(12,35,64,.55);
+  }
+  .donate-card .eyebrow{color:#f2b66d}
+  .donate-card .eyebrow::before{display:none}
+  .donate-card h2{color:#fff;font-size:clamp(2rem,4.4vw,3.4rem);max-width:20ch;margin:18px auto 20px}
+  .donate-card p.lead{color:rgba(255,255,255,.82);margin-inline:auto}
+  .donate-actions{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:38px}
+  .donate-meta{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:center;margin-top:30px;font-size:.88rem;color:rgba(255,255,255,.72)}
+  .donate-meta span{display:inline-flex;align-items:center;gap:8px}
+  .donate-meta svg{width:17px;height:17px;color:#f2b66d}
+
+  /* FAQ */
+  .faq-list{max-width:820px;margin-inline:auto;display:grid;gap:12px}
+  .faq-head{text-align:center;margin:0 auto 44px}
+  .faq-head h2{font-size:clamp(1.8rem,3.4vw,2.6rem);margin-top:16px}
+  .faq-head .eyebrow::before{display:none}
+  details{background:#fff;border:1px solid var(--line);border-radius:16px;padding:0 24px;transition:box-shadow .2s ease}
+  details[open]{box-shadow:var(--shadow)}
+  summary{
+    cursor:pointer;list-style:none;padding:22px 0;font-weight:600;color:var(--navy);
+    display:flex;justify-content:space-between;align-items:center;gap:16px;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";font-size:1.5rem;font-weight:400;color:var(--terra);transition:transform .25s ease;flex:none}
+  details[open] summary::after{transform:rotate(45deg)}
+  details p{padding:0 0 24px;color:var(--muted)}
+
+  /* Footer */
+  footer{background:var(--navy);color:rgba(255,255,255,.75);padding:64px 0 36px;font-size:.92rem}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:48px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.12)}
+  footer .brand-mark{background:rgba(255,255,255,.1)}
+  footer .brand-text strong{color:#fff}
+  footer .brand-text span{color:rgba(255,255,255,.6)}
+  footer h4{margin:0 0 14px;color:#fff;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase}
+  footer ul{display:grid;gap:10px}
+  footer a{text-decoration:none}
+  footer a:hover{color:#fff;text-decoration:underline}
+  .foot-about{margin-top:18px;max-width:38ch}
+  .disclaimer{padding-top:28px;font-size:.82rem;color:rgba(255,255,255,.55);display:grid;gap:8px}
+
+  /* Reveal on scroll */
+  .js .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .7s ease}
+  .js .reveal.in{opacity:1;transform:none}
+  .js .reveal.d1{transition-delay:.08s}
+  .js .reveal.d2{transition-delay:.16s}
+  .js .reveal.d3{transition-delay:.24s}
+
+  /* Responsive */
+  @media (max-width:980px){
+    section{padding:80px 0}
+    .hero{padding-top:64px}
+    .hero-grid,.mission-grid,.un-grid{grid-template-columns:1fr;gap:48px}
+    .hero-grid{padding-bottom:64px}
+    .hero-art{max-width:520px}
+    .hero-tag{left:12px}
+    .steps{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr 1fr}
+    .foot-grid>div:first-child{grid-column:1/-1}
+  }
+  @media (max-width:760px){
+    body{font-size:16px}
+    .menu-btn{display:block}
+    .nav-links{
+      position:absolute;top:72px;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;
+      background:var(--sand);border-bottom:1px solid var(--line);padding:8px 20px 20px;
+      display:none;box-shadow:0 24px 40px -20px rgba(12,35,64,.3);
+    }
+    .nav-links.open{display:flex}
+    .nav-links a:not(.btn){padding:14px 0;border-bottom:1px solid var(--line)}
+    .nav-links a:not(.btn)::after{display:none}
+    .nav-links .btn{margin-top:16px}
+    .cards{grid-template-columns:1fr}
+    .card{padding:28px}
+    .strip-inner{grid-template-columns:1fr}
+    .strip-item{border-left:0;border-top:1px solid rgba(255,255,255,.1);padding:20px 0}
+    .strip-item:first-child{border-top:0}
+    .hero-cta .btn,.donate-actions .btn{width:100%}
+    .donate-card{padding:60px 22px;border-radius:24px}
+    .foot-grid{grid-template-columns:1fr;gap:32px}
+    .founder{padding:72px 0}
+    .founder-card{padding:44px 24px 40px;border-radius:24px}
+    .founder-card .btn{width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{transition:none!important;animation:none!important}
+    .js .reveal{opacity:1;transform:none}
+  }
+</style>
+</head>
+
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top" aria-label="Jonah – CogniAI Initiative, home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 12 12 4l9 8v8H3z" fill="#f7f2e8"/><path d="M9.5 20v-5.5a2.5 2.5 0 0 1 5 0V20z" fill="#c24a24"/></svg>
+      </span>
+      <span class="brand-text"><strong>Jonah</strong><span>CogniAI Initiative</span></span>
+    </a>
+
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+
+    <nav class="nav-links" id="navLinks" aria-label="Primary">
+      <a href="#mission">Our mission</a>
+      <a href="#programs">Programs</a>
+      <a href="#un">United Nations</a>
+      <a href="#how">How it works</a>
+      <a class="btn btn-primary btn-sm" href="https://buy.stripe.com/8x2eVd5rcaEq0Ak1SH0Ny03" target="_blank" rel="noopener">Donate</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top" style="padding-bottom:0">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Humanitarian works · Palestine &amp; Africa</span>
+      <h1>Safe homes. Safe passage. <em>A future for every child.</em></h1>
+      <p class="lead">Jonah – CogniAI Initiative in Humanitarian Works funds shelter and emergency transport for Palestinian families, and education and food for African communities — working closely with the United Nations.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary btn-lg" href="https://buy.stripe.com/8x2eVd5rcaEq0Ak1SH0Ny03" target="_blank" rel="noopener">
+          Donate now
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-ghost btn-lg" href="#programs">See our work</a>
+      </div>
+      <p class="secure">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        Secure checkout powered by Stripe
+      </p>
+    </div>
+
+    <div class="hero-art reveal" aria-hidden="true">
+      <svg viewBox="0 0 520 580" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#0d2b4d"/>
+            <stop offset=".55" stop-color="#1b6a86"/>
+            <stop offset="1" stop-color="#f2b66d"/>
+          </linearGradient>
+          <radialGradient id="sun" cx=".5" cy=".5" r=".5">
+            <stop offset="0" stop-color="#fff3d6"/>
+            <stop offset=".45" stop-color="#ffd59a" stop-opacity=".9"/>
+            <stop offset="1" stop-color="#ffd59a" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect width="520" height="580" fill="url(#sky)"/>
+        <!-- stars -->
+        <g fill="#fff" opacity=".8">
+          <circle cx="60" cy="50" r="1.6"/><circle cx="130" cy="95" r="1.2"/><circle cx="210" cy="40" r="1.8"/>
+          <circle cx="300" cy="80" r="1.2"/><circle cx="410" cy="48" r="1.6"/><circle cx="470" cy="110" r="1.2"/>
+          <circle cx="90" cy="160" r="1"/><circle cx="440" cy="190" r="1"/>
+        </g>
+        <!-- sun glow -->
+        <circle cx="330" cy="330" r="190" fill="url(#sun)"/>
+        <circle cx="330" cy="330" r="62" fill="#ffe9bd"/>
+        <!-- hills -->
+        <path d="M0 372 C90 322 170 346 250 366 S410 332 520 360 V580 H0Z" fill="#17507a"/>
+        <path d="M0 430 C100 392 200 424 300 412 S450 392 520 424 V580 H0Z" fill="#0f3a62"/>
+        <!-- houses -->
+        <g>
+          <!-- A -->
+          <rect x="44" y="388" width="104" height="82" fill="#f1e3c8"/>
+          <rect x="44" y="388" width="104" height="8" fill="#e2cfa8"/>
+          <path d="M66 470v-30a14 14 0 0 1 28 0v30z" fill="#0c2340"/>
+          <path d="M108 430v-12a9 9 0 0 1 18 0v12z" fill="#ffcf70"/>
+          <!-- B -->
+          <rect x="160" y="366" width="86" height="104" fill="#ecdab8"/>
+          <rect x="160" y="366" width="86" height="8" fill="#dcc596"/>
+          <path d="M176 410v-14a10 10 0 0 1 20 0v14z" fill="#ffcf70"/>
+          <path d="M210 410v-14a10 10 0 0 1 20 0v14z" fill="#0c2340" opacity=".85"/>
+          <path d="M187 470v-26a12 12 0 0 1 24 0v26z" fill="#0c2340"/>
+          <!-- C -->
+          <rect x="258" y="396" width="94" height="74" fill="#f4e8d0"/>
+          <rect x="258" y="396" width="94" height="8" fill="#e5d3ae"/>
+          <path d="M276 470v-28a12 12 0 0 1 24 0v28z" fill="#0c2340"/>
+          <path d="M318 436v-12a9 9 0 0 1 18 0v12z" fill="#ffcf70"/>
+          <!-- D -->
+          <rect x="364" y="380" width="112" height="90" fill="#ecdab8"/>
+          <rect x="364" y="380" width="112" height="8" fill="#dcc596"/>
+          <path d="M380 432v-14a10 10 0 0 1 20 0v14z" fill="#ffcf70"/>
+          <path d="M440 432v-14a10 10 0 0 1 20 0v14z" fill="#ffcf70"/>
+          <path d="M412 470v-28a12 12 0 0 1 24 0v28z" fill="#0c2340"/>
+        </g>
+        <!-- ground & road -->
+        <rect y="470" width="520" height="110" fill="#0a1d36"/>
+        <path d="M0 520 C140 500 330 540 520 505 V540 C330 575 140 535 0 560Z" fill="#17304f"/>
+        <path d="M0 540 C140 520 330 558 520 524" stroke="#f2b66d" stroke-width="2.5" stroke-dasharray="14 12" fill="none" opacity=".75"/>
+        <!-- olive tree -->
+        <g>
+          <path d="M486 470c-4-28-2-50 4-72" stroke="#3a2a1c" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <circle cx="490" cy="388" r="26" fill="#55763b"/>
+          <circle cx="470" cy="402" r="20" fill="#678a49"/>
+          <circle cx="508" cy="404" r="18" fill="#4a6a33"/>
+        </g>
+        <!-- little ones: school book -->
+        <g transform="translate(40 500)">
+          <rect width="64" height="44" rx="6" fill="#f7f2e8"/>
+          <path d="M32 6v32M10 14h14M10 22h14M40 14h14M40 22h14" stroke="#c24a24" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <div class="hero-tag">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></svg>
+        <span><b>Working with the UN</b>Coordinated, principled humanitarian action</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- trust strip -->
+  <div class="strip">
+    <div class="wrap strip-inner">
+      <div class="strip-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></svg>
+        <div><b>Working closely with the UN</b><span>Aligned with UN humanitarian coordination</span></div>
+      </div>
+      <div class="strip-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.6-7-11a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 6.400-7 11-7 11z"/></svg>
+        <div><b>Palestine &amp; Africa</b><span>Shelter, safe transport, education, food</span></div>
+      </div>
+      <div class="strip-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        <div><b>Secure giving</b><span>Payments handled by Stripe</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MISSION ============ -->
+<section class="mission" id="mission">
+  <div class="wrap mission-grid">
+    <div class="mission-copy reveal">
+      <span class="eyebrow">Our mission</span>
+      <h2>Humanitarian work, guided by intelligence and compassion.</h2>
+      <p class="lead">Jonah – CogniAI Initiative exists to put help where it is needed most: a roof for a family that has lost everything, a safe way out for people in danger, and a school meal and a classroom for a child in Africa.</p>
+      <p>CogniAI brings intelligent, data-informed planning to humanitarian work, helping us prioritise urgent needs and cut the delays between a gift and the people it serves. Technology supports the work — but it is people, trust and partnership that deliver it.</p>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar reveal d1">
+        <div class="pillar-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.500 12 4l9 7.500"/><path d="M5 10v10h14V10"/><path d="M10 20v-5a2 2 0 0 1 4 0v5"/></svg></div>
+        <div><h3>Shelter</h3><p>Safe, dignified housing for Palestinian families who have lost their homes.</p></div>
+      </div>
+      <div class="pillar reveal d2">
+        <div class="pillar-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v5c0 5 3.400 8.400 8 10 4.600-1.600 8-5 8-10V6z"/><path d="m9 12 2.200 2.200L15.500 10"/></svg></div>
+        <div><h3>Safety</h3><p>Emergency transport that moves civilians, the sick and the wounded out of danger.</p></div>
+      </div>
+      <div class="pillar reveal d3">
+        <div class="pillar-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.500A2.500 2.500 0 0 1 6.500 3H20v15H6.500A2.500 2.500 0 0 0 4 20.500z"/><path d="M4 20.500A2.500 2.500 0 0 0 6.500 23H20v-5"/><path d="M9 8h7"/></svg></div>
+        <div><h3>Learning &amp; nourishment</h3><p>Education and food so African communities can grow strong and stay in school.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOUNDER'S MESSAGE ============ -->
+<section class="founder" id="founder" aria-labelledby="founderLabel">
+  <div class="wrap">
+    <figure class="founder-card reveal">
+      <span class="eyebrow" id="founderLabel">A message from our founder</span>
+      <svg class="qmark" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true"><path d="M8 34V25c0-7 3-11.500 9.500-14.500l2 3C16 15.500 14.500 18 14.300 21H20v13zM28 34V25c0-7 3-11.500 9.500-14.500l2 3C36 15.500 34.500 18 34.300 21H40v13z"/></svg>
+      <blockquote>
+        <p><strong>Israel is not a place, it’s the people.</strong> Israel is where our people stand — even though right now, those people need our help.</p>
+        <p>Evacuating them right now is the most logical thing, and we will make a way to move them out.</p>
+      </blockquote>
+      <figcaption>
+        <span class="founder-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M3 12 12 4l9 8v8H3z" fill="#f7f2e8"/><path d="M9.500 20v-5.500a2.500 2.500 0 0 1 5 0V20z" fill="#c24a24"/></svg>
+        </span>
+        <span><b>Founder</b><span class="role">CogniAI Studios</span></span>
+      </figcaption>
+      <a class="btn btn-primary btn-lg" href="https://buy.stripe.com/8x2eVd5rcaEq0Ak1SH0Ny03" target="_blank" rel="noopener">
+        Help us move people to safety
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ PROGRAMS ============ -->
+<section class="programs" id="programs">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Our programs</span>
+      <h2>Where your gift goes.</h2>
+      <p class="lead">Two regions, four commitments. Every donation supports practical, life-changing help for people who need it most.</p>
+    </div>
+
+    <!-- Palestine -->
+    <div class="region reveal"><span class="region-dot"></span><h3>Palestine</h3></div>
+    <div class="cards">
+      <article class="card reveal">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.500 12 4l9 7.500"/><path d="M5 10v10h14V10"/><path d="M10 20v-5a2 2 0 0 1 4 0v5"/></svg></div>
+        <h3>Homes for Palestinian families</h3>
+        <p>Families who have lost their homes need more than a tent. We fund safe, dignified shelter so people can live with security and privacy while they rebuild their lives.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.500 4.500 4.500L19 7.500"/></svg>Emergency and temporary shelter</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.500 4.500 4.500L19 7.500"/></svg>Repair and rebuilding of damaged homes</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.500 4.500 4.500L19 7.500"/></svg>Household essentials for families starting again</li>
+        </ul>
+        <a class="btn btn-outline btn-sm" href="https://buy.stripe.com/8x2eVd5rcaEq0Ak1SH0Ny03" target="_blank" rel="noopener">Fund a home</a>
+      </article>
+
+      <article class="card reveal d1">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="14" height="10" rx="1.500"/><path d="M16 10h3.500L22 13v4h-6"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/><path d="M9 10v4M7 12h4"/></svg></div>
+        <h3>Safe &amp; emergency transport</h3>
+        <p>When staying is no longer safe, moving must be. We fund emergency transport that helps civilians — the wounded, the sick, children and the elderly — reach safety and care.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.500 4.500 4.500L19 7.500"/></svg>Emergency evacuation of civilians</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.500 4.500 4.500L19 7.500"/></svg>Ambulance and medical transport</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.500 4.500 4.500L19 7.500"/></svg>Safe routes planned through humanitarian channels</li>
+        </ul>
+        <a class="btn btn-outline btn-sm" href="https://buy.stripe.com/8x2eVd5rcaEq0Ak1SH0Ny03" target="_blank" rel="noopener">Fund safe passage</a>
+      </article>
+    </div>
+
+    <!-- Africa -->
+    <div class="region africa reveal"><span class="region-dot"></span><h3>African communities</h3></div>
+    <div class="cards">
+      <article class="card africa reveal">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.500A2.500 2.500 0 0 1 6.500 3H20v15H6.500A2.500 2.500 0 0 0 4 20.500z"/><path d="M4 20.500A2.500 2.500 0 0 0 6.500 23H20v-5"/><path d="M9 8h7M9 12h5"/></svg></div>
+        <h3>Education</h3>
+        <p>Education is the surest path out of poverty. We support African communities with the learning materials and classroom support that keep children in school and learning.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.500 4.500 4.500L19 7.500"/></svg>School supplies and learning materials</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.500 4.500 4.500L19 7.500"/></svg>Support for classrooms and teachers</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.500 4.500 4.500L19 7.500"/></svg>Helping girls and boys stay in school</li>
+        </ul>
+        <a class="btn btn-outline btn-sm" href="https://buy.stripe.com/8x2eVd5rcaEq0Ak1SH0Ny03" target="_blank" rel="noopener">Fund a classroom</a>
+      </article>
+
+      <article class="card africa reveal d1">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V9"/><path d="M12 9c0-3 1.500-5 4-6 .4 3-.8 5.400-4 6z"/><path d="M12 9C12 6 10.500 4 8 3c-.4 3 .8 5.400 4 6z"/><path d="M12 15c0-2.500 1.500-4.200 4-5 .3 2.600-.8 4.400-4 5z"/><path d="M12 15c0-2.500-1.500-4.200-4-5-.3 2.600.8 4.400 4 5z"/></svg></div>
+        <h3>Food &amp; nourishment</h3>
+        <p>No child learns on an empty stomach. We fund food for families and communities facing hunger, so children can grow, learn and look ahead with hope.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.500 4.500 4.500L19 7.500"/></svg>Emergency food for families</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.500 4.500 4.500L19 7.500"/></svg>School meals for children</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.500 4.500 4.500L19 7.500"/></svg>Support for community food security</li>
+        </ul>
+        <a class="btn btn-outline btn-sm" href="https://buy.stripe.com/8x2eVd5rcaEq0Ak1SH0Ny03" target="_blank" rel="noopener">Fund meals</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ UNITED NATIONS ============ -->
+<section class="un" id="un">
+  <div class="wrap un-grid">
+    <div class="reveal">
+      <span class="eyebrow">Our partnership</span>
+      <h2>We work closely with the United Nations.</h2>
+      <p>Humanitarian response is strongest when it is coordinated. We work closely with the United Nations and its humanitarian agencies so that help reaches people through trusted, established channels — avoiding duplication, responding to assessed needs, and keeping aid safe and accountable.</p>
+      <p>Our work is guided by the humanitarian principles affirmed by the UN General Assembly.</p>
+      <div class="principles" aria-label="Humanitarian principles">
+        <span class="chip">Humanity</span>
+        <span class="chip">Neutrality</span>
+        <span class="chip">Impartiality</span>
+        <span class="chip">Independence</span>
+      </div>
+    </div>
+
+    <div class="un-points">
+      <div class="un-point reveal d1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="m8.600 10.600 6.800-3.200M8.600 13.400l6.800 3.200"/></svg>
+        <div><h3>Coordinated</h3><p>Planning alongside UN agencies and partners so efforts complement one another on the ground.</p></div>
+      </div>
+      <div class="un-point reveal d2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v5c0 5 3.400 8.400 8 10 4.600-1.600 8-5 8-10V6z"/><path d="m9 12 2.200 2.200L15.500 10"/></svg>
+        <div><h3>Accountable</h3><p>Working through established humanitarian channels that put people, safety and transparency first.</p></div>
+      </div>
+      <div class="un-point reveal d3">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.600-7-11a4 4 0 0 1 7-2.600A4 4 0 0 1 19 10c0 6.400-7 11-7 11z"/></svg>
+        <div><h3>People-centred</h3><p>Every decision starts with the needs, dignity and rights of the people we serve.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section id="how">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">How it works</span>
+      <h2>From your gift to the people who need it.</h2>
+      <p class="lead">Simple, secure and focused on getting help to the ground without delay.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <h3>You give securely</h3>
+        <p>Choose your gift on our secure Stripe checkout page. It takes about a minute and works on any device.</p>
+      </div>
+      <div class="step reveal d1">
+        <h3>We coordinate</h3>
+        <p>Working closely with the United Nations and partners, we direct support to the most urgent needs.</p>
+      </div>
+      <div class="step reveal d2">
+        <h3>Help is delivered</h3>
+        <p>Shelter, safe transport, education and food reach families in Palestine and communities across Africa.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DONATE ============ -->
+<section class="donate" id="donate">
+  <div class="wrap">
+    <div class="donate-card reveal">
+      <span class="eyebrow">Make a difference today</span>
+      <h2>Help a family find safety. Help a child find a classroom.</h2>
+      <p class="lead">Your gift supports homes and safe passage in Palestine, and education and food in African communities. Every contribution matters.</p>
+      <div class="donate-actions">
+        <a class="btn btn-primary btn-lg" href="https://buy.stripe.com/8x2eVd5rcaEq0Ak1SH0Ny03" target="_blank" rel="noopener">
+          Donate securely
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <button class="btn btn-ghost btn-lg" type="button" id="shareBtn">Share this page</button>
+      </div>
+      <div class="donate-meta">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Secure checkout by Stripe</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Major cards accepted</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v5c0 5 3.400 8.400 8 10 4.600-1.600 8-5 8-10V6z"/></svg>We never see your card details</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq" style="padding-top:0">
+  <div class="wrap">
+    <div class="faq-head reveal">
+      <span class="eyebrow">Questions</span>
+      <h2>Good to know before you give.</h2>
+    </div>
+    <div class="faq-list reveal">
+      <details>
+        <summary>How do I donate?</summary>
+        <p>Select any “Donate” button on this page. You will be taken to a secure Stripe checkout page where you can choose your gift and complete your payment.</p>
+      </details>
+      <details>
+        <summary>Is my payment secure?</summary>
+        <p>Yes. Payments are processed by Stripe, a leading payment provider. Your card details are entered on Stripe’s secure page and are never seen or stored by us.</p>
+      </details>
+      <details>
+        <summary>What does your gift support?</summary>
+        <p>Gifts support our humanitarian programs: homes and emergency transport for Palestinian families, and education and food for African communities.</p>
+      </details>
+      <details>
+        <summary>How do you work with the United Nations?</summary>
+        <p>We work closely with the United Nations and its humanitarian agencies, coordinating our efforts through established humanitarian channels so that aid is targeted, safe and accountable.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#top" aria-label="Jonah – CogniAI Initiative, back to top">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M3 12 12 4l9 8v8H3z" fill="#f7f2e8"/><path d="M9.500 20v-5.500a2.500 2.500 0 0 1 5 0V20z" fill="#c24a24"/></svg>
+          </span>
+          <span class="brand-text"><strong>Jonah</strong><span>CogniAI Initiative</span></span>
+        </a>
+        <p class="foot-about">Humanitarian works for safe homes and emergency transport in Palestine, and for education and food in African communities.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#mission">Our mission</a></li>
+          <li><a href="#founder">Founder’s message</a></li>
+          <li><a href="#programs">Programs</a></li>
+          <li><a href="#un">United Nations</a></li>
+          <li><a href="#how">How it works</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Give</h4>
+        <ul>
+          <li><a href="https://buy.stripe.com/8x2eVd5rcaEq0Ak1SH0Ny03" target="_blank" rel="noopener">Donate now</a></li>
+          <li><a href="#faq">Questions</a></li>
+        </ul>
+        <!-- Add a contact email / organisation registration details here when ready -->
+      </div>
+    </div>
+    <div class="disclaimer">
+      <p>© <span id="year">2026</span> Jonah – CogniAI Initiative in Humanitarian Works. All rights reserved.</p>
+      <p>References to the United Nations describe our collaboration and do not imply endorsement. The United Nations name and emblem are not used on this site.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu
+  (function () {
+    var btn = document.getElementById('menuBtn');
+    var nav = document.getElementById('navLinks');
+    function setOpen(open) {
+      nav.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', String(open));
+      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
+    btn.addEventListener('click', function () { setOpen(!nav.classList.contains('open')); });
+    nav.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
+  })();
+
+  // Reveal on scroll
+  (function () {
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+
+  // Share
+  (function () {
+    var btn = document.getElementById('shareBtn');
+    btn.addEventListener('click', function () {
+      var data = {
+        title: document.title,
+        text: 'Support safe homes and safe passage in Palestine, and education and food in African communities.',
+        url: location.href
+      };
+      if (navigator.share) { navigator.share(data).catch(function () {}); return; }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(location.href).then(function () {
+          var old = btn.textContent; btn.textContent = 'Link copied ✓';
+          setTimeout(function () { btn.textContent = old; }, 2200);
+        }).catch(function () {});
+      }
+    });
+  })();
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
